@@ -1,6 +1,7 @@
+// src/components/Navbar.tsx
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Heart } from 'lucide-react';
 
 interface NavLink {
     id: string;
@@ -38,16 +39,19 @@ const Navbar: React.FC = () => {
         setMobileMenuOpen(!mobileMenuOpen);
     };
 
+    // Enhanced variants for iOS 18-like appearance
     const navVariants = {
         top: {
             backgroundColor: 'rgba(255, 255, 255, 0)',
+            backdropFilter: 'blur(0px)',
             boxShadow: '0 0 0 rgba(0, 0, 0, 0)',
-            padding: '1rem 0',
+            padding: '1.25rem 0',
         },
         scrolled: {
-            backgroundColor: 'rgba(255, 255, 255, 1)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-            padding: '0.5rem 0',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(12px)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.05)',
+            padding: '0.75rem 0',
         }
     };
 
@@ -57,30 +61,88 @@ const Navbar: React.FC = () => {
             y: 0,
             opacity: 1,
             transition: {
-                delay: i * 0.1,
+                delay: i * 0.08,
                 duration: 0.4,
-                ease: 'easeOut'
+                ease: [0.25, 0.1, 0.25, 1] // iOS-like cubic-bezier
             }
         })
+    };
+
+    const buttonVariants = {
+        initial: {
+            opacity: 0,
+            scale: 0.9
+        },
+        animate: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                delay: 0.3,
+                duration: 0.4,
+                ease: [0.25, 0.1, 0.25, 1]
+            }
+        },
+        hover: {
+            scale: 1.03,
+            boxShadow: '0 4px 20px rgba(255, 107, 129, 0.4)',
+            transition: {
+                duration: 0.2,
+                ease: "easeOut"
+            }
+        },
+        tap: {
+            scale: 0.97,
+            boxShadow: '0 2px 10px rgba(255, 107, 129, 0.3)',
+            transition: {
+                duration: 0.1,
+                ease: "easeIn"
+            }
+        }
+    };
+
+    const logoVariants = {
+        initial: { opacity: 0, x: -20 },
+        animate: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1]
+            }
+        },
+        hover: {
+            scale: 1.05,
+            transition: {
+                duration: 0.2,
+                ease: "easeOut"
+            }
+        }
     };
 
     const mobileMenuVariants = {
         closed: {
             opacity: 0,
-            x: '100%',
+            y: -20,
+            scale: 0.98,
             transition: {
                 duration: 0.3,
-                ease: 'easeInOut'
+                ease: [0.25, 0.1, 0.25, 1]
             }
         },
         open: {
             opacity: 1,
-            x: 0,
+            y: 0,
+            scale: 1,
             transition: {
-                duration: 0.3,
-                ease: 'easeInOut'
+                duration: 0.4,
+                ease: [0.25, 0.1, 0.25, 1]
             }
         }
+    };
+
+    const menuIconVariants = {
+        closed: { rotate: 0 },
+        open: { rotate: 90 }
     };
 
     return (
@@ -89,25 +151,31 @@ const Navbar: React.FC = () => {
             variants={navVariants}
             initial="top"
             animate={controls}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4 }}
         >
-            <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            <div className="container mx-auto px-6 flex justify-between items-center">
                 <motion.div
-                    className="text-2xl font-bold"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
+                    className="flex items-center gap-2"
+                    variants={logoVariants}
+                    initial="initial"
+                    animate="animate"
+                    whileHover="hover"
                 >
-                    <span className="text-[#FF6B81]">Heart</span>
-                    <span className="text-[#D86D72]">Match</span>
+                    <div className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-full">
+                        <Heart size={20} className="text-white" />
+                    </div>
+                    <div className="text-2xl font-bold">
+                        <span className="text-[#FF6B81]">Heart</span>
+                        <span className="text-[#D86D72]">Match</span>
+                    </div>
                 </motion.div>
 
-                <div className="hidden md:flex space-x-8 items-center">
+                <div className="hidden md:flex space-x-10 items-center">
                     {navLinks.map((link, index) => (
                         <motion.a
                             key={link.id}
                             href={link.href}
-                            className="hover:text-[#FF6B81] transition-colors duration-200"
+                            className="text-sm font-medium hover:text-[#FF6B81] transition-colors duration-200 relative group"
                             variants={linkVariants}
                             custom={index}
                             initial="initial"
@@ -116,70 +184,100 @@ const Navbar: React.FC = () => {
                             whileTap={{ scale: 0.95 }}
                         >
                             {link.label}
+                            <motion.span
+                                className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF6B81] group-hover:w-full transition-all duration-300"
+                                initial={{ width: 0 }}
+                                whileHover={{ width: '100%' }}
+                            />
                         </motion.a>
                     ))}
                     <motion.button
-                        className="bg-[#FF6B81] hover:bg-[#D86D72] text-white px-6 py-2 rounded-full transition-colors duration-200"
-                        variants={linkVariants}
-                        custom={navLinks.length}
+                        className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-7 py-2.5 rounded-full font-medium shadow-md"
+                        variants={buttonVariants}
                         initial="initial"
                         animate="animate"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover="hover"
+                        whileTap="tap"
                     >
                         Sign Up Free
                     </motion.button>
                 </div>
 
                 <motion.button
-                    className="md:hidden text-[#2B2B2A]"
+                    className="md:hidden bg-white/10 backdrop-blur-md p-2 rounded-full shadow-sm border border-gray-100/20"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
                     onClick={toggleMobileMenu}
                     aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                    variants={menuIconVariants}
+                    animate={mobileMenuOpen ? "open" : "closed"}
                 >
-                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    <AnimatePresence mode="wait">
+                        {mobileMenuOpen ? (
+                            <motion.div
+                                key="close"
+                                initial={{ opacity: 0, rotate: -90 }}
+                                animate={{ opacity: 1, rotate: 0 }}
+                                exit={{ opacity: 0, rotate: 90 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <X size={24} className="text-[#FF6B81]" />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="menu"
+                                initial={{ opacity: 0, rotate: 90 }}
+                                animate={{ opacity: 1, rotate: 0 }}
+                                exit={{ opacity: 0, rotate: -90 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Menu size={24} className="text-[#2B2B2A]" />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </motion.button>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile menu - iOS 18 style with glass effect */}
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <motion.div
-                        className="md:hidden fixed inset-0 bg-white z-40 pt-20"
+                        className="md:hidden fixed inset-x-0 top-20 m-4 rounded-2xl bg-white/80 backdrop-blur-xl shadow-lg border border-white/40 z-40 overflow-hidden"
                         variants={mobileMenuVariants}
                         initial="closed"
                         animate="open"
                         exit="closed"
                     >
-                        <div className="container mx-auto px-4 flex flex-col space-y-6 py-8">
+                        <div className="container mx-auto px-4 py-8 flex flex-col space-y-6">
                             {navLinks.map((link, index) => (
                                 <motion.a
                                     key={link.id}
                                     href={link.href}
-                                    className="text-xl hover:text-[#FF6B81] transition-colors duration-200"
-                                    initial={{ opacity: 0, x: -20 }}
+                                    className="text-lg font-medium text-[#2B2B2A] hover:text-[#FF6B81] transition-colors duration-200 flex items-center"
+                                    initial={{ opacity: 0, x: -10 }}
                                     animate={{
                                         opacity: 1,
                                         x: 0,
-                                        transition: { delay: 0.1 + index * 0.1 }
+                                        transition: { delay: 0.1 + index * 0.08 }
                                     }}
-                                    exit={{ opacity: 0, x: -20 }}
+                                    exit={{ opacity: 0, x: -10 }}
                                     onClick={toggleMobileMenu}
                                 >
+                                    <motion.span className="inline-block mr-2 w-1.5 h-1.5 rounded-full bg-[#FF6B81]" />
                                     {link.label}
                                 </motion.a>
                             ))}
                             <motion.button
-                                className="bg-[#FF6B81] hover:bg-[#D86D72] text-white px-6 py-3 rounded-full transition-colors duration-200 w-full mt-4"
+                                className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-3.5 rounded-xl font-medium transition-all duration-200 w-full mt-4 shadow-md"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{
                                     opacity: 1,
                                     y: 0,
-                                    transition: { delay: 0.4 }
+                                    transition: { delay: 0.35 }
                                 }}
                                 exit={{ opacity: 0, y: 20 }}
+                                whileHover={{ scale: 1.02, boxShadow: '0 4px 20px rgba(255, 107, 129, 0.3)' }}
+                                whileTap={{ scale: 0.98 }}
                             >
                                 Sign Up Free
                             </motion.button>
