@@ -7,11 +7,13 @@ import Testimonials from './components/Testimonials';
 import AppPreview from './components/AppPreview';
 import FinalCTA from './components/FinalCTA';
 import Footer from './components/Footer';
+import Matches from './pages/Matches';
 
 const App: React.FC = () => {
   return (
     <div className="bg-[#FFF9F0] text-[#2B2B2A] min-h-screen font-sans">
       <Navbar />
+      <Matches />
       <Hero />
       <Features />
       <HowItWorks />
