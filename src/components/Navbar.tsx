@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { Menu, X, Heart } from 'lucide-react';
@@ -39,7 +38,6 @@ const Navbar: React.FC = () => {
         setMobileMenuOpen(!mobileMenuOpen);
     };
 
-    // Enhanced variants for iOS 18-like appearance
     const navVariants = {
         top: {
             backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -63,7 +61,7 @@ const Navbar: React.FC = () => {
             transition: {
                 delay: i * 0.08,
                 duration: 0.4,
-                ease: [0.25, 0.1, 0.25, 1] // iOS-like cubic-bezier
+                ease: [0.25, 0.1, 0.25, 1]
             }
         })
     };
@@ -165,8 +163,8 @@ const Navbar: React.FC = () => {
                         <Heart size={20} className="text-white" />
                     </div>
                     <div className="text-2xl font-bold">
-                        <span className="text-[#FF6B81]">Heart</span>
-                        <span className="text-[#D86D72]">Match</span>
+                        <span className={scrolled ? "text-[#FF6B81]" : "text-white"}>Heart</span>
+                        <span className={scrolled ? "text-[#D86D72]" : "text-white"}>Match</span>
                     </div>
                 </motion.div>
 
@@ -175,7 +173,7 @@ const Navbar: React.FC = () => {
                         <motion.a
                             key={link.id}
                             href={link.href}
-                            className="text-sm font-medium hover:text-[#FF6B81] transition-colors duration-200 relative group"
+                            className={`text-sm font-medium hover:text-[#FF6B81] transition-colors duration-200 relative group ${scrolled ? 'text-[#2B2B2A]' : 'text-white'}`}
                             variants={linkVariants}
                             custom={index}
                             initial="initial"
@@ -231,7 +229,7 @@ const Navbar: React.FC = () => {
                                 exit={{ opacity: 0, rotate: -90 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                <Menu size={24} className="text-[#2B2B2A]" />
+                                <Menu size={24} className={scrolled ? "text-[#2B2B2A]" : "text-white"} />
                             </motion.div>
                         )}
                     </AnimatePresence>
