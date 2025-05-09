@@ -1,6 +1,5 @@
 // src/components/Footer.tsx
-import React, { useState, useRef } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
 import { Heart, Send, ExternalLink, ChevronUp, Mail, Check, Info } from 'lucide-react';
 
 interface FooterLink {
@@ -21,8 +20,30 @@ const Footer: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
-    const footerRef = useRef(null);
-    const isInView = useInView(footerRef, { once: true, amount: 0.1 });
+    const [isInView, setIsInView] = useState(false);
+    const footerRef = useRef<HTMLElement | null>(null);
+
+    // Use intersection observer to detect when the footer is in view
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (footerRef.current) {
+            observer.observe(footerRef.current);
+        }
+
+        return () => {
+            if (footerRef.current) {
+                observer.unobserve(footerRef.current);
+            }
+        };
+    }, []);
 
     const handleSubscribe = (e: React.FormEvent) => {
         e.preventDefault();
@@ -90,46 +111,6 @@ const Footer: React.FC = () => {
         { id: 'tiktok', icon: 'tiktok', href: '#', label: 'TikTok' },
     ];
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.1,
-            }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        show: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                duration: 0.5,
-                ease: [0.25, 0.1, 0.25, 1]
-            }
-        }
-    };
-
-    const linkVariants = {
-        hidden: { opacity: 0, x: -5 },
-        show: {
-            opacity: 1,
-            x: 0,
-            transition: {
-                duration: 0.3,
-            }
-        },
-        hover: {
-            x: 5,
-            transition: {
-                duration: 0.2,
-            }
-        }
-    };
-
     return (
         <footer className="relative overflow-hidden" ref={footerRef}>
             {/* Top curved divider */}
@@ -163,63 +144,41 @@ const Footer: React.FC = () => {
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5"></div>
 
-                    <motion.div
-                        className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full opacity-5 blur-[100px]"
+                    <div
+                        className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full opacity-5 blur-[100px] animate-pulse-slow"
                         style={{ background: 'radial-gradient(circle, rgba(255,107,129,1) 0%, rgba(255,107,129,0) 70%)' }}
-                        animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.05, 0.08, 0.05],
-                        }}
-                        transition={{
-                            duration: 15,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                        }}
                     />
 
-                    <motion.div
-                        className="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full opacity-5 blur-[100px]"
+                    <div
+                        className="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full opacity-5 blur-[100px] animate-pulse-slower"
                         style={{ background: 'radial-gradient(circle, rgba(168,224,215,1) 0%, rgba(168,224,215,0) 70%)' }}
-                        animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.05, 0.08, 0.05],
-                        }}
-                        transition={{
-                            duration: 18,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                        }}
                     />
                 </div>
 
                 <div className="container mx-auto px-6">
                     {/* Main footer grid */}
-                    <motion.div
-                        className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 lg:gap-12 mb-12"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate={isInView ? "show" : "hidden"}
+                    <div
+                        className={`grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 lg:gap-12 mb-12 transition-opacity duration-1000 ${isInView ? 'opacity-100' : 'opacity-0'
+                            }`}
                     >
                         {/* Logo and newsletter column */}
-                        <motion.div
-                            className="md:col-span-4 lg:col-span-3"
-                            variants={itemVariants}
+                        <div
+                            className={`md:col-span-4 lg:col-span-3 transition-all duration-500 ${isInView ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+                                }`}
+                            style={{ transitionDelay: '100ms' }}
                         >
-                            <motion.div
-                                className="flex items-center mb-6"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.2 }}
+                            <div
+                                className="flex items-center mb-6 hover:scale-105 transition-transform duration-200"
                             >
-                                <motion.div
-                                    className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-lg mr-2 flex items-center justify-center"
-                                    whileHover={{ rotate: 10 }}
+                                <div
+                                    className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-lg mr-2 flex items-center justify-center hover:rotate-10 transition-transform duration-200"
                                 >
                                     <Heart size={16} className="text-white" />
-                                </motion.div>
+                                </div>
                                 <span className="text-white text-2xl font-bold">
                                     Heart<span className="text-[#FF6B81]">Match</span>
                                 </span>
-                            </motion.div>
+                            </div>
 
                             <p className="text-gray-400 mb-6">
                                 Finding love in the digital age, made simple.
@@ -228,59 +187,44 @@ const Footer: React.FC = () => {
                             {/* Newsletter form */}
                             <div className="mb-8">
                                 <h3 className="text-white text-md font-semibold mb-3">Get Dating Tips & Updates</h3>
-                                <AnimatePresence mode="wait">
-                                    {isSuccess ? (
-                                        <motion.div
-                                            className="bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-xl p-3 flex items-center"
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: 'auto' }}
-                                            exit={{ opacity: 0, height: 0 }}
+                                {isSuccess ? (
+                                    <div
+                                        className="bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-xl p-3 flex items-center transition-all duration-300"
+                                    >
+                                        <Check size={16} className="text-green-400 mr-2" />
+                                        <p className="text-green-100 text-sm">Thanks for subscribing!</p>
+                                    </div>
+                                ) : (
+                                    <form
+                                        onSubmit={handleSubscribe}
+                                        className="flex"
+                                    >
+                                        <div className="relative flex-grow">
+                                            <Mail size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="Your email"
+                                                className="w-full pl-9 pr-3 py-2.5 rounded-l-lg bg-gray-700/50 border border-gray-600 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#FF6B81]/50 focus:border-[#FF6B81]/50"
+                                                required
+                                            />
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            className="px-4 py-2.5 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] rounded-r-lg text-white hover:scale-105 active:scale-95 transition-transform duration-200"
+                                            disabled={isSubmitting}
                                         >
-                                            <Check size={16} className="text-green-400 mr-2" />
-                                            <p className="text-green-100 text-sm">Thanks for subscribing!</p>
-                                        </motion.div>
-                                    ) : (
-                                        <motion.form
-                                            onSubmit={handleSubscribe}
-                                            className="flex"
-                                            initial={{ opacity: 1 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                        >
-                                            <div className="relative flex-grow">
-                                                <Mail size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-                                                <input
-                                                    type="email"
-                                                    value={email}
-                                                    onChange={(e) => setEmail(e.target.value)}
-                                                    placeholder="Your email"
-                                                    className="w-full pl-9 pr-3 py-2.5 rounded-l-lg bg-gray-700/50 border border-gray-600 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#FF6B81]/50 focus:border-[#FF6B81]/50"
-                                                    required
+                                            {isSubmitting ? (
+                                                <div
+                                                    className="h-5 w-5 rounded-full border-2 border-white border-t-transparent animate-spin"
                                                 />
-                                            </div>
-                                            <motion.button
-                                                type="submit"
-                                                className="px-4 py-2.5 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] rounded-r-lg text-white"
-                                                whileHover={{
-                                                    scale: 1.05,
-                                                    transition: { duration: 0.2 }
-                                                }}
-                                                whileTap={{ scale: 0.95 }}
-                                                disabled={isSubmitting}
-                                            >
-                                                {isSubmitting ? (
-                                                    <motion.div
-                                                        className="h-5 w-5 rounded-full border-2 border-white border-t-transparent"
-                                                        animate={{ rotate: 360 }}
-                                                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                                    />
-                                                ) : (
-                                                    <Send size={16} />
-                                                )}
-                                            </motion.button>
-                                        </motion.form>
-                                    )}
-                                </AnimatePresence>
+                                            ) : (
+                                                <Send size={16} />
+                                            )}
+                                        </button>
+                                    </form>
+                                )}
                             </div>
 
                             {/* Social links */}
@@ -288,12 +232,10 @@ const Footer: React.FC = () => {
                                 <h3 className="text-white text-md font-semibold mb-3">Connect With Us</h3>
                                 <div className="flex space-x-3">
                                     {socialLinks.map(social => (
-                                        <motion.a
+                                        <a
                                             key={social.id}
                                             href={social.href}
-                                            className="relative bg-gray-700/30 backdrop-blur-sm hover:bg-gray-700/50 p-2.5 rounded-lg text-gray-400 hover:text-white border border-gray-700/50 transition-colors duration-200 group"
-                                            whileHover={{ scale: 1.1, y: -3 }}
-                                            whileTap={{ scale: 0.95 }}
+                                            className="relative bg-gray-700/30 backdrop-blur-sm hover:bg-gray-700/50 p-2.5 rounded-lg text-gray-400 hover:text-white border border-gray-700/50 hover:scale-110 hover:-translate-y-1 active:scale-95 transition-all duration-200 group"
                                             onMouseEnter={() => setActiveTooltip(social.id)}
                                             onMouseLeave={() => setActiveTooltip(null)}
                                             aria-label={social.label}
@@ -320,104 +262,58 @@ const Footer: React.FC = () => {
                                             )}
 
                                             {/* Tooltip */}
-                                            <AnimatePresence>
-                                                {activeTooltip === social.id && (
-                                                    <motion.div
-                                                        className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
-                                                        initial={{ opacity: 0, y: 5 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        exit={{ opacity: 0, y: 5 }}
-                                                        transition={{ duration: 0.2 }}
-                                                    >
-                                                        {social.label}
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                        </motion.a>
+                                            {activeTooltip === social.id && (
+                                                <div
+                                                    className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 animate-fade-in"
+                                                >
+                                                    {social.label}
+                                                </div>
+                                            )}
+                                        </a>
                                     ))}
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
 
-                        {/* Footer links columns */}
-                        {footerColumns.map(column => (
-                            <motion.div
+                        {footerColumns.map((column, columnIndex) => (
+                            <div
                                 key={column.id}
-                                className="md:col-span-2 lg:col-span-3"
-                                variants={itemVariants}
+                                className={`md:col-span-2 lg:col-span-3 transition-all duration-500 ${isInView ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+                                    }`}
+                                style={{ transitionDelay: `${(columnIndex + 1) * 100 + 100}ms` }}
                             >
                                 <h3 className="text-white font-bold mb-4 text-lg">{column.title}</h3>
                                 <ul className="space-y-3">
-                                    {column.links.map(link => (
-                                        <li key={link.id}>
-                                            <motion.a
+                                    {column.links.map((link, linkIndex) => (
+                                        <li
+                                            key={link.id}
+                                            className={`transition-all duration-300 ${isInView ? 'translate-x-0 opacity-100' : 'translate-x-[-5px] opacity-0'
+                                                }`}
+                                            style={{ transitionDelay: `${(columnIndex + 1) * 100 + (linkIndex + 1) * 50 + 100}ms` }}
+                                        >
+                                            <a
                                                 href={link.href}
-                                                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center group"
-                                                variants={linkVariants}
-                                                whileHover="hover"
+                                                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center group hover:translate-x-1"
                                             >
-                                                <motion.span className="inline-block mr-1.5 w-1 h-1 rounded-full bg-gray-600 group-hover:bg-[#FF6B81] transition-colors" />
+                                                <span className="inline-block mr-1.5 w-1 h-1 rounded-full bg-gray-600 group-hover:bg-[#FF6B81] transition-colors" />
                                                 <span>{link.label}</span>
                                                 {link.isNew && (
                                                     <span className="ml-2 text-xs bg-[#FF6B81]/20 text-[#FF6B81] px-1.5 py-0.5 rounded-md">
                                                         New
                                                     </span>
                                                 )}
-                                            </motion.a>
+                                            </a>
                                         </li>
                                     ))}
                                 </ul>
-                            </motion.div>
-                        ))}
-
-                        {/* App download column */}
-                        <motion.div
-                            className="md:col-span-4 lg:col-span-3"
-                            variants={itemVariants}
-                        >
-                            <h3 className="text-white font-bold mb-4 text-lg">Get the App</h3>
-                            <p className="text-gray-400 mb-4">Our mobile app is coming soon. Join the waitlist to be the first to know when it launches!</p>
-
-                            <div className="space-y-3">
-                                <motion.div
-                                    className="flex items-center gap-3 bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-700/50 cursor-not-allowed opacity-70"
-                                    whileHover={{ scale: 1 }}
-                                >
-                                    <div className="bg-gray-700 w-10 h-10 rounded-lg flex items-center justify-center shrink-0">
-                                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" className="text-gray-300">
-                                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.68 1.36-1.53 2.7-2.53 4.08ZM13.34 7.3c-.12-2.48 2.04-4.68 4.7-4.5.26 2.72-2.62 4.9-4.7 4.5Z"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-gray-400 text-xs">Coming soon on</span>
-                                        <span className="text-white font-medium">App Store</span>
-                                    </div>
-                                </motion.div>
-
-                                <motion.div
-                                    className="flex items-center gap-3 bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-gray-700/50 cursor-not-allowed opacity-70"
-                                    whileHover={{ scale: 1 }}
-                                >
-                                    <div className="bg-gray-700 w-10 h-10 rounded-lg flex items-center justify-center shrink-0">
-                                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" className="text-gray-300">
-                                            <path d="M17.94 9c-.78 2.34-3.13 5.25-3.13 5.25s-2.34-2.91-3.12-5.25c-.8-2.4.8-4.95 3.12-4.95s3.93 2.55 3.13 4.95ZM6.1 15c1.17 1.95 4.73 3 4.73 3s0-3.75-1.18-5.7c-1.18-1.95-3.5-1.8-4.43.15-.93 1.95.69 3.83.88 2.55ZM8.93 12c1.17 1.95 4.73 3 4.73 3s0-3.75-1.18-5.7c-1.18-1.95-3.5-1.8-4.43.15-.93 1.95.88 4.5.88 2.55ZM12 19.5s4.13-2.33 5.31-4.28c1.18-1.95.59-4.35-1.77-4.5-2.36-.15-3.54 8.78-3.54 8.78Z"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-gray-400 text-xs">Coming soon on</span>
-                                        <span className="text-white font-medium">Google Play</span>
-                                    </div>
-                                </motion.div>
                             </div>
-                        </motion.div>
-                    </motion.div>
+                        ))}
+                    </div>
 
-                    {/* Bottom bar with copyright */}
-                    <motion.div
-                        className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center"
-                        initial={{ opacity: 0 }}
-                        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
+                    <div
+                        className={`border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center transition-opacity duration-600 ${isInView ? 'opacity-100' : 'opacity-0'
+                            }`}
+                        style={{ transitionDelay: '600ms' }}
                     >
                         <p className="text-gray-500 text-sm mb-4 md:mb-0 flex items-center">
                             <Info size={14} className="mr-1.5" />
@@ -427,20 +323,42 @@ const Footer: React.FC = () => {
                             <a href="#" className="text-gray-400 hover:text-white text-sm mr-6 hover:underline">Beta Program</a>
                             <a href="#" className="text-gray-400 hover:text-white text-sm mr-6 hover:underline">Partners</a>
 
-                            {/* Back to top button */}
-                            <motion.button
-                                className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg flex items-center justify-center"
+                            <button
+                                className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg flex items-center justify-center hover:-translate-y-1 active:scale-95 transition-all duration-200"
                                 onClick={scrollToTop}
-                                whileHover={{ y: -2 }}
-                                whileTap={{ scale: 0.95 }}
                                 aria-label="Back to top"
                             >
                                 <ChevronUp size={16} />
-                            </motion.button>
+                            </button>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
+
+            <style>{`
+                @keyframes fade-in {
+                    0% { opacity: 0; transform: translateY(5px); }
+                    100% { opacity: 1; transform: translateY(0); }
+                }
+                
+                .animate-fade-in {
+                    animation: fade-in 0.2s ease-out forwards;
+                }
+                
+                @keyframes pulse-slow {
+                    0% { opacity: 0.05; transform: scale(1); }
+                    50% { opacity: 0.08; transform: scale(1.2); }
+                    100% { opacity: 0.05; transform: scale(1); }
+                }
+                
+                .animate-pulse-slow {
+                    animation: pulse-slow 15s ease-in-out infinite alternate;
+                }
+                
+                .animate-pulse-slower {
+                    animation: pulse-slow 18s ease-in-out infinite alternate;
+                }
+            `}</style>
         </footer>
     );
 };

@@ -1,39 +1,185 @@
-import React from 'react';
-// import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import HowItWorks from './components/HowItWorks';
-import Testimonials from './components/Testimonials';
-import AppPreview from './components/AppPreview';
-import FinalCTA from './components/FinalCTA';
-import Footer from './components/Footer';
+// src/App.tsx
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+// App pages
 import Matches from './pages/Matches';
 import MatchProfile from './pages/MatchProfile';
 import UserProfile from './pages/UserProfile';
 import Messages from './pages/Messages';
 import Conversation from './pages/Conversation';
-import Onboarding from './pages/Onboading';
 import Subscription from './pages/Subscription';
+import Settings from './pages/Settings';
+import BlockedUsers from './pages/BlockedUsers';
+import FAQHelp from './pages/FAQHelp';
+import DatePlanner from './pages/DatePlanner';
+import Icebreakers from './pages/Icebreakers';
+import HomePage from './pages/Home';
+import AuthLayout from './layouts/AuthLayout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Onboarding from './pages/Onboading';
+import MainLayout from './layouts/MainLayout';
+import PageNotFound from './pages/PageNotFound';
 
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [completedOnboarding, setCompletedOnboarding] = useState<boolean>(false);
+
+  const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+
+    if (isAuthenticated && !completedOnboarding) {
+      return <Navigate to="/onboarding" replace />;
+    }
+
+    return <>{children}</>;
+  };
+
+  const OnboardingRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+
+    if (isAuthenticated && completedOnboarding) {
+      return <Navigate to="/matches" replace />;
+    }
+
+    return <>{children}</>;
+  };
+
+  const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    if (isAuthenticated && completedOnboarding) {
+      return <Navigate to="/matches" replace />;
+    }
+
+    return <>{children}</>;
+  };
+
   return (
-    <div className="bg-[#FFF9F0] text-[#2B2B2A] min-h-screen font-sans">
-      {/* <Navbar /> */}
-      <Subscription />
-      <Onboarding />
-      <Conversation />
-      <Messages />
-      <UserProfile />
-      <MatchProfile />
-      <Matches />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <Testimonials />
-      <AppPreview />
-      <FinalCTA />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={
+          <PublicRoute>
+            <HomePage />
+          </PublicRoute>
+        } />
+
+        <Route path="/login" element={
+          <PublicRoute>
+            <AuthLayout>
+              <Login setIsAuthenticated={setIsAuthenticated} />
+            </AuthLayout>
+          </PublicRoute>
+        } />
+
+        <Route path="/register" element={
+          <PublicRoute>
+            <AuthLayout>
+              <Register setIsAuthenticated={setIsAuthenticated} />
+            </AuthLayout>
+          </PublicRoute>
+        } />
+
+        <Route path="/onboarding" element={
+          <OnboardingRoute>
+            <Onboarding />
+          </OnboardingRoute>
+        } />
+
+        <Route path="/matches" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Matches />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/match/:id" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <MatchProfile />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <UserProfile />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/messages" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Messages />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/conversation/:id" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Conversation />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/subscription" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Subscription />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/settings" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Settings />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/blocked-users" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <BlockedUsers />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/help" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <FAQHelp />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/date-planner" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <DatePlanner />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/icebreakers" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Icebreakers />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
