@@ -128,7 +128,7 @@ const AppPreview: React.FC = () => {
                         <h2
                             className="text-4xl md:text-5xl font-bold mb-6 text-[#2B2B2A]"
                         >
-                            Take HeartMatch Everywhere
+                            Take miSoulMate Everywhere
                         </h2>
 
                         <p

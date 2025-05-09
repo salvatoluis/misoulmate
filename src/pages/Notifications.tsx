@@ -109,7 +109,7 @@ const initialNotifications: Notification[] = [
     {
         id: 'n9',
         type: 'system',
-        content: 'Welcome to HeartMatch! Complete your profile to start matching.',
+        content: 'Welcome to miSoulMate! Complete your profile to start matching.',
         timestamp: '1 week ago',
         isRead: true
     },
@@ -234,8 +234,8 @@ const NotificationPage: React.FC = () => {
                 <div className="container mx-auto px-4 pb-4 flex items-center gap-4">
                     <button
                         className={`px-4 py-1.5 rounded-full text-sm font-medium ${activeFilter === 'all'
-                                ? 'bg-[#FF6B81] text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            ? 'bg-[#FF6B81] text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             } transition-colors`}
                         onClick={() => setActiveFilter('all')}
                     >
@@ -243,8 +243,8 @@ const NotificationPage: React.FC = () => {
                     </button>
                     <button
                         className={`px-4 py-1.5 rounded-full text-sm font-medium ${activeFilter === 'unread'
-                                ? 'bg-[#FF6B81] text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            ? 'bg-[#FF6B81] text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             } transition-colors`}
                         onClick={() => setActiveFilter('unread')}
                     >

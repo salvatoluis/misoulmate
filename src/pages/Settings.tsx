@@ -69,14 +69,14 @@ const Settings: React.FC = () => {
             id: 'read_receipts',
             title: 'Read Receipts',
             description: 'Let matches know when you\'ve read their messages',
-      value: 'On',
+            value: 'On',
             options: ['On', 'Off']
         },
         {
             id: 'activity_status',
             title: 'Activity Status',
-            description: 'Show when you\'re active on HeartMatch',
-      value: 'On',
+            description: 'Show when you\'re active on miSoulMate',
+            value: 'On',
             options: ['On', 'Off']
         }
     ]);
@@ -133,8 +133,8 @@ const Settings: React.FC = () => {
                     <div className="flex space-x-4">
                         <button
                             className={`py-4 px-1 font-medium border-b-2 transition-colors ${activeTab === 'account'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('account')}
                         >
@@ -142,8 +142,8 @@ const Settings: React.FC = () => {
                         </button>
                         <button
                             className={`py-4 px-1 font-medium border-b-2 transition-colors ${activeTab === 'notifications'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('notifications')}
                         >
@@ -151,8 +151,8 @@ const Settings: React.FC = () => {
                         </button>
                         <button
                             className={`py-4 px-1 font-medium border-b-2 transition-colors ${activeTab === 'privacy'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('privacy')}
                         >
@@ -324,8 +324,8 @@ const Settings: React.FC = () => {
                                                     <button
                                                         key={option}
                                                         className={`py-2 px-3 rounded-lg text-sm border ${setting.value === option
-                                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                                            ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                                            : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                                             } transition-colors`}
                                                         onClick={() => changePrivacySetting(setting.id, option)}
                                                     >

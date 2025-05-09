@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 
-const Login: React.FC<any> = ({  }) => {
+const Login: React.FC<any> = ({ }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +23,7 @@ const Login: React.FC<any> = ({  }) => {
         <div>
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-                <p className="text-gray-600">Sign in to continue to HeartMatch</p>
+                <p className="text-gray-600">Sign in to continue to miSoulMate</p>
             </div>
 
             {error && (

@@ -49,13 +49,11 @@ const Footer: React.FC = () => {
 
         setIsSubmitting(true);
 
-        // Simulate API call
         setTimeout(() => {
             setIsSubmitting(false);
             setIsSuccess(true);
             setEmail('');
 
-            // Reset after some time
             setTimeout(() => {
                 setIsSuccess(false);
             }, 5000);
@@ -136,9 +134,7 @@ const Footer: React.FC = () => {
                 </svg>
             </div>
 
-            {/* Main footer content */}
             <div className="pt-16 pb-8 bg-[#2B2B2A] relative">
-                {/* Background decorative elements */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5"></div>
 
@@ -174,7 +170,7 @@ const Footer: React.FC = () => {
                                     <Heart size={16} className="text-white" />
                                 </div>
                                 <span className="text-white text-2xl font-bold">
-                                    Heart<span className="text-[#FF6B81]">Match</span>
+                                    miSoul<span className="text-[#FF6B81]">Mate</span>
                                 </span>
                             </div>
 
@@ -315,7 +311,7 @@ const Footer: React.FC = () => {
                     >
                         <p className="text-gray-500 text-sm mb-4 md:mb-0 flex items-center">
                             <Info size={14} className="mr-1.5" />
-                            Made with love in San Francisco. © 2025 HeartMatch. All rights reserved.
+                            Made with love in San Francisco. © 2025 miSoulMate. All rights reserved.
                         </p>
                         <div className="flex items-center">
                             <a href="#" className="text-gray-400 hover:text-white text-sm mr-6 hover:underline">Beta Program</a>

@@ -41,7 +41,7 @@ const HowItWorks: React.FC = () => {
         }
     ];
 
-    const headingWords = "How HeartMatch Works".split(' ');
+    const headingWords = "How miSoulMate Works".split(' ');
 
     const containerVariants = {
         hidden: { opacity: 0 },

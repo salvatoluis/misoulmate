@@ -48,7 +48,7 @@ const Onboarding: React.FC = () => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const totalSteps = 7; 
+    const totalSteps = 7;
     const currentStepIndex =
         currentStep === 'welcome' ? 0 :
             currentStep === 'photos' ? 1 :
@@ -237,7 +237,7 @@ const Onboarding: React.FC = () => {
                         <div className="w-20 h-20 bg-[#FF6B81]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                             <Heart size={36} className="text-[#FF6B81]" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-800 mb-3">Welcome to HeartMatch</h1>
+                        <h1 className="text-2xl font-bold text-gray-800 mb-3">Welcome to miSoulMate</h1>
                         <p className="text-gray-600 mb-8">
                             Let's create your profile and find your perfect match. This will only take about 5 minutes.
                         </p>
@@ -376,7 +376,7 @@ const Onboarding: React.FC = () => {
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
                                     required
                                 />
-                                <p className="text-xs text-gray-500 mt-1">You must be 18 years or older to use HeartMatch</p>
+                                <p className="text-xs text-gray-500 mt-1">You must be 18 years or older to use miSoulMate</p>
                             </div>
 
                             {/* Gender */}

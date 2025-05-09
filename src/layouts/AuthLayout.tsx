@@ -16,7 +16,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
                     <div className="w-10 h-10 bg-[#FF6B81]/10 rounded-full flex items-center justify-center">
                         <Heart size={24} className="text-[#FF6B81]" />
                     </div>
-                    <span className="text-xl font-bold text-gray-800 ml-2">HeartMatch</span>
+                    <span className="text-xl font-bold text-gray-800 ml-2">miSoulMate</span>
                 </Link>
             </header>
 
@@ -27,7 +27,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
 
             {/* Footer */}
             <footer className="py-6 text-center text-sm text-gray-500">
-                <p>© 2025 HeartMatch. All rights reserved.</p>
+                <p>© 2025 miSoulMate. All rights reserved.</p>
                 <div className="mt-2 space-x-4">
                     <Link to="/terms" className="text-gray-500 hover:text-gray-700">Terms</Link>
                     <Link to="/privacy" className="text-gray-500 hover:text-gray-700">Privacy</Link>

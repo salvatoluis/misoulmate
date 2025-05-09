@@ -181,7 +181,7 @@ const FinalCTA: React.FC = () => {
                             className={`text-xl mb-10 max-w-2xl mx-auto text-white/90 transition-transform duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}
                             style={{ transitionDelay: '400ms' }}
                         >
-                            Join thousands of singles already on HeartMatch. Your perfect match could be just a click away.
+                            Join thousands of singles already on miSoulMate. Your perfect match could be just a click away.
                         </p>
 
                         <div

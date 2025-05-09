@@ -19,11 +19,11 @@ const Testimonials: React.FC = () => {
                 id: 1,
                 names: 'Sarah & Michael',
                 image: '/images/couple-1.jpg',
-                quote: 'We matched on HeartMatch in June and were engaged by December. The compatibility algorithm really works! We had so much in common from day one.',
+                quote: 'We matched on miSoulMate in June and were engaged by December. The compatibility algorithm really works! We had so much in common from day one.',
                 rating: 5,
                 location: 'San Francisco, CA',
                 date: 'June 2024',
-                fullStory: 'We both swiped right and immediately hit it off. Our first date lasted 6 hours - we just couldn\'t stop talking! Within weeks, we knew this was something special.HeartMatch\'s personality questions really helped match us on values that matter. Four months later, Michael proposed during a weekend trip to Napa. We\'re planning our wedding for next summer!',
+                fullStory: 'We both swiped right and immediately hit it off. Our first date lasted 6 hours - we just couldn\'t stop talking! Within weeks, we knew this was something special.miSoulMate\'s personality questions really helped match us on values that matter. Four months later, Michael proposed during a weekend trip to Napa. We\'re planning our wedding for next summer!',
                 additionalPhotos: ['/images/couple-1b.jpg', '/images/couple-1c.jpg'],
                 matchRate: 98
             },
@@ -31,11 +31,11 @@ const Testimonials: React.FC = () => {
                 id: 2,
                 names: 'David & James',
                 image: '/images/couple-2.jpg',
-                quote: 'After trying several dating apps, HeartMatch was the one that finally worked for us. The verified profiles meant we could trust who we were talking to.',
+                quote: 'After trying several dating apps, miSoulMate was the one that finally worked for us. The verified profiles meant we could trust who we were talking to.',
                 rating: 5,
                 location: 'Chicago, IL',
                 date: 'April 2024',
-                fullStory: 'We were both tired of dating apps with fake profiles and people not looking for real connections. HeartMatch\'s verification system gave us confidence that we were talking to genuine people.When we matched, the conversation flowed naturally.We met for coffee, which turned into dinner, which turned into the best relationship either of us has ever had.Thank you HeartMatch!',
+                fullStory: 'We were both tired of dating apps with fake profiles and people not looking for real connections. miSoulMate\'s verification system gave us confidence that we were talking to genuine people.When we matched, the conversation flowed naturally.We met for coffee, which turned into dinner, which turned into the best relationship either of us has ever had.Thank you miSoulMate!',
                 additionalPhotos: ['/images/couple-2b.jpg'],
                 matchRate: 95
             },
@@ -43,11 +43,11 @@ const Testimonials: React.FC = () => {
                 id: 3,
                 names: 'Priya & Raj',
                 image: '/images/couple-3.jpg',
-                quote: 'HeartMatch understood our cultural background and values. We connected on a level that other apps never provided. Our families couldn\'t be happier!',
+                quote: 'miSoulMate understood our cultural background and values. We connected on a level that other apps never provided. Our families couldn\'t be happier!',
                 rating: 5,
                 location: 'Seattle, WA',
                 date: 'March 2024',
-                fullStory: 'As two professionals with traditional families but modern lives, finding the right match was challenging. HeartMatch\'s detailed preferences allowed us to be specific about what mattered to us.When we matched, it felt different from other connections we\'d made online. After three months of dating, we introduced each other to our families, who were thrilled. We\'re now planning our future together.',
+                fullStory: 'As two professionals with traditional families but modern lives, finding the right match was challenging. miSoulMate\'s detailed preferences allowed us to be specific about what mattered to us.When we matched, it felt different from other connections we\'d made online. After three months of dating, we introduced each other to our families, who were thrilled. We\'re now planning our future together.',
                 matchRate: 96
             }
         ];
@@ -114,7 +114,7 @@ const Testimonials: React.FC = () => {
                     <p
                         className="text-lg text-gray-600 max-w-2xl mx-auto"
                     >
-                        Hear from couples who found each other through HeartMatch.
+                        Hear from couples who found each other through miSoulMate.
                     </p>
                 </div>
 

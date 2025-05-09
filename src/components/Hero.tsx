@@ -313,8 +313,8 @@ const Hero: React.FC = () => {
                             <div className="w-72 h-auto relative">
                                 <div className="absolute inset-0 bg-gradient-to-tr from-[#FF6B81]/20 to-[#A8E0D7]/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
                                 <img
-                                    src="/images/app-mockup.png"
-                                    alt="HeartMatch App"
+                                    src="https://images.unsplash.com/photo-1516980907201-943c13a8d03c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGxvdmV8ZW58MHx8MHx8fDA%3D"
+                                    alt="miSoulMate App"
                                     className="w-full h-auto rounded-[32px] border-[8px] border-[#2B2B2A] shadow-2xl relative z-10"
                                 />
 

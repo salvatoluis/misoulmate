@@ -165,8 +165,8 @@ const Navbar: React.FC = () => {
                         <Heart size={20} className="text-white" />
                     </div>
                     <div className="text-2xl font-bold">
-                        <span className={scrolled ? "text-[#FF6B81]" : "text-white"}>Heart</span>
-                        <span className={scrolled ? "text-[#D86D72]" : "text-white"}>Match</span>
+                        <span className={scrolled ? "text-[#FF6B81]" : "text-white"}>MiSoul</span>
+                        <span className={scrolled ? "text-[#D86D72]" : "text-white"}>Mate</span>
                     </div>
                 </motion.div>
 
