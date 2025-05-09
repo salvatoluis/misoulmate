@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { Menu, X, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface NavLink {
     id: string;
@@ -18,6 +19,7 @@ const Navbar: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const controls = useAnimation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -196,6 +198,7 @@ const Navbar: React.FC = () => {
                         animate="animate"
                         whileHover="hover"
                         whileTap="tap"
+                        onClick={() => navigate('/register')}
                     >
                         Sign Up Free
                     </motion.button>
@@ -236,7 +239,6 @@ const Navbar: React.FC = () => {
                 </motion.button>
             </div>
 
-            {/* Mobile menu - iOS 18 style with glass effect */}
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <motion.div
@@ -276,6 +278,7 @@ const Navbar: React.FC = () => {
                                 exit={{ opacity: 0, y: 20 }}
                                 whileHover={{ scale: 1.02, boxShadow: '0 4px 20px rgba(255, 107, 129, 0.3)' }}
                                 whileTap={{ scale: 0.98 }}
+                                onClick={() => navigate('/register')}
                             >
                                 Sign Up Free
                             </motion.button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, MessageCircle, Filter, Search, User, MapPin, Coffee, Music, BookOpen, Camera, Film, ChevronDown, ChevronUp, Sliders, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const dummyMatches = [
     {
@@ -83,7 +84,6 @@ const dummyMatches = [
     },
 ];
 
-// Interest icons mapping
 const interestIcons: Record<string, React.ReactNode> = {
     Photography: <Camera size={16} />,
     Reading: <BookOpen size={16} />,
@@ -121,22 +121,20 @@ const Matches: React.FC = () => {
         interests: [],
         showFilters: false,
     });
+    const navigate = useNavigate();
 
-    // Simulate loading state
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
         }, 1000);
     }, []);
 
-    // Handle card expansion
     const toggleCardExpansion = (id: number) => {
         setExpandedCard(expandedCard === id ? null : id);
     };
 
-    // Handle photo navigation
     const navigatePhoto = (matchId: number, direction: 'next' | 'prev') => {
-        const match = matches.find(m => m.id === matchId);
+        const match = matches?.find(m => m.id === matchId);
         if (!match) return;
 
         const currentIndex = selectedPhoto[matchId] || 0;
@@ -150,19 +148,14 @@ const Matches: React.FC = () => {
         });
     };
 
-    // Like/Pass handlers
     const handleLike = (id: number) => {
-        // In a real app, you'd call an API here
-        // For now, we'll just remove the match from the list
         setMatches(matches.filter(match => match.id !== id));
     };
 
     const handlePass = (id: number) => {
-        // Similar to like, just removing from the list
         setMatches(matches.filter(match => match.id !== id));
     };
 
-    // Toggle filters visibility
     const toggleFilters = () => {
         setFilters({
             ...filters,
@@ -170,7 +163,6 @@ const Matches: React.FC = () => {
         });
     };
 
-    // Filter matches by interest
     const filterByInterest = (interest: string) => {
         const newInterests = filters.interests.includes(interest)
             ? filters.interests.filter(i => i !== interest)
@@ -182,12 +174,10 @@ const Matches: React.FC = () => {
         });
     };
 
-    // Get all unique interests
     const allInterests = Array.from(
         new Set(matches.flatMap(match => match.interests))
     );
 
-    // Filter matches based on current filters
     const filteredMatches = matches.filter(match => {
         const ageMatch = match.age >= filters.ageRange[0] && match.age <= filters.ageRange[1];
         const distanceMatch = match.distance <= filters.distance;
@@ -196,7 +186,6 @@ const Matches: React.FC = () => {
         return ageMatch && distanceMatch && interestMatch;
     });
 
-    // Page variants for smoother loading
     const pageVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -206,7 +195,6 @@ const Matches: React.FC = () => {
         exit: { opacity: 0, transition: { duration: 0.2 } }
     };
 
-    // Card variants for staggered entry
     const cardVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: (i: number) => ({
@@ -214,7 +202,7 @@ const Matches: React.FC = () => {
             y: 0,
             transition: {
                 duration: 0.25,
-                delay: i * 0.05, // Reduced stagger delay for faster loading
+                delay: i * 0.05,
                 ease: [0.25, 0.1, 0.25, 1]
             }
         }),
@@ -318,8 +306,8 @@ const Matches: React.FC = () => {
                                                 <button
                                                     key={interest}
                                                     className={`px-3 py-1.5 text-sm rounded-full flex items-center gap-1.5 transition-colors ${filters.interests.includes(interest)
-                                                            ? 'bg-[#FF6B81] text-white'
-                                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                        ? 'bg-[#FF6B81] text-white'
+                                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                                         }`}
                                                     onClick={() => filterByInterest(interest)}
                                                 >
@@ -436,8 +424,8 @@ const Matches: React.FC = () => {
                                                             <div
                                                                 key={photoIndex}
                                                                 className={`h-1 rounded-full ${(selectedPhoto[match.id] || 0) === photoIndex
-                                                                        ? 'w-5 bg-white'
-                                                                        : 'w-1.5 bg-white/50'
+                                                                    ? 'w-5 bg-white'
+                                                                    : 'w-1.5 bg-white/50'
                                                                     } transition-all`}
                                                             />
                                                         ))}
@@ -445,18 +433,15 @@ const Matches: React.FC = () => {
                                                 </>
                                             )}
 
-                                            {/* Match percentage badge */}
                                             <div className="absolute top-3 right-3 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-2.5 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-1">
                                                 <Heart size={12} className="fill-white" /> {match.matchPercentage}%
                                             </div>
 
-                                            {/* Last active indicator */}
                                             <div className="absolute bottom-3 left-3 bg-black/30 text-white text-xs px-2 py-0.5 rounded-full backdrop-blur-sm">
                                                 {match.lastActive}
                                             </div>
                                         </div>
 
-                                        {/* Profile info */}
                                         <div className="p-4">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
@@ -468,12 +453,10 @@ const Matches: React.FC = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Occupation */}
                                             <div className="text-gray-700 text-sm mb-3">
                                                 {match.occupation}
                                             </div>
 
-                                            {/* Interests */}
                                             <div className="flex flex-wrap gap-1.5 mb-3">
                                                 {match.interests.slice(0, 4).map(interest => (
                                                     <span
@@ -486,7 +469,6 @@ const Matches: React.FC = () => {
                                                 ))}
                                             </div>
 
-                                            {/* Bio - truncated unless expanded */}
                                             <div className="text-gray-600 text-sm">
                                                 {expandedCard === match.id ? (
                                                     match.bio
@@ -505,7 +487,6 @@ const Matches: React.FC = () => {
                                                 )}
                                             </div>
 
-                                            {/* Action buttons */}
                                             <div className="flex justify-between mt-4 pt-3 border-t border-gray-100">
                                                 <button
                                                     className="w-16 h-12 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
@@ -516,7 +497,7 @@ const Matches: React.FC = () => {
 
                                                 <button
                                                     className="flex-grow mx-2 h-12 flex items-center justify-center rounded-xl bg-[#FF6B81]/10 hover:bg-[#FF6B81]/20 text-[#FF6B81] transition-colors"
-                                                    onClick={() => { }}
+                                                    onClick={() => navigate('/conversation/8910', { state: { matchId: match.id } })}
                                                 >
                                                     <MessageCircle className="w-5 h-5 mr-2" />
                                                     Message

@@ -1,28 +1,24 @@
-// src/components/Hero.tsx
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, ChevronDown, Heart, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero: React.FC = () => {
-    // Mouse move effect
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const heroRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
-    // For 3D card effect
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    // Transforms for parallax elements
     const floatingX = useTransform(x, [-100, 100], [-15, 15]);
     const floatingY = useTransform(y, [-100, 100], [-15, 15]);
     const rotateX = useTransform(y, [-100, 100], [10, -10]);
     const rotateY = useTransform(x, [-100, 100], [-10, 10]);
 
-    // Spring physics for smoother motion
     const springX = useSpring(floatingX, { mass: 0.3, stiffness: 70, damping: 20 });
     const springY = useSpring(floatingY, { mass: 0.3, stiffness: 70, damping: 20 });
 
-    // For the dynamic text reveal
     const controls = useAnimation();
     const wordControls = useAnimation();
 
@@ -58,7 +54,6 @@ const Hero: React.FC = () => {
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
 
-                // Calculate distance from center (normalized to -100 to 100)
                 const moveX = ((e.clientX - centerX) / (rect.width / 2)) * 100;
                 const moveY = ((e.clientY - centerY) / (rect.height / 2)) * 100;
 
@@ -78,11 +73,9 @@ const Hero: React.FC = () => {
         };
     }, [x, y]);
 
-    // Split the heading into individual words for animation
     const headingText = "Find Your Perfect Match";
     const headingWords = headingText.split(' ');
 
-    // Generate animated floating hearts
     const FloatingHearts = () => {
         const hearts = Array.from({ length: 15 }, (_, i) => {
             const size = Math.random() * 20 + 10;
@@ -126,12 +119,9 @@ const Hero: React.FC = () => {
             className="relative min-h-screen flex items-center justify-center overflow-hidden py-20"
             style={{ perspective: '1000px' }}
         >
-            {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
-                {/* Gradient background */}
                 <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#2c1e26] to-[#1c1c1e] z-0" />
 
-                {/* Animated gradient orbs */}
                 <motion.div
                     className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
                     style={{
@@ -159,19 +149,15 @@ const Hero: React.FC = () => {
                     }}
                 />
 
-                {/* Subtle grid pattern */}
                 <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5 z-1"></div>
 
-                {/* Floating animated hearts */}
                 <div className="absolute inset-0 overflow-hidden z-1">
                     <FloatingHearts />
                 </div>
             </div>
 
             <div className="container relative z-10 mx-auto px-6 flex flex-col md:flex-row items-center gap-8">
-                {/* Left content */}
                 <div className="w-full md:w-1/2 flex flex-col items-start">
-                    {/* Animated heading with word-by-word reveal */}
                     <motion.div
                         className="overflow-hidden mb-4"
                         variants={{
@@ -204,7 +190,6 @@ const Hero: React.FC = () => {
                         </h1>
                     </motion.div>
 
-                    {/* Sparkle icon with animation */}
                     <motion.div
                         className="mb-6"
                         initial={{ opacity: 0, scale: 0 }}
@@ -214,7 +199,6 @@ const Hero: React.FC = () => {
                         <Sparkles size={28} className="text-[#FFE066]" />
                     </motion.div>
 
-                    {/* Description text */}
                     <motion.p
                         className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-black/10 p-4 rounded-xl border border-white/10"
                         custom={1}
@@ -225,7 +209,6 @@ const Hero: React.FC = () => {
                         Our intelligent matching system helps you find the one.
                     </motion.p>
 
-                    {/* Buttons with enhanced styling */}
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <motion.button
                             className="relative overflow-hidden bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
@@ -237,6 +220,7 @@ const Hero: React.FC = () => {
                                 boxShadow: '0 10px 25px -5px rgba(255, 107, 129, 0.4)'
                             }}
                             whileTap={{ scale: 0.97 }}
+                            onClick={() => navigate('/register')}
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
                                 Get Started <ArrowRight size={18} />
@@ -264,7 +248,6 @@ const Hero: React.FC = () => {
                         </motion.button>
                     </div>
 
-                    {/* Stats with animated counting */}
                     <motion.div
                         className="flex gap-8 mt-12"
                         custom={4}
@@ -309,7 +292,6 @@ const Hero: React.FC = () => {
                     </motion.div>
                 </div>
 
-                {/* 3D card/phone mockup with parallax effect */}
                 <motion.div
                     className="w-full md:w-1/2 flex justify-center items-center pt-10 md:pt-0"
                     style={{
@@ -322,7 +304,6 @@ const Hero: React.FC = () => {
                     transition={{ delay: 0.8, duration: 0.8 }}
                 >
                     <div className="relative" style={{ transformStyle: 'preserve-3d' }}>
-                        {/* Phone mockup */}
                         <motion.div
                             className="relative z-20"
                             style={{
@@ -337,7 +318,6 @@ const Hero: React.FC = () => {
                                     className="w-full h-auto rounded-[32px] border-[8px] border-[#2B2B2A] shadow-2xl relative z-10"
                                 />
 
-                                {/* Floating hearts around the phone */}
                                 <motion.div
                                     className="absolute -top-6 -right-4 z-20 bg-white/10 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/30"
                                     animate={{
@@ -373,7 +353,6 @@ const Hero: React.FC = () => {
                             </div>
                         </motion.div>
 
-                        {/* Glow effect behind phone */}
                         <div
                             className="absolute inset-0 bg-gradient-to-r from-[#FF6B81]/40 to-[#A8E0D7]/40 rounded-full blur-[80px] -z-10 scale-75"
                             style={{ transform: 'translateZ(-20px)' }}
@@ -382,7 +361,6 @@ const Hero: React.FC = () => {
                 </motion.div>
             </div>
 
-            {/* Enhanced scroll indicator */}
             <motion.div
                 className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20"
                 initial={{ opacity: 0, y: -10 }}
