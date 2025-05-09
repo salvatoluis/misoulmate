@@ -1,8 +1,6 @@
-// src/App.tsx
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// App pages
 import Matches from './pages/Matches';
 import MatchProfile from './pages/MatchProfile';
 import UserProfile from './pages/UserProfile';
