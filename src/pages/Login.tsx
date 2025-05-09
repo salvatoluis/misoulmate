@@ -1,13 +1,9 @@
-// src/pages/Login.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 
-interface LoginProps {
-    setIsAuthenticated: (value: boolean) => void;
-}
 
-const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
+const Login: React.FC<any> = ({  }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,15 +12,10 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Simple validation
         if (!email || !password) {
             setError('Please enter both email and password');
             return;
         }
-
-        // In a real app, this would call an API to authenticate
-        // For demo purposes, we'll simulate successful login
-        setIsAuthenticated(true);
         navigate('/matches');
     };
 

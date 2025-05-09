@@ -23,38 +23,17 @@ import MainLayout from './layouts/MainLayout';
 import PageNotFound from './pages/PageNotFound';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [completedOnboarding, setCompletedOnboarding] = useState<boolean>(false);
 
   const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    if (!isAuthenticated) {
-      return <Navigate to="/login" replace />;
-    }
-
-    if (isAuthenticated && !completedOnboarding) {
-      return <Navigate to="/onboarding" replace />;
-    }
 
     return <>{children}</>;
   };
 
   const OnboardingRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    if (!isAuthenticated) {
-      return <Navigate to="/login" replace />;
-    }
-
-    if (isAuthenticated && completedOnboarding) {
-      return <Navigate to="/matches" replace />;
-    }
-
     return <>{children}</>;
   };
 
   const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    if (isAuthenticated && completedOnboarding) {
-      return <Navigate to="/matches" replace />;
-    }
-
     return <>{children}</>;
   };
 
@@ -70,7 +49,7 @@ const App: React.FC = () => {
         <Route path="/login" element={
           <PublicRoute>
             <AuthLayout>
-              <Login setIsAuthenticated={setIsAuthenticated} />
+              <Login />
             </AuthLayout>
           </PublicRoute>
         } />
@@ -78,7 +57,7 @@ const App: React.FC = () => {
         <Route path="/register" element={
           <PublicRoute>
             <AuthLayout>
-              <Register setIsAuthenticated={setIsAuthenticated} />
+              <Register />
             </AuthLayout>
           </PublicRoute>
         } />

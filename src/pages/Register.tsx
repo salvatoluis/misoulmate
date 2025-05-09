@@ -1,13 +1,8 @@
-// src/pages/Register.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, ArrowRight, Calendar } from 'lucide-react';
 
-interface RegisterProps {
-    setIsAuthenticated: (value: boolean) => void;
-}
-
-const Register: React.FC<RegisterProps> = ({ setIsAuthenticated }) => {
+const Register: React.FC<any> = ({}) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -29,7 +24,6 @@ const Register: React.FC<RegisterProps> = ({ setIsAuthenticated }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Simple validation
         if (!formData.name || !formData.email || !formData.birthdate || !formData.password) {
             setError('Please fill in all required fields');
             return;
@@ -40,7 +34,6 @@ const Register: React.FC<RegisterProps> = ({ setIsAuthenticated }) => {
             return;
         }
 
-        // Check if user is at least 18
         const birthDate = new Date(formData.birthdate);
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
@@ -54,9 +47,6 @@ const Register: React.FC<RegisterProps> = ({ setIsAuthenticated }) => {
             return;
         }
 
-        // In a real app, this would call an API to register
-        // For demo purposes, we'll simulate successful registration
-        setIsAuthenticated(true);
         navigate('/onboarding');
     };
 

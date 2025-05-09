@@ -1,6 +1,5 @@
-// src/components/Footer.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Heart, Send, ExternalLink, ChevronUp, Mail, Check, Info } from 'lucide-react';
+import { Heart, Send, ChevronUp, Mail, Check, Info } from 'lucide-react';
 
 interface FooterLink {
     id: string;
@@ -23,7 +22,6 @@ const Footer: React.FC = () => {
     const [isInView, setIsInView] = useState(false);
     const footerRef = useRef<HTMLElement | null>(null);
 
-    // Use intersection observer to detect when the footer is in view
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
