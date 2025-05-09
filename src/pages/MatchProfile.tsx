@@ -1,14 +1,12 @@
-// src/pages/MatchProfilePage.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import {
     Heart, ArrowLeft, Share, MoreHorizontal, MessageCircle, X,
-    MapPin, Calendar, Briefcase, GraduationCap, Coffee, Music,
-    BookOpen, Camera, Film, User, Globe, Instagram, Check, Star,
+    MapPin, Briefcase, GraduationCap, Coffee, Music,
+    BookOpen, Camera, Film, User, Globe, Instagram, Star,
     Sparkles, Send
 } from 'lucide-react';
 
-// Extended dummy data for a single match
 const matchProfile = {
     id: 1,
     name: 'Emma Wilson',
@@ -17,7 +15,7 @@ const matchProfile = {
     distance: 3.2,
     matchPercentage: 96,
     bio: 'Coffee enthusiast, amateur photographer, and bookworm. I love exploring hidden gems in the city and finding new hiking trails on weekends. Always on the lookout for the next great read and the perfect latte art.\n\nLooking for someone who values genuine connection, has a sense of adventure, and doesn\'t mind getting lost in a good conversation.',
-  photos: [
+    photos: [
         '/images/profile-1.jpg',
         '/images/profile-1b.jpg',
         '/images/profile-1c.jpg',
@@ -134,113 +132,48 @@ const MatchProfilePage: React.FC = () => {
         }
     };
 
-    // Animation variants for smoother loading
-    const pageVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { duration: 0.25, when: "beforeChildren" }
-        },
-        exit: { opacity: 0, transition: { duration: 0.2 } }
-    };
-
-    // Smoother transitions for content sections
-    const contentVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }
-        }
-    };
-
-    // Section variants with staggered children
-    const sectionVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.1
-            }
-        }
-    };
-
-    // Item variants for staggered entries
-    const itemVariants = {
-        hidden: { opacity: 0, y: 10 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.2 }
-        }
-    };
-
     if (isLoading) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="relative w-16 h-16">
-                    <motion.div
+                    <div
                         className="absolute inset-0 rounded-full border-2 border-[#FF6B81] border-t-transparent"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />
-                    <motion.div
+                    <div
                         className="absolute inset-0 flex items-center justify-center"
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.3, duration: 0.3 }}
                     >
                         <Heart size={20} className="text-[#FF6B81]" />
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <motion.div
+        <div
             className="bg-white min-h-screen relative"
-            initial="hidden"
-            animate="visible"
-            variants={pageVariants}
         >
             {/* Header */}
             <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/60 to-transparent pt-safe">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                    <motion.button
+                    <button
                         className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.3 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
                         onClick={() => window.history.back()}
                     >
                         <ArrowLeft size={20} />
-                    </motion.button>
+                    </button>
 
                     <div className="flex gap-2">
-                        <motion.button
+                        <button
                             className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white"
-                            initial={{ opacity: 0, x: 10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.3, delay: 0.1 }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
                         >
                             <Share size={18} />
-                        </motion.button>
-                        <motion.button
+                        </button>
+                        <button
                             className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white"
-                            initial={{ opacity: 0, x: 10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.3, delay: 0.2 }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
                         >
                             <MoreHorizontal size={20} />
-                        </motion.button>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -256,20 +189,16 @@ const MatchProfilePage: React.FC = () => {
             >
                 {/* Photos */}
                 <AnimatePresence mode="wait">
-                    <motion.div
+                    <div
                         key={currentPhotoIndex}
                         className="absolute inset-0 bg-black"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
                     >
                         <img
                             src={matchProfile.photos[currentPhotoIndex]}
                             alt={`${matchProfile.name} photo ${currentPhotoIndex + 1}`}
                             className="w-full h-full object-cover"
                         />
-                    </motion.div>
+                    </div>
                 </AnimatePresence>
 
                 {/* Photo navigation indicators */}
@@ -278,8 +207,8 @@ const MatchProfilePage: React.FC = () => {
                         <button
                             key={index}
                             className={`h-1 rounded-full transition-all ${index === currentPhotoIndex
-                                    ? 'w-6 bg-white'
-                                    : 'w-1.5 bg-white/50 hover:bg-white/80'
+                                ? 'w-6 bg-white'
+                                : 'w-1.5 bg-white/50 hover:bg-white/80'
                                 }`}
                             onClick={() => handlePhotoChange(index)}
                             aria-label={`View photo ${index + 1}`}
@@ -294,67 +223,58 @@ const MatchProfilePage: React.FC = () => {
 
                 {/* Profile name overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pb-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
+                    <div
                     >
                         <h1 className="text-3xl font-bold text-white mb-1">{matchProfile.name}, {matchProfile.age}</h1>
                         <div className="flex items-center text-white/90 text-sm">
                             <MapPin size={14} className="mr-1" />
                             {matchProfile.location} • {matchProfile.distance} miles away
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
 
             {/* Profile Content */}
             <div className="container mx-auto px-4 py-6">
-                <motion.div
+                <div
                     className="grid md:grid-cols-3 gap-6 lg:gap-10"
-                    variants={contentVariants}
                 >
                     {/* Left column: Main profile info */}
                     <div className="md:col-span-2 space-y-6">
                         {/* Bio section */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
+
                         >
-                            <motion.h2
+                            <h2
                                 className="text-xl font-bold text-gray-800 mb-4 flex items-center"
-                                variants={itemVariants}
+
                             >
                                 About {matchProfile.name.split(' ')[0]}
-                            </motion.h2>
-                            <motion.div
+                            </h2>
+                            <div
                                 className="space-y-3 text-gray-600"
-                                variants={itemVariants}
+
                             >
                                 {matchProfile.bio.split('\n\n').map((paragraph, idx) => (
                                     <p key={idx}>{paragraph}</p>
                                 ))}
-                            </motion.div>
-                        </motion.section>
+                            </div>
+                        </section>
 
                         {/* Basics section */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
                         >
-                            <motion.h2
+                            <h2
                                 className="text-xl font-bold text-gray-800 mb-4"
-                                variants={itemVariants}
+
                             >
                                 Basics
-                            </motion.h2>
-                            <motion.div
+                            </h2>
+                            <div
                                 className="grid grid-cols-2 gap-4"
-                                variants={itemVariants}
+
                             >
                                 <div className="flex items-center text-gray-700">
                                     <Briefcase size={18} className="mr-3 text-gray-500" />
@@ -398,25 +318,22 @@ const MatchProfilePage: React.FC = () => {
                                         <div>{matchProfile.instagram}</div>
                                     </div>
                                 </div>
-                            </motion.div>
-                        </motion.section>
+                            </div>
+                        </section>
 
                         {/* Interests section */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
                         >
-                            <motion.h2
+                            <h2
                                 className="text-xl font-bold text-gray-800 mb-4"
-                                variants={itemVariants}
+
                             >
                                 Interests
-                            </motion.h2>
-                            <motion.div
+                            </h2>
+                            <div
                                 className="flex flex-wrap gap-2"
-                                variants={itemVariants}
+
                             >
                                 {matchProfile.interests.map(interest => (
                                     <span
@@ -427,25 +344,22 @@ const MatchProfilePage: React.FC = () => {
                                         {interest}
                                     </span>
                                 ))}
-                            </motion.div>
-                        </motion.section>
+                            </div>
+                        </section>
 
                         {/* Q&A section */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
                         >
-                            <motion.h2
+                            <h2
                                 className="text-xl font-bold text-gray-800 mb-4"
-                                variants={itemVariants}
+
                             >
                                 Getting to know {matchProfile.name.split(' ')[0]}
-                            </motion.h2>
-                            <motion.div
+                            </h2>
+                            <div
                                 className="space-y-5"
-                                variants={itemVariants}
+
                             >
                                 {matchProfile.questions.map((item, idx) => (
                                     <div key={idx} className="border-l-2 border-[#FF6B81] pl-4 py-1">
@@ -453,26 +367,23 @@ const MatchProfilePage: React.FC = () => {
                                         <div className="text-gray-800">{item.answer}</div>
                                     </div>
                                 ))}
-                            </motion.div>
-                        </motion.section>
+                            </div>
+                        </section>
 
                         {/* Music section */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
                         >
-                            <motion.h2
+                            <h2
                                 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"
-                                variants={itemVariants}
+
                             >
                                 <Music size={18} />
                                 Top Artists
-                            </motion.h2>
-                            <motion.div
+                            </h2>
+                            <div
                                 className="space-y-3"
-                                variants={itemVariants}
+
                             >
                                 {matchProfile.spotifyArtists.map((artist, idx) => (
                                     <div key={idx} className="flex items-center gap-3">
@@ -482,16 +393,15 @@ const MatchProfilePage: React.FC = () => {
                                         <div className="text-gray-800">{artist}</div>
                                     </div>
                                 ))}
-                            </motion.div>
-                        </motion.section>
+                            </div>
+                        </section>
                     </div>
 
                     {/* Right column: Actions and compatibility */}
                     <div className="space-y-6">
                         {/* Action buttons card */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-4"
-                            variants={contentVariants}
                         >
                             <div className="flex items-center justify-between gap-3 mb-5">
                                 <button
@@ -527,8 +437,8 @@ const MatchProfilePage: React.FC = () => {
                                     ></textarea>
                                     <button
                                         className={`absolute bottom-3 right-3 p-1.5 rounded-full ${messageText.trim()
-                                                ? 'bg-[#FF6B81] text-white'
-                                                : 'bg-gray-100 text-gray-400'
+                                            ? 'bg-[#FF6B81] text-white'
+                                            : 'bg-gray-100 text-gray-400'
                                             }`}
                                         onClick={handleSendMessage}
                                         disabled={!messageText.trim()}
@@ -553,46 +463,36 @@ const MatchProfilePage: React.FC = () => {
                                     ))}
                                 </div>
                             </div>
-                        </motion.section>
+                        </section>
 
                         {/* Compatibility section */}
-                        <motion.section
+                        <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
                         >
                             <div className="flex justify-between items-center mb-4">
-                                <motion.h2
+                                <h2
                                     className="text-xl font-bold text-gray-800 flex items-center gap-2"
-                                    variants={itemVariants}
+
                                 >
                                     <span className="text-[#FF6B81]">{matchProfile.compatibility.overall}%</span> Compatibility
-                                </motion.h2>
-                                <motion.button
+                                </h2>
+                                <button
                                     className="text-[#FF6B81] text-sm font-medium"
                                     onClick={() => setShowCompatibility(!showCompatibility)}
-                                    variants={itemVariants}
+
                                 >
                                     {showCompatibility ? 'Hide' : 'Show'} details
-                                </motion.button>
+                                </button>
                             </div>
 
-                            <motion.div
+                            <div
                                 className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] h-2.5 rounded-full mb-4"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${matchProfile.compatibility.overall}%` }}
-                                transition={{ duration: 0.8, delay: 0.3 }}
                             />
 
                             <AnimatePresence>
                                 {showCompatibility && (
-                                    <motion.div
+                                    <div
                                         className="space-y-3 mt-5"
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
                                     >
                                         {Object.entries(matchProfile.compatibility)
                                             .filter(([key]) => key !== 'overall')
@@ -603,25 +503,20 @@ const MatchProfilePage: React.FC = () => {
                                                         <span className="font-medium text-gray-800">{value}%</span>
                                                     </div>
                                                     <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                                        <motion.div
+                                                        <div
                                                             className="h-full bg-[#FF6B81]/70 rounded-full"
-                                                            initial={{ width: 0 }}
-                                                            animate={{ width: `${value}%` }}
-                                                            transition={{ duration: 0.5 }}
                                                         />
                                                     </div>
                                                 </div>
                                             ))}
-                                    </motion.div>
+                                    </div>
                                 )}
                             </AnimatePresence>
-                        </motion.section>
+                        </section>
 
-                        {/* Mutual connections */}
                         {matchProfile.mutualConnections > 0 && (
-                            <motion.section
+                            <section
                                 className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-                                variants={contentVariants}
                             >
                                 <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                     <Star size={18} className="text-[#FFE066]" />
@@ -630,12 +525,12 @@ const MatchProfilePage: React.FC = () => {
                                 <p className="text-gray-600">
                                     You have {matchProfile.mutualConnections} mutual {matchProfile.mutualConnections === 1 ? 'connection' : 'connections'} with {matchProfile.name.split(' ')[0]}.
                                 </p>
-                            </motion.section>
+                            </section>
                         )}
                     </div>
-                </motion.div>
+                </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
