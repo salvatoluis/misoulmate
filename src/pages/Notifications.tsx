@@ -1,8 +1,6 @@
-// src/pages/NotificationPage.tsx
 import React, { useState } from 'react';
 import { ArrowLeft, Heart, MessageCircle, Bell, Calendar, Settings, Trash2, Check, Users, Star } from 'lucide-react';
 
-// Define types for notifications
 interface Notification {
     id: string;
     type: 'match' | 'message' | 'like' | 'view' | 'event' | 'system';
@@ -18,7 +16,6 @@ interface Notification {
     };
 }
 
-// Dummy notification data
 const initialNotifications: Notification[] = [
     {
         id: 'n1',
@@ -132,14 +129,11 @@ const NotificationPage: React.FC = () => {
     const [activeFilter, setActiveFilter] = useState<'all' | 'unread'>('all');
     const [showClearConfirm, setShowClearConfirm] = useState(false);
 
-    // Filter notifications based on the active filter
     const filteredNotifications = activeFilter === 'all'
         ? notifications
         : notifications.filter(notif => !notif.isRead);
 
-    // Group notifications by date
     const groupedNotifications = filteredNotifications.reduce((groups: { [key: string]: Notification[] }, notification) => {
-        // Extract date from timestamp (just for demo purposes - in a real app you'd have actual dates)
         const dateKey = notification.timestamp.includes('ago') || notification.timestamp === 'Yesterday'
             ? 'Today'
             : notification.timestamp;
@@ -152,25 +146,21 @@ const NotificationPage: React.FC = () => {
         return groups;
     }, {});
 
-    // Handle marking a notification as read
     const markAsRead = (id: string) => {
         setNotifications(notifications.map(notif =>
             notif.id === id ? { ...notif, isRead: true } : notif
         ));
     };
 
-    // Handle marking all notifications as read
     const markAllAsRead = () => {
         setNotifications(notifications.map(notif => ({ ...notif, isRead: true })));
     };
 
-    // Handle clearing all notifications
     const clearAllNotifications = () => {
         setNotifications([]);
         setShowClearConfirm(false);
     };
 
-    // Get notification icon based on type
     const getNotificationIcon = (type: Notification['type']) => {
         switch (type) {
             case 'match':
@@ -190,12 +180,10 @@ const NotificationPage: React.FC = () => {
         }
     };
 
-    // Count unread notifications
     const unreadCount = notifications.filter(notif => !notif.isRead).length;
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
-            {/* Header */}
             <header className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center">
@@ -230,7 +218,6 @@ const NotificationPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Filter tabs */}
                 <div className="container mx-auto px-4 pb-4 flex items-center gap-4">
                     <button
                         className={`px-4 py-1.5 rounded-full text-sm font-medium ${activeFilter === 'all'
@@ -258,7 +245,6 @@ const NotificationPage: React.FC = () => {
                 </div>
             </header>
 
-            {/* Notification list */}
             <div className="container mx-auto px-4 pt-4">
                 {notifications.length === 0 ? (
                     <div className="text-center py-12">
@@ -290,12 +276,10 @@ const NotificationPage: React.FC = () => {
                     <div className="space-y-6">
                         {Object.entries(groupedNotifications).map(([date, dateNotifications]) => (
                             <div key={date}>
-                                {/* Date header */}
                                 <div className="text-sm font-medium text-gray-500 mb-3">
                                     {date}
                                 </div>
 
-                                {/* Notifications for this date */}
                                 <div className="space-y-2">
                                     {dateNotifications.map(notification => (
                                         <div
@@ -304,7 +288,6 @@ const NotificationPage: React.FC = () => {
                                                 } shadow-sm hover:shadow-md transition-shadow cursor-pointer`}
                                             onClick={() => markAsRead(notification.id)}
                                         >
-                                            {/* Icon or profile photo */}
                                             <div className="mr-3 mt-1">
                                                 {notification.data?.photo ? (
                                                     <div className="w-10 h-10 rounded-full overflow-hidden">
@@ -321,7 +304,6 @@ const NotificationPage: React.FC = () => {
                                                 )}
                                             </div>
 
-                                            {/* Notification content */}
                                             <div className="flex-grow">
                                                 <div className="flex justify-between items-center mb-1">
                                                     <div className={`font-medium ${notification.isRead ? 'text-gray-700' : 'text-gray-900'}`}>
@@ -373,7 +355,6 @@ const NotificationPage: React.FC = () => {
                 )}
             </div>
 
-            {/* Clear all confirmation dialog */}
             {showClearConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl p-6 max-w-sm w-full">

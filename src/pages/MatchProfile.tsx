@@ -16,11 +16,11 @@ const matchProfile = {
     matchPercentage: 96,
     bio: 'Coffee enthusiast, amateur photographer, and bookworm. I love exploring hidden gems in the city and finding new hiking trails on weekends. Always on the lookout for the next great read and the perfect latte art.\n\nLooking for someone who values genuine connection, has a sense of adventure, and doesn\'t mind getting lost in a good conversation.',
     photos: [
-        '/images/profile-1.jpg',
-        '/images/profile-1b.jpg',
-        '/images/profile-1c.jpg',
-        '/images/profile-1d.jpg',
-        '/images/profile-1e.jpg'
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1498551172505-8ee7ad69f235?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1504703395950-b89145a5425b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     ],
     interests: ['Photography', 'Reading', 'Coffee', 'Hiking', 'Travel', 'Art', 'Museums'],
     lastActive: 'Just now',
@@ -72,14 +72,12 @@ const MatchProfilePage: React.FC = () => {
     const photosRef = useRef<HTMLDivElement>(null);
     const [dragStartX, setDragStartX] = useState(0);
 
-    // Simulate loading state
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
         }, 800);
     }, []);
 
-    // Navigate between photos
     const handlePhotoChange = (newIndex: number) => {
         if (isAnimating) return;
         setIsAnimating(true);
@@ -87,7 +85,6 @@ const MatchProfilePage: React.FC = () => {
         setTimeout(() => setIsAnimating(false), 300);
     };
 
-    // Handle drag interactions for photos
     const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
         const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
         setDragStartX(clientX);
@@ -97,26 +94,21 @@ const MatchProfilePage: React.FC = () => {
         const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX;
         const delta = clientX - dragStartX;
 
-        if (Math.abs(delta) > 50) { // Minimum drag distance
+        if (Math.abs(delta) > 50) {
             if (delta > 0 && currentPhotoIndex > 0) {
-                // Dragged right -> previous photo
                 handlePhotoChange(currentPhotoIndex - 1);
             } else if (delta < 0 && currentPhotoIndex < matchProfile.photos.length - 1) {
-                // Dragged left -> next photo
                 handlePhotoChange(currentPhotoIndex + 1);
             }
         }
     };
 
-    // Handle message sending
     const handleSendMessage = () => {
         if (!messageText.trim()) return;
-        // In a real app, you'd send the message to an API
         alert(`Message sent: ${messageText}`);
         setMessageText('');
     };
 
-    // Interest icon mapping
     const getInterestIcon = (interest: string) => {
         switch (interest) {
             case 'Photography': return <Camera size={16} />;
@@ -153,7 +145,6 @@ const MatchProfilePage: React.FC = () => {
         <div
             className="bg-white min-h-screen relative"
         >
-            {/* Header */}
             <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/60 to-transparent pt-safe">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <button
@@ -178,7 +169,6 @@ const MatchProfilePage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Photo Gallery */}
             <div
                 className="relative h-[70vh] bg-gray-100 overflow-hidden"
                 ref={photosRef}
@@ -187,7 +177,6 @@ const MatchProfilePage: React.FC = () => {
                 onTouchStart={handleDragStart}
                 onTouchEnd={handleDragEnd}
             >
-                {/* Photos */}
                 <AnimatePresence mode="wait">
                     <div
                         key={currentPhotoIndex}
@@ -201,7 +190,6 @@ const MatchProfilePage: React.FC = () => {
                     </div>
                 </AnimatePresence>
 
-                {/* Photo navigation indicators */}
                 <div className="absolute top-4 left-0 right-0 flex justify-center gap-1.5 px-4 pt-12">
                     {matchProfile.photos.map((_, index) => (
                         <button
@@ -216,12 +204,10 @@ const MatchProfilePage: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Match percentage badge */}
                 <div className="absolute top-24 right-4 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-lg flex items-center gap-1.5">
                     <Heart size={14} className="fill-white" /> {matchProfile.matchPercentage}% Match
                 </div>
 
-                {/* Profile name overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pb-6">
                     <div
                     >
@@ -234,14 +220,11 @@ const MatchProfilePage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Profile Content */}
             <div className="container mx-auto px-4 py-6">
                 <div
                     className="grid md:grid-cols-3 gap-6 lg:gap-10"
                 >
-                    {/* Left column: Main profile info */}
                     <div className="md:col-span-2 space-y-6">
-                        {/* Bio section */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
 
@@ -262,7 +245,6 @@ const MatchProfilePage: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Basics section */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                         >
@@ -321,7 +303,6 @@ const MatchProfilePage: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Interests section */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                         >
@@ -347,7 +328,6 @@ const MatchProfilePage: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Q&A section */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                         >
@@ -370,7 +350,6 @@ const MatchProfilePage: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Music section */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                         >
@@ -397,9 +376,7 @@ const MatchProfilePage: React.FC = () => {
                         </section>
                     </div>
 
-                    {/* Right column: Actions and compatibility */}
                     <div className="space-y-6">
-                        {/* Action buttons card */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-4"
                         >
@@ -425,7 +402,6 @@ const MatchProfilePage: React.FC = () => {
                                 </button>
                             </div>
 
-                            {/* Quick message section */}
                             <div className="space-y-3">
                                 <h3 className="text-sm font-medium text-gray-500">Start a conversation</h3>
                                 <div className="relative">
@@ -465,7 +441,6 @@ const MatchProfilePage: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Compatibility section */}
                         <section
                             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                         >

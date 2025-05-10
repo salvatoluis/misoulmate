@@ -1,4 +1,3 @@
-// src/pages/UserProfile.tsx
 import React, { useState, useRef } from 'react';
 import {
     Camera, Edit, ChevronRight, LogOut, Bell, Shield,
@@ -7,16 +6,15 @@ import {
     Music,
 } from 'lucide-react';
 
-// Dummy user data
 const userData = {
     id: "user123",
     name: "Alex Johnson",
     age: 29,
     photos: [
-        "/images/user-profile-1.jpg",
-        "/images/user-profile-2.jpg",
-        "/images/user-profile-3.jpg",
-        "/images/user-profile-4.jpg",
+        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1551632811-561732d1e306?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGlraW5nfGVufDB8fDB8fHww",
+        "https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     ],
     bio: "Product designer by day, amateur chef by night. Love hiking, travel photography, and finding the best coffee shops in town.\n\nLooking for someone who enjoys good conversation and new adventures.",
     occupation: "Senior Product Designer at TechCorp",
@@ -49,7 +47,6 @@ const UserProfile: React.FC = () => {
     const [expandedSection, setExpandedSection] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Form state (would be more detailed in a real app)
     const [formData, setFormData] = useState({
         bio: userData.bio,
         occupation: userData.occupation,
@@ -72,7 +69,6 @@ const UserProfile: React.FC = () => {
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // In a real app, you would upload the file to a server here
         console.log("File selected:", e.target.files?.[0]);
     };
 
@@ -82,7 +78,6 @@ const UserProfile: React.FC = () => {
 
     const toggleEdit = () => {
         if (editing) {
-            // In a real app, you would save changes to the server here
             userData.bio = formData.bio;
             userData.occupation = formData.occupation;
             userData.education = formData.education;
@@ -91,13 +86,11 @@ const UserProfile: React.FC = () => {
     };
 
     const handleSignOut = () => {
-        // In a real app, this would sign the user out
         alert("User signed out");
     };
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
-            {/* Header */}
             <header className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center">
@@ -109,8 +102,8 @@ const UserProfile: React.FC = () => {
                     {activeTab === 'profile' && (
                         <button
                             className={`px-4 py-1.5 rounded-full text-sm font-medium ${editing
-                                    ? 'bg-[#FF6B81] text-white'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-[#FF6B81] text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 } transition-colors`}
                             onClick={toggleEdit}
                         >
@@ -119,13 +112,12 @@ const UserProfile: React.FC = () => {
                     )}
                 </div>
 
-                {/* Tabs */}
                 <div className="border-b border-gray-200">
                     <div className="container mx-auto px-4 flex">
                         <button
                             className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'profile'
-                                    ? 'text-[#FF6B81]'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'text-[#FF6B81]'
+                                : 'text-gray-500 hover:text-gray-700'
                                 } transition-colors`}
                             onClick={() => setActiveTab('profile')}
                         >
@@ -136,8 +128,8 @@ const UserProfile: React.FC = () => {
                         </button>
                         <button
                             className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'settings'
-                                    ? 'text-[#FF6B81]'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'text-[#FF6B81]'
+                                : 'text-gray-500 hover:text-gray-700'
                                 } transition-colors`}
                             onClick={() => setActiveTab('settings')}
                         >
@@ -152,9 +144,7 @@ const UserProfile: React.FC = () => {
 
             <div className="container mx-auto px-4 pt-6 pb-20">
                 {activeTab === 'profile' ? (
-                    /* Profile Tab */
                     <div className="space-y-6">
-                        {/* Photos Section */}
                         <section className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 border-b border-gray-100">
                                 <h2 className="text-lg font-bold text-gray-800">Photos</h2>
@@ -215,7 +205,6 @@ const UserProfile: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* About Section */}
                         <section className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 border-b border-gray-100">
                                 <h2 className="text-lg font-bold text-gray-800">About</h2>
@@ -239,7 +228,6 @@ const UserProfile: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Work & Education Section */}
                         <section className="bg-white rounded-xl shadow-sm overflow-hidden">
                             <div
                                 className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -288,7 +276,6 @@ const UserProfile: React.FC = () => {
                             )}
                         </section>
 
-                        {/* Interests Section */}
                         <section className="bg-white rounded-xl shadow-sm overflow-hidden">
                             <div
                                 className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -309,8 +296,8 @@ const UserProfile: React.FC = () => {
                                             <div
                                                 key={index}
                                                 className={`px-3 py-1.5 rounded-full text-sm ${editing
-                                                        ? 'bg-gray-100 text-gray-700 pr-1.5 group'
-                                                        : 'bg-gray-100 text-gray-700'
+                                                    ? 'bg-gray-100 text-gray-700 pr-1.5 group'
+                                                    : 'bg-gray-100 text-gray-700'
                                                     }`}
                                             >
                                                 {interest}
@@ -335,7 +322,6 @@ const UserProfile: React.FC = () => {
                             )}
                         </section>
 
-                        {/* Questions Section */}
                         <section className="bg-white rounded-xl shadow-sm overflow-hidden">
                             <div
                                 className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -376,7 +362,6 @@ const UserProfile: React.FC = () => {
                             )}
                         </section>
 
-                        {/* Connected Accounts */}
                         <section className="bg-white rounded-xl shadow-sm overflow-hidden">
                             <div
                                 className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -420,9 +405,7 @@ const UserProfile: React.FC = () => {
                         </section>
                     </div>
                 ) : (
-                    /* Settings Tab */
                     <div className="space-y-6">
-                        {/* Account Settings */}
                         <section className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 border-b border-gray-100">
                                 <h2 className="text-lg font-bold text-gray-800">Account</h2>
@@ -458,7 +441,6 @@ const UserProfile: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Privacy & Safety */}
                         <section className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 border-b border-gray-100">
                                 <h2 className="text-lg font-bold text-gray-800">Privacy & Safety</h2>
@@ -504,7 +486,6 @@ const UserProfile: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Help & Support */}
                         <section className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 border-b border-gray-100">
                                 <h2 className="text-lg font-bold text-gray-800">Help & Support</h2>
@@ -537,7 +518,6 @@ const UserProfile: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Sign Out */}
                         <button
                             className="w-full py-4 text-[#FF6B81] font-medium bg-white rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
                             onClick={handleSignOut}

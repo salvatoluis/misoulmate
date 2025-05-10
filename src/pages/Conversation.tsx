@@ -4,7 +4,7 @@ import { ArrowLeft, MoreVertical, Image, Send, Info, Mic, Smile } from 'lucide-r
 const matchData = {
     id: 1,
     name: 'Emma Wilson',
-    photo: '/images/profile-1.jpg',
+    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
     isOnline: true,
     lastActive: 'Active now',
     matchDate: 'May 15, 2025',
@@ -44,14 +44,14 @@ const initialMessages = [
         id: 5,
         senderId: 'match',
         text: 'I love the Japanese Garden! I\'ve never been to Twin Peaks though.Maybe we could check it out sometime?',
-    timestamp: 'Yesterday, 3:15 PM',
+        timestamp: 'Yesterday, 3:15 PM',
         isRead: true
     },
     {
         id: 6,
         senderId: 'match',
         text: 'Also, do you have a favorite coffee shop? I\'m always looking for new places to try.',
-    timestamp: 'Today, 12:45 PM',
+        timestamp: 'Today, 12:45 PM',
         isRead: false
     }
 ];
@@ -101,7 +101,6 @@ const Conversation: React.FC = () => {
         setMessages([...messages, newMessage]);
         setMessageInput('');
 
-        // Simulate a reply after 2 seconds
         setTimeout(() => {
             const replyMessage = {
                 id: messages.length + 2,
@@ -115,31 +114,25 @@ const Conversation: React.FC = () => {
         }, 3000);
     };
 
-    // Handle file selection
     const handleSelectFile = () => {
         fileInputRef.current?.click();
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // In a real app, you would upload the file here
         if (e.target.files && e.target.files[0]) {
             console.log('Selected file:', e.target.files[0]);
-            // You would handle image upload and messaging here
         }
     };
 
-    // Handle quick reply selection
     const handleQuickReply = (reply: string) => {
         setMessageInput(reply);
     };
 
-    // Format date for display
     const formatMessageDate = (date: string) => {
         if (date.startsWith('Just now')) return date;
         return date;
     };
 
-    // Group messages by date
     const messagesByDate = messages.reduce((groups: { [key: string]: typeof messages }, message) => {
         const dateStr = message.timestamp.split(',')[0];
         if (!groups[dateStr]) {
@@ -151,7 +144,6 @@ const Conversation: React.FC = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen flex flex-col">
-            {/* Header */}
             <header className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-3 flex justify-between items-center">
                     <div className="flex items-center">
@@ -190,7 +182,6 @@ const Conversation: React.FC = () => {
                 </div>
             </header>
 
-            {/* Profile info panel (slide down when toggled) */}
             <div
                 className={`bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 ${showInfo ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                     }`}
@@ -230,27 +221,22 @@ const Conversation: React.FC = () => {
                 </div>
             </div>
 
-            {/* Messages area */}
             <div className="flex-grow overflow-y-auto p-4 pb-20">
                 <div className="container mx-auto max-w-3xl space-y-6">
-                    {/* Starting info */}
                     <div className="text-center">
                         <div className="bg-white/70 backdrop-blur-sm inline-block px-4 py-2 rounded-lg text-sm text-gray-500">
                             You matched with {matchData.name} on {matchData.matchDate}
                         </div>
                     </div>
 
-                    {/* Messages grouped by date */}
                     {Object.entries(messagesByDate).map(([date, dateMessages]) => (
                         <div key={date} className="space-y-4">
-                            {/* Date divider */}
                             <div className="flex items-center justify-center">
                                 <div className="bg-gray-200 rounded-full px-3 py-1 text-xs text-gray-600">
                                     {date}
                                 </div>
                             </div>
 
-                            {/* Messages for this date */}
                             {dateMessages.map(message => (
                                 <div
                                     key={message.id}
@@ -268,8 +254,8 @@ const Conversation: React.FC = () => {
 
                                     <div
                                         className={`max-w-[75%] ${message.senderId === 'user'
-                                                ? 'bg-[#FF6B81] text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
-                                                : 'bg-white text-gray-800 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
+                                            ? 'bg-[#FF6B81] text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
+                                            : 'bg-white text-gray-800 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
                                             } p-3 shadow-sm relative`}
                                     >
                                         <p className="text-sm">{message.text}</p>
@@ -287,7 +273,6 @@ const Conversation: React.FC = () => {
                         </div>
                     ))}
 
-                    {/* Typing indicator */}
                     {isTyping && (
                         <div className="flex justify-start">
                             <div className="w-8 h-8 rounded-full overflow-hidden mr-2 mt-1 flex-shrink-0">
@@ -307,7 +292,6 @@ const Conversation: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Quick replies */}
                     {messages.length > 0 && messages[messages.length - 1].senderId === 'match' && (
                         <div className="mt-4 overflow-x-auto scrollbar-hide py-2">
                             <div className="flex space-x-2 w-max">
@@ -328,7 +312,6 @@ const Conversation: React.FC = () => {
                 </div>
             </div>
 
-            {/* Message input area */}
             <div className="bg-white border-t border-gray-200 py-3 px-4 sticky bottom-0 z-40">
                 <div className="container mx-auto max-w-3xl">
                     <div className="flex items-center">

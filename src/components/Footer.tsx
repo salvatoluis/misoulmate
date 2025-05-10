@@ -109,7 +109,6 @@ const Footer: React.FC = () => {
 
     return (
         <footer className="relative overflow-hidden" ref={footerRef}>
-            {/* Top curved divider */}
             <div className="absolute top-0 left-0 right-0 h-12 overflow-hidden">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +220,6 @@ const Footer: React.FC = () => {
                                 )}
                             </div>
 
-                            {/* Social links */}
                             <div>
                                 <h3 className="text-white text-md font-semibold mb-3">Connect With Us</h3>
                                 <div className="flex space-x-3">
@@ -255,7 +253,6 @@ const Footer: React.FC = () => {
                                                 </svg>
                                             )}
 
-                                            {/* Tooltip */}
                                             {activeTooltip === social.id && (
                                                 <div
                                                     className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 animate-fade-in"
@@ -311,7 +308,7 @@ const Footer: React.FC = () => {
                     >
                         <p className="text-gray-500 text-sm mb-4 md:mb-0 flex items-center">
                             <Info size={14} className="mr-1.5" />
-                            Made with love in San Francisco. © 2025 miSoulMate. All rights reserved.
+                            Made with love in Nairobi Kenya. © 2025 miSoulMate. All rights reserved.
                         </p>
                         <div className="flex items-center">
                             <a href="#" className="text-gray-400 hover:text-white text-sm mr-6 hover:underline">Beta Program</a>

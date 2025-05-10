@@ -19,6 +19,11 @@ import Register from './pages/Register';
 import Onboarding from './pages/Onboading';
 import MainLayout from './layouts/MainLayout';
 import PageNotFound from './pages/PageNotFound';
+import NotificationPage from './pages/Notifications';
+import Discover from './pages/Discover';
+import SafetyCenter from './pages/SafetyCenter';
+import ContactUs from './pages/ContactUs';
+import CommunityGuidelines from './pages/CommunityGuidelines';
 
 const App: React.FC = () => {
 
@@ -41,6 +46,21 @@ const App: React.FC = () => {
         <Route path="/" element={
           <PublicRoute>
             <HomePage />
+          </PublicRoute>
+        } />
+        <Route path="/safety" element={
+          <PublicRoute>
+            <SafetyCenter />
+          </PublicRoute>
+        } />
+        <Route path="/contact" element={
+          <PublicRoute>
+            <ContactUs />
+          </PublicRoute>
+        } />
+        <Route path="/community" element={
+          <PublicRoute>
+            <CommunityGuidelines />
           </PublicRoute>
         } />
 
@@ -150,6 +170,22 @@ const App: React.FC = () => {
           <ProtectedRoute>
             <MainLayout>
               <Icebreakers />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/discover" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Discover />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/notifications" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <NotificationPage />
             </MainLayout>
           </ProtectedRoute>
         } />

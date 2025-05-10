@@ -12,7 +12,11 @@ const dummyMatches = [
         distance: 3.2,
         matchPercentage: 96,
         bio: 'Coffee enthusiast, amateur photographer, and bookworm. Looking for someone to explore the city with!',
-        photos: ['/images/profile-1.jpg', '/images/profile-1b.jpg', '/images/profile-1c.jpg'],
+        photos: [
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1560535733-540e0b0068b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1604072366595-e75dc92d6bdc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
         interests: ['Photography', 'Reading', 'Coffee', 'Hiking'],
         lastActive: 'Just now',
         occupation: 'UX Designer',
@@ -25,7 +29,10 @@ const dummyMatches = [
         distance: 5.8,
         matchPercentage: 92,
         bio: 'Music lover, tech geek, and fitness enthusiast. Looking for someone with similar interests and a good sense of humor.',
-        photos: ['/images/profile-2.jpg', '/images/profile-2b.jpg'],
+        photos: [
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
         interests: ['Music', 'Technology', 'Fitness', 'Cooking'],
         lastActive: '5 minutes ago',
         occupation: 'Software Engineer',
@@ -38,7 +45,11 @@ const dummyMatches = [
         distance: 7.1,
         matchPercentage: 89,
         bio: 'Art lover, foodie, and travel enthusiast. Let\'s explore new restaurants and plan weekend getaways!',
-        photos: ['/images/profile-3.jpg', '/images/profile-3b.jpg', '/images/profile-3c.jpg'],
+        photos: [
+            'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1496440737103-cd596325d314?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
         interests: ['Travel', 'Art', 'Food', 'Yoga'],
         lastActive: '1 hour ago',
         occupation: 'Marketing Manager',
@@ -51,7 +62,10 @@ const dummyMatches = [
         distance: 12.4,
         matchPercentage: 87,
         bio: 'Movie buff, amateur chef, and dog lover. Looking for someone to share movie nights and cooking adventures.',
-        photos: ['/images/profile-4.jpg', '/images/profile-4b.jpg'],
+        photos: [
+            'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
         interests: ['Movies', 'Cooking', 'Dogs', 'Tennis'],
         lastActive: '3 hours ago',
         occupation: 'Product Manager',
@@ -64,7 +78,10 @@ const dummyMatches = [
         distance: 15.7,
         matchPercentage: 85,
         bio: 'Book lover, pianist, and nature enthusiast. Looking for someone to share quiet evenings and weekend hikes.',
-        photos: ['/images/profile-5.jpg', '/images/profile-5b.jpg'],
+        photos: [
+            'https://images.unsplash.com/photo-1532910404247-7ee9488d7292?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
         interests: ['Reading', 'Music', 'Hiking', 'Yoga'],
         lastActive: 'Yesterday',
         occupation: 'Clinical Psychologist',
@@ -77,11 +94,83 @@ const dummyMatches = [
         distance: 18.2,
         matchPercentage: 83,
         bio: 'Photographer, rock climber, and coffee addict. Looking for someone to join my adventures!',
-        photos: ['/images/profile-6.jpg', '/images/profile-6b.jpg'],
+        photos: [
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
         interests: ['Photography', 'Rock Climbing', 'Coffee', 'Travel'],
         lastActive: 'Yesterday',
         occupation: 'Photographer',
     },
+    // Adding 4 more profiles with Unsplash photos
+    {
+        id: 7,
+        name: 'Jasmine',
+        age: 25,
+        location: 'Fremont',
+        distance: 20.3,
+        matchPercentage: 81,
+        bio: 'Dance instructor by day, stargazer by night. Looking for someone who appreciates both art and science. Let\'s dance under the stars!',
+        photos: [
+            'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1516726817505-f5ed825624d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
+        interests: ['Dancing', 'Astronomy', 'Painting', 'Poetry'],
+        lastActive: '2 days ago',
+        occupation: 'Dance Instructor',
+    },
+    {
+        id: 8,
+        name: 'Ryan',
+        age: 33,
+        location: 'Cupertino',
+        distance: 22.5,
+        matchPercentage: 78,
+        bio: 'Former chef turned tech enthusiast. I still cook a mean pasta carbonara. Looking for someone to share good food and meaningful conversations.',
+        photos: [
+            'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1488161628813-04466f872be2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
+        interests: ['Cooking', 'Technology', 'Philosophy', 'Wine Tasting'],
+        lastActive: '3 days ago',
+        occupation: 'Solution Architect',
+    },
+    {
+        id: 9,
+        name: 'Alexandra',
+        age: 30,
+        location: 'Sausalito',
+        distance: 9.7,
+        matchPercentage: 76,
+        bio: 'Marine biologist with a passion for environmental conservation. When I\'m not in the lab, you can find me surfing or hiking. Looking for someone who loves nature as much as I do.',
+        photos: [
+            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
+        interests: ['Surfing', 'Environmental Science', 'Hiking', 'Photography'],
+        lastActive: '4 days ago',
+        occupation: 'Marine Biologist',
+    },
+    {
+        id: 10,
+        name: 'Ethan',
+        age: 28,
+        location: 'Menlo Park',
+        distance: 14.3,
+        matchPercentage: 72,
+        bio: 'Musician and sound engineer who loves everything audio. Collector of vinyl records and vintage instruments. Let\'s go to a concert and discuss our favorite albums afterward.',
+        photos: [
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1484515991647-c5760fcecfc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        ],
+        interests: ['Music Production', 'Vinyl Collecting', 'Concerts', 'Guitar'],
+        lastActive: 'Last week',
+        occupation: 'Sound Engineer',
+    }
 ];
 
 const interestIcons: Record<string, React.ReactNode> = {
@@ -326,7 +415,6 @@ const Matches: React.FC = () => {
             </header>
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Loading state */}
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center pt-10">
                         <div className="relative w-16 h-16">
@@ -348,7 +436,6 @@ const Matches: React.FC = () => {
                     </div>
                 ) : (
                     <>
-                        {/* Match count */}
                         <div className="mb-6 flex justify-between items-center">
                             <h2 className="text-lg font-medium text-gray-800">
                                 {filteredMatches.length} potential {filteredMatches.length === 1 ? 'match' : 'matches'}
@@ -359,7 +446,6 @@ const Matches: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Matches grid */}
                         {filteredMatches.length === 0 ? (
                             <div className="text-center py-10">
                                 <div className="mb-4 flex justify-center">
@@ -388,7 +474,6 @@ const Matches: React.FC = () => {
                                         variants={cardVariants}
                                         layout
                                     >
-                                        {/* Profile photo */}
                                         <div className="relative aspect-[4/5] overflow-hidden">
                                             <img
                                                 src={match.photos[selectedPhoto[match.id] || 0]}
@@ -396,7 +481,6 @@ const Matches: React.FC = () => {
                                                 className="w-full h-full object-cover"
                                             />
 
-                                            {/* Photo navigation - only show if there are multiple photos */}
                                             {match.photos.length > 1 && (
                                                 <>
                                                     <button
@@ -418,7 +502,6 @@ const Matches: React.FC = () => {
                                                         <ChevronDown className="transform -rotate-90 text-white w-5 h-5 drop-shadow-md" />
                                                     </button>
 
-                                                    {/* Photo indicators */}
                                                     <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
                                                         {match.photos.map((_, photoIndex) => (
                                                             <div
@@ -445,7 +528,7 @@ const Matches: React.FC = () => {
                                         <div className="p-4">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
-                                                    <h3 className="text-lg font-bold text-gray-800">{match.name}, {match.age}</h3>
+                                                    <h3 onClick={() => navigate('/match/89')} className="text-lg font-bold text-gray-800">{match.name}, {match.age}</h3>
                                                     <div className="flex items-center text-gray-500 text-sm">
                                                         <MapPin size={14} className="mr-1" />
                                                         {match.location} • {match.distance} miles away
