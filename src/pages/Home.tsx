@@ -1,4 +1,3 @@
-// src/pages/HomePage.tsx
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -8,6 +7,7 @@ import Testimonials from '../components/Testimonials';
 import AppPreview from '../components/AppPreview';
 import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
+import AIAssistantModal from '@/elements.tsx/AIAssistantModal';
 
 const HomePage: React.FC = () => {
     return (
@@ -20,6 +20,8 @@ const HomePage: React.FC = () => {
             <AppPreview />
             <FinalCTA />
             <Footer />
+            <AIAssistantModal />
+
         </div>
     );
 };
