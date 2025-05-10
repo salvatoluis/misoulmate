@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Search, Settings, Heart, ArrowLeft } from 'lucide-react';
 
-// Dummy messages data
 const messagesList = [
     {
         id: 'm1',
         matchId: 1,
         name: 'Emma Wilson',
-        photo: '/images/profile-1.jpg',
+        photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
         lastMessage: 'So what coffee shop would you recommend?',
         lastMessageTime: '12:45 PM',
         unreadCount: 2,
@@ -18,7 +17,7 @@ const messagesList = [
         id: 'm2',
         matchId: 2,
         name: 'Michael Chen',
-        photo: '/images/profile-2.jpg',
+        photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop',
         lastMessage: 'That sounds great! I\'ll check it out.',
         lastMessageTime: 'Yesterday',
         unreadCount: 0,
@@ -29,7 +28,7 @@ const messagesList = [
         id: 'm3',
         matchId: 3,
         name: 'Sophia Rodriguez',
-        photo: '/images/profile-3.jpg',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop',
         lastMessage: 'You: Thanks for the restaurant recommendation!',
         lastMessageTime: 'Yesterday',
         unreadCount: 0,
@@ -40,86 +39,41 @@ const messagesList = [
         id: 'm4',
         matchId: 4,
         name: 'James Wilson',
-        photo: '/images/profile-4.jpg',
+        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop',
         lastMessage: 'I love that movie too! Have you seen the sequel?',
         lastMessageTime: 'Tuesday',
         unreadCount: 0,
         isOnline: true,
         matchPercentage: 87
-    },
-    {
-        id: 'm5',
-        matchId: 5,
-        name: 'Olivia Park',
-        photo: '/images/profile-5.jpg',
-        lastMessage: 'You: I\'ll definitely check out that book!',
-        lastMessageTime: 'Monday',
-        unreadCount: 0,
-        isOnline: false,
-        matchPercentage: 85
-    },
-    {
-        id: 'm6',
-        matchId: 6,
-        name: 'Daniel Thompson',
-        photo: '/images/profile-6.jpg',
-        lastMessage: 'How was your hike last weekend?',
-        lastMessageTime: 'May 20',
-        unreadCount: 0,
-        isOnline: false,
-        matchPercentage: 83
-    },
-    {
-        id: 'm7',
-        matchId: 7,
-        name: 'Ava Johnson',
-        photo: '/images/profile-7.jpg',
-        lastMessage: 'You: I\'d love to hear more about your photography!',
-    lastMessageTime: 'May 18',
-        unreadCount: 0,
-        isOnline: false,
-        matchPercentage: 80
-    },
-    {
-        id: 'm8',
-        matchId: 8,
-        name: 'Noah Williams',
-        photo: '/images/profile-8.jpg',
-        lastMessage: 'That concert sounds amazing!',
-        lastMessageTime: 'May 15',
-        unreadCount: 0,
-        isOnline: false,
-        matchPercentage: 78
     }
 ];
 
-// Dummy new matches data
 const newMatches = [
     {
         id: 9,
         name: 'Zoe',
-        photo: '/images/profile-9.jpg',
+        photo: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&h=400&fit=crop',
         matchTime: '2 hours ago',
         matchPercentage: 94
     },
     {
         id: 10,
         name: 'Ryan',
-        photo: '/images/profile-10.jpg',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=400&fit=crop',
         matchTime: '5 hours ago',
         matchPercentage: 91
     },
     {
         id: 11,
         name: 'Mia',
-        photo: '/images/profile-11.jpg',
+        photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=400&fit=crop',
         matchTime: '1 day ago',
         matchPercentage: 88
     },
     {
         id: 12,
         name: 'Lucas',
-        photo: '/images/profile-12.jpg',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop',
         matchTime: '2 days ago',
         matchPercentage: 87
     }
@@ -129,7 +83,6 @@ const Messages: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTab, setActiveTab] = useState('inbox');
 
-    // Filter messages based on search query
     const filteredMessages = messagesList.filter(message =>
         message.name.toLowerCase().includes(searchQuery.toLowerCase())
     );

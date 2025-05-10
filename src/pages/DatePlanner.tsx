@@ -1,4 +1,3 @@
-// src/pages/DatePlanner.tsx
 import React, { useState } from 'react';
 import { ChevronRight, Calendar, MapPin, Clock, Filter, Heart, Coffee, Utensils, Ticket, Bike, GlassWater, BookOpen, Send } from 'lucide-react';
 
@@ -9,7 +8,7 @@ interface DateIdea {
     category: string;
     time: string;
     location: string;
-    cost: 1 | 2 | 3; // 1 = $, 2 = $$, 3 = $$$
+    cost: 1 | 2 | 3;
     imageSrc: string;
     liked: boolean;
 }
@@ -29,7 +28,6 @@ const DatePlanner: React.FC = () => {
     const [matchId, setMatchId] = useState<string | null>(null);
     const [customDatePlan, setCustomDatePlan] = useState('');
 
-    // Date categories
     const categories: DateCategory[] = [
         { id: 'cafe', name: 'Café', icon: <Coffee size={18} /> },
         { id: 'restaurant', name: 'Restaurant', icon: <Utensils size={18} /> },
@@ -39,15 +37,13 @@ const DatePlanner: React.FC = () => {
         { id: 'cultural', name: 'Cultural', icon: <BookOpen size={18} /> }
     ];
 
-    // Mock matches for suggesting date
     const matches = [
-        { id: '1', name: 'Jordan', avatarUrl: '/images/avatar-1.jpg' },
-        { id: '2', name: 'Taylor', avatarUrl: '/images/avatar-2.jpg' },
-        { id: '3', name: 'Alex', avatarUrl: '/images/avatar-3.jpg' },
-        { id: '4', name: 'Casey', avatarUrl: '/images/avatar-4.jpg' }
+        { id: '1', name: 'Jordan', avatarUrl: 'https://images.unsplash.com/photo-1527203561188-dae1bc1a417f?w=150&h=150&fit=crop' },
+        { id: '2', name: 'Taylor', avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop' },
+        { id: '3', name: 'Alex', avatarUrl: 'https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=150&h=150&fit=crop' },
+        { id: '4', name: 'Casey', avatarUrl: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=150&h=150&fit=crop' }
     ];
 
-    // Date ideas
     const [dateIdeas, setDateIdeas] = useState<DateIdea[]>([
         {
             id: '1',
@@ -57,7 +53,7 @@ const DatePlanner: React.FC = () => {
             time: '1-2 hours',
             location: 'Local coffee shop',
             cost: 1,
-            imageSrc: '/images/date-coffee.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1522683280249-025c6e03d311?w=600&h=400&fit=crop',
             liked: false
         },
         {
@@ -68,7 +64,7 @@ const DatePlanner: React.FC = () => {
             time: '2-3 hours',
             location: 'Park or viewpoint',
             cost: 1,
-            imageSrc: '/images/date-picnic.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&h=400&fit=crop',
             liked: true
         },
         {
@@ -79,7 +75,7 @@ const DatePlanner: React.FC = () => {
             time: '2-3 hours',
             location: 'Jazz bar',
             cost: 2,
-            imageSrc: '/images/date-jazz.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&h=400&fit=crop',
             liked: false
         },
         {
@@ -90,7 +86,7 @@ const DatePlanner: React.FC = () => {
             time: '1-2 hours',
             location: 'Local art gallery',
             cost: 1,
-            imageSrc: '/images/date-gallery.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1531259683007-016a7b628fc3?w=600&h=400&fit=crop',
             liked: true
         },
         {
@@ -101,7 +97,7 @@ const DatePlanner: React.FC = () => {
             time: '2-3 hours',
             location: 'Fine dining restaurant',
             cost: 3,
-            imageSrc: '/images/date-dining.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop',
             liked: false
         },
         {
@@ -112,7 +108,7 @@ const DatePlanner: React.FC = () => {
             time: '2 hours',
             location: 'Comedy club',
             cost: 2,
-            imageSrc: '/images/date-comedy.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop',
             liked: false
         },
         {
@@ -123,7 +119,7 @@ const DatePlanner: React.FC = () => {
             time: '2-4 hours',
             location: 'Bike trail',
             cost: 1,
-            imageSrc: '/images/date-biking.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop',
             liked: false
         },
         {
@@ -134,12 +130,11 @@ const DatePlanner: React.FC = () => {
             time: '2-3 hours',
             location: 'Winery or wine bar',
             cost: 2,
-            imageSrc: '/images/date-wine.jpg',
+            imageSrc: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&h=400&fit=crop',
             liked: true
         }
     ]);
 
-    // Toggle like status for date idea
     const toggleLike = (id: string) => {
         setDateIdeas(prevIdeas =>
             prevIdeas.map(idea =>
@@ -148,7 +143,6 @@ const DatePlanner: React.FC = () => {
         );
     };
 
-    // Filter date ideas based on active filters
     const filteredDateIdeas = dateIdeas.filter(idea => {
         const matchesCategory = !selectedCategory || idea.category === selectedCategory;
         const matchesCost = !costFilter || idea.cost === costFilter;
@@ -205,8 +199,8 @@ const DatePlanner: React.FC = () => {
                     <div className="flex space-x-4">
                         <button
                             className={`py-4 px-1 font-medium border-b-2 transition-colors ${activeTab === 'ideas'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('ideas')}
                         >
@@ -214,8 +208,8 @@ const DatePlanner: React.FC = () => {
                         </button>
                         <button
                             className={`py-4 px-1 font-medium border-b-2 transition-colors ${activeTab === 'saved'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('saved')}
                         >
@@ -223,8 +217,8 @@ const DatePlanner: React.FC = () => {
                         </button>
                         <button
                             className={`py-4 px-1 font-medium border-b-2 transition-colors ${activeTab === 'custom'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('custom')}
                         >
@@ -245,8 +239,8 @@ const DatePlanner: React.FC = () => {
                                 <div className="grid grid-cols-3 gap-2">
                                     <button
                                         className={`py-2 px-3 rounded-lg text-sm border ${selectedCategory === null
-                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                            ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                            : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                             } transition-colors`}
                                         onClick={() => setSelectedCategory(null)}
                                     >
@@ -256,8 +250,8 @@ const DatePlanner: React.FC = () => {
                                         <button
                                             key={category.id}
                                             className={`py-2 px-3 rounded-lg text-sm border flex items-center justify-center ${selectedCategory === category.id
-                                                    ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                    : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                                 } transition-colors`}
                                             onClick={() => setSelectedCategory(category.id)}
                                         >
@@ -274,8 +268,8 @@ const DatePlanner: React.FC = () => {
                                 <div className="flex space-x-2">
                                     <button
                                         className={`flex-1 py-2 px-3 rounded-lg text-sm border ${costFilter === null
-                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                            ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                            : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                             } transition-colors`}
                                         onClick={() => setCostFilter(null)}
                                     >
@@ -283,8 +277,8 @@ const DatePlanner: React.FC = () => {
                                     </button>
                                     <button
                                         className={`flex-1 py-2 px-3 rounded-lg text-sm border ${costFilter === 1
-                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                            ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                            : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                             } transition-colors`}
                                         onClick={() => setCostFilter(1)}
                                     >
@@ -292,8 +286,8 @@ const DatePlanner: React.FC = () => {
                                     </button>
                                     <button
                                         className={`flex-1 py-2 px-3 rounded-lg text-sm border ${costFilter === 2
-                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                            ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                            : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                             } transition-colors`}
                                         onClick={() => setCostFilter(2)}
                                     >
@@ -301,8 +295,8 @@ const DatePlanner: React.FC = () => {
                                     </button>
                                     <button
                                         className={`flex-1 py-2 px-3 rounded-lg text-sm border ${costFilter === 3
-                                                ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
-                                                : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                                            ? 'border-[#FF6B81] bg-[#FF6B81]/5 text-[#FF6B81]'
+                                            : 'border-gray-200 text-gray-700 hover:bg-gray-50'
                                             } transition-colors`}
                                         onClick={() => setCostFilter(3)}
                                     >
@@ -541,8 +535,8 @@ const DatePlanner: React.FC = () => {
                                             <button
                                                 key={match.id}
                                                 className={`flex flex-col items-center mx-1 p-2 rounded-lg transition-colors ${matchId === match.id
-                                                        ? 'bg-[#FF6B81]/10 text-[#FF6B81]'
-                                                        : 'hover:bg-gray-100'
+                                                    ? 'bg-[#FF6B81]/10 text-[#FF6B81]'
+                                                    : 'hover:bg-gray-100'
                                                     }`}
                                                 onClick={() => setMatchId(match.id)}
                                             >
@@ -608,8 +602,8 @@ const DatePlanner: React.FC = () => {
 
                                 <button
                                     className={`w-full py-3 rounded-lg text-white font-medium ${matchId && customDatePlan.trim().length > 0
-                                            ? 'bg-[#FF6B81] hover:bg-[#D86D72]'
-                                            : 'bg-gray-300 cursor-not-allowed'
+                                        ? 'bg-[#FF6B81] hover:bg-[#D86D72]'
+                                        : 'bg-gray-300 cursor-not-allowed'
                                         } transition-colors`}
                                     disabled={!matchId || customDatePlan.trim().length === 0}
                                 >

@@ -19,7 +19,7 @@ const Loader: React.FC<LoaderProps> = ({ onFinished, duration = 3000 }) => {
             onFinished();
         }, duration);
 
-        const interval = 500;
+        const interval = 400;
         const progressTimer = setInterval(() => {
             setProgress(prev => {
                 const newProgress = prev + (interval / duration) * 100;
