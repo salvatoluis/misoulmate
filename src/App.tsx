@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Matches from './pages/Matches';
@@ -24,8 +24,22 @@ import Discover from './pages/Discover';
 import SafetyCenter from './pages/SafetyCenter';
 import ContactUs from './pages/ContactUs';
 import CommunityGuidelines from './pages/CommunityGuidelines';
+import Loader from './elements.tsx/Loader';
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const reloadListener = () => {
+      setLoading(true);
+    };
+
+    window.addEventListener('beforeunload', reloadListener);
+
+    return () => {
+      window.removeEventListener('beforeunload', reloadListener);
+    };
+  }, []);
 
   const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
@@ -41,158 +55,161 @@ const App: React.FC = () => {
   };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={
-          <PublicRoute>
-            <HomePage />
-          </PublicRoute>
-        } />
-        <Route path="/safety" element={
-          <PublicRoute>
-            <SafetyCenter />
-          </PublicRoute>
-        } />
-        <Route path="/contact" element={
-          <PublicRoute>
-            <ContactUs />
-          </PublicRoute>
-        } />
-        <Route path="/community" element={
-          <PublicRoute>
-            <CommunityGuidelines />
-          </PublicRoute>
-        } />
+   <>
+      {loading && <Loader onFinished={() => setLoading(false)} />}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <PublicRoute>
+              <HomePage />
+            </PublicRoute>
+          } />
+          <Route path="/safety" element={
+            <PublicRoute>
+              <SafetyCenter />
+            </PublicRoute>
+          } />
+          <Route path="/contact" element={
+            <PublicRoute>
+              <ContactUs />
+            </PublicRoute>
+          } />
+          <Route path="/community" element={
+            <PublicRoute>
+              <CommunityGuidelines />
+            </PublicRoute>
+          } />
 
-        <Route path="/login" element={
-          <PublicRoute>
-            <AuthLayout>
-              <Login />
-            </AuthLayout>
-          </PublicRoute>
-        } />
+          <Route path="/login" element={
+            <PublicRoute>
+              <AuthLayout>
+                <Login />
+              </AuthLayout>
+            </PublicRoute>
+          } />
 
-        <Route path="/register" element={
-          <PublicRoute>
-            <AuthLayout>
-              <Register />
-            </AuthLayout>
-          </PublicRoute>
-        } />
+          <Route path="/register" element={
+            <PublicRoute>
+              <AuthLayout>
+                <Register />
+              </AuthLayout>
+            </PublicRoute>
+          } />
 
-        <Route path="/onboarding" element={
-          <OnboardingRoute>
-            <Onboarding />
-          </OnboardingRoute>
-        } />
+          <Route path="/onboarding" element={
+            <OnboardingRoute>
+              <Onboarding />
+            </OnboardingRoute>
+          } />
 
-        <Route path="/matches" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Matches />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/matches" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Matches />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/match/:id" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <MatchProfile />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/match/:id" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <MatchProfile />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/profile" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <UserProfile />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <UserProfile />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/messages" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Messages />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/messages" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Messages />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/conversation/:id" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Conversation />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/conversation/:id" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Conversation />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/subscription" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Subscription />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/subscription" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Subscription />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/settings" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Settings />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Settings />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/blocked-users" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <BlockedUsers />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/blocked-users" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <BlockedUsers />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/help" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <FAQHelp />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/help" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <FAQHelp />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/date-planner" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <DatePlanner />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/date-planner" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <DatePlanner />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/icebreakers" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Icebreakers />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/icebreakers" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Icebreakers />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/discover" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Discover />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/discover" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Discover />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="/notifications" element={
-          <ProtectedRoute>
-            <MainLayout>
-              <NotificationPage />
-            </MainLayout>
-          </ProtectedRoute>
-        } />
+          <Route path="/notifications" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <NotificationPage />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
 
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
+   </>
   );
 };
 
