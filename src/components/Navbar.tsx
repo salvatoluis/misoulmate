@@ -52,7 +52,6 @@ const Navbar: React.FC = () => {
         };
     }, [scrolled]);
 
-    // Handle clicks outside mobile menu to close it
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
@@ -82,7 +81,6 @@ const Navbar: React.FC = () => {
                 }`}
         >
             <div className="container mx-auto px-6 flex justify-between items-center">
-                {/* Logo */}
                 <div
                     className="flex items-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
                     onClick={() => navigate('/')}
@@ -91,12 +89,11 @@ const Navbar: React.FC = () => {
                         <Heart size={20} className="text-white" />
                     </div>
                     <div className="text-2xl font-bold">
-                        <span className={scrolled ? "text-[#FF6B81]" : "text-white"}>Heart</span>
-                        <span className={scrolled ? "text-[#D86D72]" : "text-white"}>Match</span>
+                        <span className={scrolled ? "text-[#FF6B81]" : "text-white"}>MiSoul</span>
+                        <span className={scrolled ? "text-[#D86D72]" : "text-white"}>Mate</span>
                     </div>
                 </div>
 
-                {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center space-x-6">
                     {activeLinks.map((link, index) => (
                         <Link
@@ -123,7 +120,6 @@ const Navbar: React.FC = () => {
                         </Link>
                     ))}
 
-                    {/* Authentication Buttons */}
                     {isAuthenticated ? (
                         <button
                             className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
@@ -155,7 +151,6 @@ const Navbar: React.FC = () => {
                     )}
                 </div>
 
-                {/* Mobile Menu Toggle */}
                 <button
                     className="md:hidden bg-white/10 backdrop-blur-md p-2 rounded-full shadow-sm border border-gray-100/20"
                     onClick={toggleMobileMenu}
@@ -169,7 +164,6 @@ const Navbar: React.FC = () => {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
             {mobileMenuOpen && (
                 <div
                     ref={mobileMenuRef}
@@ -251,7 +245,6 @@ const Navbar: React.FC = () => {
                             )}
                         </div>
 
-                        {/* Demo Toggle - Just for development purposes */}
                         <div
                             className="mt-4 p-3 bg-gray-100 rounded-lg text-sm text-gray-500 flex flex-col space-y-2"
                             style={{
