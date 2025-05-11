@@ -31,12 +31,8 @@ const AppPreview: React.FC = () => {
         }
     ];
 
-    // For 3D tilt effect
     const x = useMotionValue(0);
     const y = useMotionValue(0);
-
-    const rotateX = useTransform(y, [-300, 300], [10, -10]);
-    const rotateY = useTransform(x, [-300, 300], [-10, 10]);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const rect = sectionRef.current ? (sectionRef.current as HTMLElement).getBoundingClientRect() : null;
@@ -44,7 +40,6 @@ const AppPreview: React.FC = () => {
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
 
-            // Calculate distance from center
             const moveX = (e.clientX - centerX) / 5;
             const moveY = (e.clientY - centerY) / 5;
 
@@ -56,24 +51,6 @@ const AppPreview: React.FC = () => {
     const handleMouseLeave = () => {
         x.set(0);
         y.set(0);
-    };
-
-    // Handle email submission for waitlist
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!email) return;
-
-        setIsSubmitting(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setIsSubscribed(true);
-
-            setTimeout(() => {
-                setEmail('');
-            }, 3000);
-        }, 1500);
     };
 
     React.useEffect(() => {
