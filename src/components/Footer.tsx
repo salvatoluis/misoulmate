@@ -163,14 +163,16 @@ const Footer: React.FC = () => {
                             <div
                                 className="flex items-center mb-6 hover:scale-105 transition-transform duration-200"
                             >
-                                <div
-                                    className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-lg mr-2 flex items-center justify-center hover:rotate-10 transition-transform duration-200"
-                                >
-                                    <Heart size={16} className="text-white" />
-                                </div>
-                                <span className="text-white text-2xl font-bold">
-                                    miSoul<span className="text-[#FF6B81]">Mate</span>
-                                </span>
+                                <img
+                                    src='/images/logo.png'
+                                    alt="Logo"
+                                    className="h-8 w-auto"
+                                    style={{
+                                        animation: 'fadeInDown 0.5s ease forwards',
+                                        opacity: 0,
+                                        animationDelay: '0.2s'
+                                    }}
+                                />
                             </div>
 
                             <p className="text-gray-400 mb-6">

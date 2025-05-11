@@ -85,12 +85,28 @@ const Navbar: React.FC = () => {
                     className="flex items-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
                     onClick={() => navigate('/')}
                 >
-                    <div className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-full">
-                        <Heart size={20} className="text-white" />
-                    </div>
                     <div className="text-2xl font-bold">
-                        <span className={scrolled ? "text-[#FF6B81]" : "text-white"}>MiSoul</span>
-                        <span className={scrolled ? "text-[#D86D72]" : "text-white"}>Mate</span>
+                        {scrolled ? (
+                            <img
+                                src='/images/logo_2.png'
+                                alt="Logo"
+                                className="h-8 w-auto"
+                                style={{
+                                    animation: 'fadeIn 0.3s ease forwards',
+                                }}
+                            />
+                        ) : (
+                            <img
+                                src='/images/logo.png'
+                                alt="Logo"
+                                className="h-8 w-auto"
+                                style={{
+                                    animation: 'fadeInDown 0.5s ease forwards',
+                                    opacity: 0,
+                                    animationDelay: '0.2s'
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
 
