@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { useInView, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { Download, Heart, Bell, Check, Mail } from 'lucide-react';
 
 const AppPreview: React.FC = () => {
@@ -10,7 +10,6 @@ const AppPreview: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubscribed, setIsSubscribed] = useState(false);
 
-    // App screens content
     const appScreens = [
         {
             id: 1,
@@ -71,14 +70,12 @@ const AppPreview: React.FC = () => {
             setIsSubmitting(false);
             setIsSubscribed(true);
 
-            // Reset subscription state after a while
             setTimeout(() => {
                 setEmail('');
             }, 3000);
         }, 1500);
     };
 
-    // Switch to the next screen every 3 seconds
     React.useEffect(() => {
         if (!isInView) return;
 
@@ -97,9 +94,7 @@ const AppPreview: React.FC = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
-            {/* Background decorative elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {/* Gradient orbs */}
                 <div
                     className="absolute top-0 right-0 w-[50%] h-[50%] rounded-full opacity-10 blur-[120px]"
                     style={{ background: 'radial-gradient(circle, rgba(255,107,129,0.4) 0%, rgba(255,107,129,0) 70%)' }}
@@ -137,7 +132,6 @@ const AppPreview: React.FC = () => {
                             Our mobile app is almost ready! Get notifications, send messages, and never miss an opportunity to connect with your matches wherever you go.
                         </p>
 
-                        {/* Feature list */}
                         <div
                             className="space-y-4 mb-8"
                         >
@@ -158,7 +152,6 @@ const AppPreview: React.FC = () => {
                             ))}
                         </div>
 
-                        {/* Join Waitlist */}
                         <div
                             className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-white/80 shadow-lg mb-8"
                         >
@@ -231,12 +224,10 @@ const AppPreview: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right column: Phone mockup */}
                     <div
                         className="flex justify-center md:order-2 order-1"
                     >
                         <div className="relative">
-                            {/* 3D Phone container */}
                             <div
                                 className="relative z-10"
                                 style={{
@@ -244,7 +235,6 @@ const AppPreview: React.FC = () => {
                                     transformStyle: 'preserve-3d',
                                 }}
                             >
-                                {/* Coming Soon Tag */}
                                 <div
                                     className="absolute -top-6 -right-6 z-30 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-4 py-2 rounded-full shadow-lg font-bold text-sm flex items-center gap-1 whitespace-nowrap border-2 border-white"
 
@@ -256,9 +246,7 @@ const AppPreview: React.FC = () => {
                                 <div
                                     className="relative z-20 w-72 ios-mockup"
                                 >
-                                    {/* Phone frame */}
                                     <div className="relative">
-                                        {/* Phone hardware frame */}
                                         <div className="w-full h-full absolute top-0 left-0 z-30 pointer-events-none">
                                             <img
                                                 src="/images/phone-frame.png"
@@ -267,9 +255,7 @@ const AppPreview: React.FC = () => {
                                             />
                                         </div>
 
-                                        {/* Screen container */}
                                         <div className="rounded-[38px] overflow-hidden bg-black border-8 border-[#2B2B2A] relative aspect-[9/19] shadow-2xl">
-                                            {/* App screens carousel */}
                                             <div className="relative w-full h-full overflow-hidden bg-gradient-to-b from-[#1c1c1e] to-[#2c1e26]">
                                                 <AnimatePresence mode="wait">
                                                     <div
@@ -284,9 +270,7 @@ const AppPreview: React.FC = () => {
                                                     </div>
                                                 </AnimatePresence>
 
-                                                {/* App UI overlay elements */}
                                                 <div className="absolute inset-0 pointer-events-none">
-                                                    {/* Status bar */}
                                                     <div className="h-10 w-full px-5 flex justify-between items-center bg-gradient-to-b from-black/30 to-transparent">
                                                         <div className="text-white text-xs">9:41 AM</div>
                                                         <div className="flex items-center gap-1">
@@ -295,7 +279,6 @@ const AppPreview: React.FC = () => {
                                                         </div>
                                                     </div>
 
-                                                    {/* App screen indicator dots */}
                                                     <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-1">
                                                         {appScreens.map((_, index) => (
                                                             <div
@@ -310,7 +293,6 @@ const AppPreview: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Notification bubbles around the phone */}
                                     <div
                                         className="absolute -top-4 -right-3 z-40 bg-white rounded-full p-2 shadow-lg border border-gray-200"
                                     >
@@ -336,14 +318,12 @@ const AppPreview: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Glow effect */}
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-to-r from-[#FF6B81]/20 to-[#A8E0D7]/20 blur-3xl -z-10 opacity-70"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Bottom decorative ellipse */}
             <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#F0F4FF] to-transparent -z-10"></div>
         </section>
     );

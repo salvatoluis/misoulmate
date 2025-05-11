@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Heart, Send, ChevronUp, Mail, Check, Info } from 'lucide-react';
+import { Send, ChevronUp, Mail, Check, Info } from 'lucide-react';
 
 interface FooterLink {
     id: string;
@@ -149,12 +149,10 @@ const Footer: React.FC = () => {
                 </div>
 
                 <div className="container mx-auto px-6">
-                    {/* Main footer grid */}
                     <div
                         className={`grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 lg:gap-12 mb-12 transition-opacity duration-1000 ${isInView ? 'opacity-100' : 'opacity-0'
                             }`}
                     >
-                        {/* Logo and newsletter column */}
                         <div
                             className={`md:col-span-4 lg:col-span-3 transition-all duration-500 ${isInView ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
                                 }`}
@@ -179,7 +177,6 @@ const Footer: React.FC = () => {
                                 Finding love in the digital age, made simple.
                             </p>
 
-                            {/* Newsletter form */}
                             <div className="mb-8">
                                 <h3 className="text-white text-md font-semibold mb-3">Get Dating Tips & Updates</h3>
                                 {isSuccess ? (
