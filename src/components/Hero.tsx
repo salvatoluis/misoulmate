@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { ArrowRight, ChevronDown, Heart, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles, Bookmark, BellRing } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Hero: React.FC = () => {
@@ -73,16 +73,17 @@ const Hero: React.FC = () => {
         };
     }, [x, y]);
 
-    const headingText = "Find Your Perfect Match";
+    const headingText = "Find Your Lifelong Partner";
     const headingWords = headingText.split(' ');
 
-    const FloatingHearts = () => {
-        const hearts = Array.from({ length: 15 }, (_, i) => {
-            const size = Math.random() * 20 + 10;
-            const duration = Math.random() * 10 + 15;
+    // Replaced the floating hearts with subtle floating elements
+    const FloatingElements = () => {
+        const elements = Array.from({ length: 10 }, (_, i) => {
+            const size = Math.random() * 15 + 8;
+            const duration = Math.random() * 12 + 18;
             const delay = Math.random() * 5;
             const left = Math.random() * 100;
-            const opacity = Math.random() * 0.6 + 0.1;
+            const opacity = Math.random() * 0.3 + 0.1;
 
             return (
                 <motion.div
@@ -95,8 +96,8 @@ const Hero: React.FC = () => {
                     initial={{ y: '100vh', scale: 0 }}
                     animate={{
                         y: '-100vh',
-                        scale: [0, 1, 0.8, 1.2, 0],
-                        rotate: [0, 10, -10, 15, -15, 0],
+                        scale: [0, 1, 0.8, 1, 0],
+                        rotate: [0, 5, -5, 8, -8, 0],
                     }}
                     transition={{
                         duration: duration,
@@ -105,27 +106,33 @@ const Hero: React.FC = () => {
                         ease: "linear"
                     }}
                 >
-                    <Heart size={size} className="text-[#FF6B81]/40" fill="#FF6B81" />
+                    {i % 3 === 0 ? (
+                        <BellRing size={size} className="text-gold/60" />
+                    ) : i % 3 === 1 ? (
+                        <Bookmark size={size} className="text-sage/60" />
+                    ) : (
+                        <div className="w-2 h-2 rounded-full bg-cream/40"></div>
+                    )}
                 </motion.div>
             );
         });
 
-        return <>{hearts}</>;
+        return <>{elements}</>;
     };
 
     return (
         <section
             ref={heroRef}
-            className="relative min-h-screen flex items-center justify-center overflow-hidden py-20"
+            className="relative bg-black min-h-screen flex items-center justify-center overflow-hidden py-20"
             style={{ perspective: '1000px' }}
         >
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#2c1e26] to-[#1c1c1e] z-0" />
+                <div className="absolute inset-0 bg-gradient-to-b from-navy via-slate to-navy z-0" />
 
                 <motion.div
                     className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
                     style={{
-                        background: 'radial-gradient(circle, rgba(255,107,129,0.8) 0%, rgba(255,107,129,0) 70%)',
+                        background: 'radial-gradient(circle, rgba(43,108,176,0.8) 0%, rgba(43,108,176,0) 70%)',
                         x: springX,
                         y: springY
                     }}
@@ -134,7 +141,7 @@ const Hero: React.FC = () => {
                 <motion.div
                     className="absolute -bottom-[30%] -right-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
                     style={{
-                        background: 'radial-gradient(circle, rgba(168,224,215,0.8) 0%, rgba(168,224,215,0) 70%)',
+                        background: 'radial-gradient(circle, rgba(124,157,150,0.8) 0%, rgba(124,157,150,0) 70%)',
                         x: springX,
                         y: springY,
                         scale: 1.2
@@ -152,7 +159,7 @@ const Hero: React.FC = () => {
                 <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5 z-1"></div>
 
                 <div className="absolute inset-0 overflow-hidden z-1">
-                    <FloatingHearts />
+                    <FloatingElements />
                 </div>
             </div>
 
@@ -167,7 +174,7 @@ const Hero: React.FC = () => {
                         initial="hidden"
                         animate={wordControls}
                     >
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFE0E5] to-white">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-cream to-white">
                             {headingWords.map((word, i) => (
                                 <motion.span
                                     key={i}
@@ -196,28 +203,28 @@ const Hero: React.FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 1.2, duration: 0.5 }}
                     >
-                        <Sparkles size={28} className="text-[#FFE066]" />
+                        <Sparkles size={28} className="text-gold" />
                     </motion.div>
 
                     <motion.p
-                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-black/10 p-4 rounded-xl border border-white/10"
+                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-navy/30 p-4 rounded-xl border border-white/10"
                         custom={1}
                         initial={{ opacity: 0, y: 30 }}
                         animate={controls}
                     >
-                        Join thousands of singles who have found meaningful connections.
-                        Our intelligent matching system helps you find the one.
+                        Begin your journey to a meaningful marriage with our thoughtful matchmaking service.
+                        We connect compatible individuals seeking lifelong commitment based on shared values.
                     </motion.p>
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
+                            className="relative overflow-hidden bg-gradient-to-r from-azure to-navy text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
                             custom={2}
                             initial={{ opacity: 0, y: 30 }}
                             animate={controls}
                             whileHover={{
                                 scale: 1.03,
-                                boxShadow: '0 10px 25px -5px rgba(255, 107, 129, 0.4)'
+                                boxShadow: '0 10px 25px -5px rgba(43, 108, 176, 0.4)'
                             }}
                             whileTap={{ scale: 0.97 }}
                             onClick={() => navigate('/register')}
@@ -226,7 +233,7 @@ const Hero: React.FC = () => {
                                 Get Started <ArrowRight size={18} />
                             </span>
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-[#D86D72] to-[#FF6B81]"
+                                className="absolute inset-0 bg-gradient-to-r from-navy to-azure"
                                 initial={{ x: '-100%' }}
                                 whileHover={{ x: 0 }}
                                 transition={{ duration: 0.4 }}
@@ -244,7 +251,7 @@ const Hero: React.FC = () => {
                             }}
                             whileTap={{ scale: 0.97 }}
                         >
-                            Learn More
+                            Our Approach
                         </motion.button>
                     </div>
 
@@ -261,9 +268,9 @@ const Hero: React.FC = () => {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1.6, duration: 0.5 }}
                             >
-                                1M+
+                                500K+
                             </motion.span>
-                            <span className="text-white/60 text-sm">Active Users</span>
+                            <span className="text-white/60 text-sm">Committed Members</span>
                         </div>
 
                         <div className="text-center">
@@ -273,9 +280,9 @@ const Hero: React.FC = () => {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1.7, duration: 0.5 }}
                             >
-                                85%
+                                92%
                             </motion.span>
-                            <span className="text-white/60 text-sm">Match Rate</span>
+                            <span className="text-white/60 text-sm">Compatibility Rate</span>
                         </div>
 
                         <div className="text-center">
@@ -285,9 +292,9 @@ const Hero: React.FC = () => {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1.8, duration: 0.5 }}
                             >
-                                10K+
+                                5K+
                             </motion.span>
-                            <span className="text-white/60 text-sm">Success Stories</span>
+                            <span className="text-white/60 text-sm">Marriages</span>
                         </div>
                     </motion.div>
                 </div>
@@ -311,11 +318,11 @@ const Hero: React.FC = () => {
                             }}
                         >
                             <div className="w-72 h-auto relative">
-                                <div className="absolute inset-0 bg-gradient-to-tr from-[#FF6B81]/20 to-[#A8E0D7]/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
+                                <div className="absolute inset-0 bg-gradient-to-tr from-azure/20 to-sage/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
                                 <img
-                                    src="https://images.unsplash.com/photo-1516980907201-943c13a8d03c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGxvdmV8ZW58MHx8MHx8fDA%3D"
-                                    alt="miSoulMate App"
-                                    className="w-full h-auto rounded-[32px] border-[8px] border-[#2B2B2A] shadow-2xl relative z-10"
+                                    src="https://images.unsplash.com/photo-1511405889574-b01de1da5441?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
+                                    alt="Lifetime Partner App"
+                                    className="w-full h-auto rounded-[32px] border-[8px] border-charcoal shadow-2xl relative z-10"
                                 />
 
                                 <motion.div
@@ -331,7 +338,7 @@ const Hero: React.FC = () => {
                                     }}
                                     style={{ transform: 'translateZ(60px)' }}
                                 >
-                                    <Heart size={24} className="text-[#FF6B81]" fill="#FF6B81" />
+                                    <BellRing size={24} className="text-gold" />
                                 </motion.div>
 
                                 <motion.div
@@ -348,13 +355,13 @@ const Hero: React.FC = () => {
                                     }}
                                     style={{ transform: 'translateZ(50px)' }}
                                 >
-                                    <span className="text-white text-sm">98% Match!</span>
+                                    <span className="text-white text-sm">97% Compatible</span>
                                 </motion.div>
                             </div>
                         </motion.div>
 
                         <div
-                            className="absolute inset-0 bg-gradient-to-r from-[#FF6B81]/40 to-[#A8E0D7]/40 rounded-full blur-[80px] -z-10 scale-75"
+                            className="absolute inset-0 bg-gradient-to-r from-azure/40 to-sage/40 rounded-full blur-[80px] -z-10 scale-75"
                             style={{ transform: 'translateZ(-20px)' }}
                         ></div>
                     </div>

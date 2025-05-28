@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
                         <Link
                             key={link.id}
                             to={link.href}
-                            className={`text-sm font-medium hover:text-[#FF6B81] transition-colors duration-200 relative group ${scrolled ? 'text-[#2B2B2A]' : 'text-white'
+                            className={`text-sm font-medium hover:text-coral transition-colors duration-200 relative group ${scrolled ? 'text-[#2B2B2A]' : 'text-white'
                                 }`}
                             style={{
                                 animation: `fadeInDown 0.5s ease forwards`,
@@ -127,18 +127,18 @@ const Navbar: React.FC = () => {
                                 {link.icon && <span className="mr-1.5">{link.icon}</span>}
                                 {link.label}
                                 {link.isNew && (
-                                    <span className="ml-1.5 bg-[#FF6B81] text-white text-xs px-1.5 py-0.5 rounded-full">
+                                    <span className="ml-1.5 bg-coral text-white text-xs px-1.5 py-0.5 rounded-full">
                                         New
                                     </span>
                                 )}
                             </div>
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF6B81] group-hover:w-full transition-all duration-300" />
+                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-coral group-hover:w-full transition-all duration-300" />
                         </Link>
                     ))}
 
                     {isAuthenticated ? (
                         <button
-                            className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                            className="bg-gradient-to-r from-coral to-mint text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
                             style={{ animation: 'fadeInUp 0.6s ease forwards' }}
                             onClick={toggleAuth}
                         >
@@ -157,7 +157,7 @@ const Navbar: React.FC = () => {
                                 Sign In
                             </button>
                             <button
-                                className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                                className="bg-gradient-to-r from-coral to-mint text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
                                 style={{ animation: 'fadeInUp 0.6s ease forwards' }}
                                 onClick={() => navigate('/register')}
                             >
@@ -173,7 +173,7 @@ const Navbar: React.FC = () => {
                     aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                 >
                     {mobileMenuOpen ? (
-                        <X size={24} className="text-[#FF6B81]" />
+                        <X size={24} className="text-coral" />
                     ) : (
                         <Menu size={24} className={scrolled ? "text-[#2B2B2A]" : "text-white"} />
                     )}
@@ -191,7 +191,7 @@ const Navbar: React.FC = () => {
                             <Link
                                 key={link.id}
                                 to={link.href}
-                                className="text-lg font-medium text-[#2B2B2A] hover:text-[#FF6B81] transition-colors duration-200 flex items-center p-2 rounded-lg hover:bg-gray-100/50"
+                                className="text-lg font-medium text-[#2B2B2A] hover:text-coral transition-colors duration-200 flex items-center p-2 rounded-lg hover:bg-gray-100/50"
                                 style={{
                                     animation: 'slideInLeft 0.3s ease forwards',
                                     animationDelay: `${0.05 * index}s`,
@@ -200,11 +200,11 @@ const Navbar: React.FC = () => {
                                 onClick={toggleMobileMenu}
                             >
                                 <span className="inline-block mr-3 w-8">
-                                    {link.icon || <div className="w-2 h-2 rounded-full bg-[#FF6B81]"></div>}
+                                    {link.icon || <div className="w-2 h-2 rounded-full bg-coral"></div>}
                                 </span>
                                 <span>{link.label}</span>
                                 {link.isNew && (
-                                    <span className="ml-auto bg-[#FF6B81] text-white text-xs px-2 py-0.5 rounded-full">
+                                    <span className="ml-auto bg-coral text-white text-xs px-2 py-0.5 rounded-full">
                                         New
                                     </span>
                                 )}
@@ -214,7 +214,7 @@ const Navbar: React.FC = () => {
                         <div className="border-t border-gray-200 my-2 pt-4">
                             {isAuthenticated ? (
                                 <button
-                                    className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
+                                    className="bg-gradient-to-r from-coral to-mint text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
                                     style={{
                                         animation: 'slideInBottom 0.3s ease forwards',
                                         animationDelay: '0.3s',
@@ -230,7 +230,7 @@ const Navbar: React.FC = () => {
                             ) : (
                                 <div className="flex flex-col space-y-3">
                                     <button
-                                        className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
+                                        className="bg-gradient-to-r from-coral to-mint text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
                                         style={{
                                             animation: 'slideInBottom 0.3s ease forwards',
                                             animationDelay: '0.3s',
@@ -271,7 +271,7 @@ const Navbar: React.FC = () => {
                         >
                             <span>Demo toggle (for development):</span>
                             <button
-                                className="text-[#FF6B81] hover:underline flex items-center"
+                                className="text-coral hover:underline flex items-center"
                                 onClick={toggleAuth}
                             >
                                 Switch to {isAuthenticated ? 'Public View' : 'Authenticated View'}
