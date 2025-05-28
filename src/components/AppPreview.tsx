@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useInView, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { useInView, AnimatePresence, useMotionValue } from 'framer-motion';
 import { Download, Heart, Bell, Check, Mail } from 'lucide-react';
 
 const AppPreview: React.FC = () => {
@@ -171,7 +171,6 @@ const AppPreview: React.FC = () => {
                             </AnimatePresence>
                         </div>
 
-                        {/* App store badges - disabled but visually present */}
                         <div
                             className="flex flex-col sm:flex-row gap-4 opacity-50"
                         >

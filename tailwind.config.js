@@ -8,16 +8,14 @@ export default {
         serif: ["Playfair Display", "serif"],
       },
       colors: {
-        coral: "#FF6B81",
-        rose: "#D86D72",
-        mint: "#A8E0D7",
+        coral: "#1A365D",
+        rose: "#2B6CB0",
+        mint: "#4A5568",
         cream: "#FFF9F0",
         charcoal: "#2B2B2A",
-        sunny: "#FFE066",
+        sunny: "#7C9D96",
       },
     },
   },
   plugins: [],
 };
-
-// postcss.config.js
