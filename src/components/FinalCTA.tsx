@@ -1,6 +1,5 @@
-// src/components/FinalCTA.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Heart, ArrowRight, Check, Mail, UserPlus, X } from 'lucide-react';
+import { ArrowRight, Check, Mail, UserPlus, X, Heart } from 'lucide-react';
 
 const FinalCTA: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +11,7 @@ const FinalCTA: React.FC = () => {
 
     const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 });
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const handleMouseMove = (e: any) => {
         const rect = sectionRef.current ? sectionRef.current.getBoundingClientRect() : null;
         if (rect) {
             const centerX = rect.left + rect.width / 2;
@@ -34,7 +33,7 @@ const FinalCTA: React.FC = () => {
         setParallaxOffset({ x: 0, y: 0 });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         if (!email) return;
 
@@ -85,7 +84,7 @@ const FinalCTA: React.FC = () => {
             onMouseLeave={handleMouseLeave}
         >
             <div
-                className="absolute inset-0 bg-gradient-to-br from-[#FF6B81] via-[#D86D72] to-[#A8E0D7] z-0 transition-transform duration-300"
+                className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-blue-600 to-teal-500 z-0 transition-transform duration-300"
                 style={{
                     backgroundPosition: `${mousePosition.x * 100}% ${mousePosition.y * 100}%`,
                     transform: `translate(${parallaxOffset.x}px, ${parallaxOffset.y}px)`,
@@ -169,7 +168,7 @@ const FinalCTA: React.FC = () => {
                             className={`text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/90 transition-transform duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}
                             style={{ fontFamily: "'Playfair Display', serif", transitionDelay: '300ms' }}
                         >
-                            Ready to Find Your Match?
+                            Begin Your Journey Today
                         </h2>
 
                         <div
@@ -181,7 +180,7 @@ const FinalCTA: React.FC = () => {
                             className={`text-xl mb-10 max-w-2xl mx-auto text-white/90 transition-transform duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}
                             style={{ transitionDelay: '400ms' }}
                         >
-                            Join thousands of singles already on miSoulMate. Your perfect match could be just a click away.
+                            Join thousands of committed individuals who have found meaningful, lasting relationships through our thoughtful matchmaking approach.
                         </p>
 
                         <div
@@ -192,7 +191,7 @@ const FinalCTA: React.FC = () => {
                                 <div
                                     className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/30 text-white flex items-center transition-all duration-300"
                                 >
-                                    <div className="bg-green-500 rounded-full p-2 mr-4">
+                                    <div className="bg-emerald-500 rounded-full p-2 mr-4">
                                         <Check size={24} className="text-white" />
                                     </div>
                                     <div className="text-left">
@@ -249,7 +248,12 @@ const FinalCTA: React.FC = () => {
                                 className={`flex flex-wrap justify-center gap-2 mt-8 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
                                 style={{ transitionDelay: '700ms' }}
                             >
-                                {['Instant Access', 'Free to Join', 'Cancel Anytime'].map((feature, i) => (
+                                {[
+                                    'Free Consultation',
+                                    'Personalized Matching',
+                                    'Privacy Protected',
+                                    'Verified Profiles'
+                                ].map((feature, i) => (
                                     <div
                                         key={i}
                                         className={`bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm text-white/80 border border-white/10 flex items-center hover:scale-105 hover:bg-white/15 transition-all duration-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
@@ -269,7 +273,7 @@ const FinalCTA: React.FC = () => {
                         style={{ transitionDelay: '900ms' }}
                     >
                         <p className="text-white/70 text-sm">
-                            Trusted by over 1M+ users worldwide • SSL Secured • Privacy Protected
+                            Trusted by over 500,000+ members worldwide • ISO 27001 Certified • GDPR Compliant
                         </p>
                     </div>
                 </div>

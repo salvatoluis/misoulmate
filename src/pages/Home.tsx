@@ -21,7 +21,6 @@ const HomePage: React.FC = () => {
             <FinalCTA />
             <Footer />
             <AIAssistantModal />
-
         </div>
     );
 };

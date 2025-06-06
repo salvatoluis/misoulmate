@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
-import { useInView, AnimatePresence, useMotionValue } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useMotionValue } from 'framer-motion';
 import { Download, Heart, Bell, Check, Mail } from 'lucide-react';
 
 const AppPreview: React.FC = () => {
-    const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+    const sectionRef = useRef<HTMLElement | null>(null);
+    const [isInView, setIsInView] = useState(false);
     const [activeScreen, setActiveScreen] = useState(0);
     const [email, setEmail] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,8 +34,8 @@ const AppPreview: React.FC = () => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        const rect = sectionRef.current ? (sectionRef.current as HTMLElement).getBoundingClientRect() : null;
+    const handleMouseMove = (e: any) => {
+        const rect = sectionRef.current ? sectionRef.current.getBoundingClientRect() : null;
         if (rect) {
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
@@ -53,7 +53,28 @@ const AppPreview: React.FC = () => {
         y.set(0);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.2 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         if (!isInView) return;
 
         const interval = setInterval(() => {
@@ -63,10 +84,23 @@ const AppPreview: React.FC = () => {
         return () => clearInterval(interval);
     }, [isInView, appScreens.length]);
 
+    const handleSubscribe = () => {
+        if (!email) return;
+
+        setIsSubmitting(true);
+
+        // Simulate API call
+        setTimeout(() => {
+            setIsSubmitting(false);
+            setIsSubscribed(true);
+            setEmail('');
+        }, 1500);
+    };
+
     return (
         <section
             id="app-preview"
-            className="py-24 bg-gradient-to-b from-white to-[#F5F7FF] relative overflow-hidden"
+            className="py-24 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden"
             ref={sectionRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -74,12 +108,12 @@ const AppPreview: React.FC = () => {
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div
                     className="absolute top-0 right-0 w-[50%] h-[50%] rounded-full opacity-10 blur-[120px]"
-                    style={{ background: 'radial-gradient(circle, rgba(255,107,129,0.4) 0%, rgba(255,107,129,0) 70%)' }}
+                    style={{ background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, rgba(79,70,229,0) 70%)' }}
                 />
 
                 <div
                     className="absolute bottom-0 left-0 w-[60%] h-[60%] rounded-full opacity-10 blur-[120px]"
-                    style={{ background: 'radial-gradient(circle, rgba(168,224,215,0.4) 0%, rgba(168,224,215,0) 70%)' }}
+                    style={{ background: 'radial-gradient(circle, rgba(20,184,166,0.4) 0%, rgba(20,184,166,0) 70%)' }}
                 />
 
                 <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5"></div>
@@ -87,97 +121,79 @@ const AppPreview: React.FC = () => {
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-                    <div
-                        className="order-2 md:order-1"
-                    >
-                        <div
-                            className="inline-flex items-center bg-gradient-to-r from-[#FF6B81]/10 to-[#A8E0D7]/10 backdrop-blur-sm px-4 py-2 rounded-full border border-[#FF6B81]/20 mb-6"
-                        >
-                            <Bell size={16} className="text-[#FF6B81] mr-2" />
-                            <span className="text-sm font-medium text-[#2B2B2A]">Coming Soon</span>
+                    <div className="order-2 md:order-1">
+                        <div className="inline-flex items-center bg-gradient-to-r from-indigo-600/10 to-teal-500/10 backdrop-blur-sm px-4 py-2 rounded-full border border-indigo-600/20 mb-6">
+                            <Bell size={16} className="text-indigo-600 mr-2" />
+                            <span className="text-sm font-medium text-slate-700">Coming Soon</span>
                         </div>
 
-                        <h2
-                            className="text-4xl md:text-5xl font-bold mb-6 text-[#2B2B2A]"
-                        >
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-800">
                             Take miSoulMate Everywhere
                         </h2>
 
-                        <p
-                            className="text-lg text-gray-600 mb-8"
-                        >
+                        <p className="text-lg text-slate-600 mb-8">
                             Our mobile app is almost ready! Get notifications, send messages, and never miss an opportunity to connect with your matches wherever you go.
                         </p>
 
-                        <div
-                            className="space-y-4 mb-8"
-                        >
+                        <div className="space-y-4 mb-8">
                             {appScreens.map((screen, index) => (
                                 <div
                                     key={screen.id}
-                                    className={`flex items-start p-3 rounded-xl transition-colors duration-300 ${activeScreen === index ? 'bg-gradient-to-r from-[#FF6B81]/5 to-transparent' : 'hover:bg-gray-50'}`}
+                                    className={`flex items-start p-3 rounded-xl transition-colors duration-300 ${activeScreen === index ? 'bg-gradient-to-r from-indigo-600/5 to-transparent' : 'hover:bg-slate-50'}`}
                                     onMouseEnter={() => setActiveScreen(index)}
                                 >
-                                    <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${index === 0 ? 'from-[#FF6B81] to-[#FF8A9A]' : index === 1 ? 'from-[#A8E0D7] to-[#7DCCBF]' : 'from-[#FFE066] to-[#FFCB45]'} flex items-center justify-center shrink-0 mr-4`}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mr-4 ${index === 0 ? 'bg-gradient-to-br from-indigo-600 to-indigo-500' :
+                                            index === 1 ? 'bg-gradient-to-br from-teal-600 to-teal-500' :
+                                                'bg-gradient-to-br from-amber-500 to-amber-400'
+                                        }`}>
                                         <span className="text-white font-medium">{screen.id}</span>
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-lg text-[#2B2B2A]">{screen.title}</h3>
-                                        <p className="text-gray-600 text-sm">{screen.description}</p>
+                                        <h3 className="font-bold text-lg text-slate-800">{screen.title}</h3>
+                                        <p className="text-slate-600 text-sm">{screen.description}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
-                        <div
-                            className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-white/80 shadow-lg mb-8"
-                        >
-                            <h3 className="text-lg font-bold mb-3 text-[#2B2B2A]">Join the Waitlist</h3>
-                            <p className="text-gray-600 text-sm mb-4">
+                        <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-white/80 shadow-lg mb-8">
+                            <h3 className="text-lg font-bold mb-3 text-slate-800">Join the Waitlist</h3>
+                            <p className="text-slate-600 text-sm mb-4">
                                 Be the first to know when the app launches and get priority access plus exclusive perks.
                             </p>
 
-                            <AnimatePresence mode="wait">
-                                {isSubscribed ? (
-                                    <div
-                                        className="flex items-center text-[#A8E0D7] font-medium"
-                                    >
-                                        <Check size={20} className="mr-2" />
-                                        <span>Thanks! You're on the waitlist!</span>
+                            {isSubscribed ? (
+                                <div className="flex items-center text-teal-600 font-medium">
+                                    <Check size={20} className="mr-2" />
+                                    <span>Thanks! You're on the waitlist!</span>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col sm:flex-row gap-2">
+                                    <div className="relative flex-grow">
+                                        <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                                        <input
+                                            type="email"
+                                            placeholder="Your email address"
+                                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-slate-200 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 transition-all duration-300 outline-none"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
                                     </div>
-                                ) : (
-                                    <form
-                                        className="flex gap-2"
+                                    <button
+                                        onClick={handleSubscribe}
+                                        className={`bg-gradient-to-r from-indigo-600 to-indigo-500 text-white px-6 py-3 rounded-xl font-medium shadow-md whitespace-nowrap hover:shadow-lg hover:scale-[1.02] transition-all duration-200 ${isSubmitting ? 'opacity-70' : ''}`}
+                                        disabled={isSubmitting}
                                     >
-                                        <div className="relative flex-grow">
-                                            <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                            <input
-                                                type="email"
-                                                placeholder="Your email address"
-                                                className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-gray-200 focus:border-[#FF6B81] focus:ring-2 focus:ring-[#FF6B81]/20 transition-all duration-300 outline-none"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                required
-                                            />
-                                        </div>
-                                        <button
-                                            type="submit"
-                                            className={`bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-6 py-3 rounded-xl font-medium shadow-md whitespace-nowrap ${isSubmitting ? 'opacity-70' : ''}`}
-                                        >
-                                            {isSubmitting ? 'Joining...' : 'Join Waitlist'}
-                                        </button>
-                                    </form>
-                                )}
-                            </AnimatePresence>
+                                        {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
-                        <div
-                            className="flex flex-col sm:flex-row gap-4 opacity-50"
-                        >
+                        <div className="flex flex-col sm:flex-row gap-4 opacity-50">
                             <div className="group relative">
-                                <button
-                                    className="bg-[#2B2B2A] text-white/80 px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 cursor-not-allowed"
-                                >
+                                <button className="bg-slate-800 text-white/80 px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 cursor-not-allowed">
                                     <Download size={20} />
                                     <span>App Store</span>
                                 </button>
@@ -187,9 +203,7 @@ const AppPreview: React.FC = () => {
                             </div>
 
                             <div className="group relative">
-                                <button
-                                    className="bg-[#2B2B2A] text-white/80 px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 cursor-not-allowed"
-                                >
+                                <button className="bg-slate-800 text-white/80 px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 cursor-not-allowed">
                                     <Download size={20} />
                                     <span>Google Play</span>
                                 </button>
@@ -200,9 +214,7 @@ const AppPreview: React.FC = () => {
                         </div>
                     </div>
 
-                    <div
-                        className="flex justify-center md:order-2 order-1"
-                    >
+                    <div className="flex justify-center md:order-2 order-1">
                         <div className="relative">
                             <div
                                 className="relative z-10"
@@ -211,17 +223,12 @@ const AppPreview: React.FC = () => {
                                     transformStyle: 'preserve-3d',
                                 }}
                             >
-                                <div
-                                    className="absolute -top-6 -right-6 z-30 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-4 py-2 rounded-full shadow-lg font-bold text-sm flex items-center gap-1 whitespace-nowrap border-2 border-white"
-
-                                >
+                                <div className="absolute -top-6 -right-6 z-30 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white px-4 py-2 rounded-full shadow-lg font-bold text-sm flex items-center gap-1 whitespace-nowrap border-2 border-white">
                                     <Bell size={14} className="animate-pulse" />
                                     Coming Soon
                                 </div>
 
-                                <div
-                                    className="relative z-20 w-72 ios-mockup"
-                                >
+                                <div className="relative z-20 w-72 ios-mockup">
                                     <div className="relative">
                                         <div className="w-full h-full absolute top-0 left-0 z-30 pointer-events-none">
                                             <img
@@ -231,20 +238,22 @@ const AppPreview: React.FC = () => {
                                             />
                                         </div>
 
-                                        <div className="rounded-[38px] overflow-hidden bg-black border-8 border-[#2B2B2A] relative aspect-[9/19] shadow-2xl">
-                                            <div className="relative w-full h-full overflow-hidden bg-gradient-to-b from-[#1c1c1e] to-[#2c1e26]">
-                                                <AnimatePresence mode="wait">
-                                                    <div
-                                                        key={activeScreen}
-                                                        className="absolute inset-0"
-                                                    >
-                                                        <img
-                                                            src={appScreens[activeScreen].image || `/images/app-screen-${activeScreen + 1}.jpg`}
-                                                            alt={appScreens[activeScreen].title}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                    </div>
-                                                </AnimatePresence>
+                                        <div className="rounded-[38px] overflow-hidden bg-black border-8 border-slate-800 relative aspect-[9/19] shadow-2xl">
+                                            <div className="relative w-full h-full overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800">
+                                                <motion.div
+                                                    key={activeScreen}
+                                                    className="absolute inset-0"
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                    transition={{ duration: 0.5 }}
+                                                >
+                                                    <img
+                                                        src={appScreens[activeScreen].image || `/images/app-screen-${activeScreen + 1}.jpg`}
+                                                        alt={appScreens[activeScreen].title}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </motion.div>
 
                                                 <div className="absolute inset-0 pointer-events-none">
                                                     <div className="h-10 w-full px-5 flex justify-between items-center bg-gradient-to-b from-black/30 to-transparent">
@@ -260,7 +269,6 @@ const AppPreview: React.FC = () => {
                                                             <div
                                                                 key={index}
                                                                 className={`h-1.5 rounded-full ${index === activeScreen ? 'w-6 bg-white' : 'w-1.5 bg-white/40'}`}
-
                                                             />
                                                         ))}
                                                     </div>
@@ -269,38 +277,31 @@ const AppPreview: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <div
-                                        className="absolute -top-4 -right-3 z-40 bg-white rounded-full p-2 shadow-lg border border-gray-200"
-                                    >
-                                        <Heart size={16} className="text-[#FF6B81]" fill="#FF6B81" />
+                                    <div className="absolute -top-4 -right-3 z-40 bg-white rounded-full p-2 shadow-lg border border-slate-100">
+                                        <Heart size={16} className="text-indigo-600" fill="rgb(79, 70, 229)" />
                                     </div>
 
-                                    <div
-                                        className="absolute top-1/4 -left-6 z-40 bg-gradient-to-r from-[#A8E0D7] to-[#7DCCBF] rounded-lg px-3 py-1.5 shadow-lg text-white text-sm"
-                                    >
+                                    <div className="absolute top-1/4 -left-6 z-40 bg-gradient-to-r from-teal-600 to-teal-500 rounded-lg px-3 py-1.5 shadow-lg text-white text-sm">
                                         98% Match!
                                     </div>
 
-                                    <div
-                                        className="absolute bottom-1/4 -right-6 z-40 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border border-gray-100 flex items-center"
-
-                                    >
-                                        <div className="w-6 h-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <div className="absolute bottom-1/4 -right-6 z-40 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border border-slate-100 flex items-center">
+                                        <div className="w-6 h-6 rounded-full bg-slate-200 mr-2"></div>
                                         <div className="text-xs">
                                             <div className="font-bold">New Message</div>
-                                            <div className="text-gray-500">Hey! How are...</div>
+                                            <div className="text-slate-500">Hey! How are...</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-to-r from-[#FF6B81]/20 to-[#A8E0D7]/20 blur-3xl -z-10 opacity-70"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-to-r from-indigo-600/20 to-teal-500/20 blur-3xl -z-10 opacity-70"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#F0F4FF] to-transparent -z-10"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent -z-10"></div>
         </section>
     );
 };

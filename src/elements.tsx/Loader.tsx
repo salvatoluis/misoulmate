@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react';
 
-interface LoaderProps {
+type LoaderProps = {
     onFinished: () => void;
     duration?: number;
-}
+};
 
-const Loader: React.FC<LoaderProps> = ({ onFinished, duration = 3000 }) => {
+const Loader = ({ onFinished, duration = 3000 }: LoaderProps) => {
     const [fadeOut, setFadeOut] = useState(false);
     const [progress, setProgress] = useState(0);
 
@@ -39,7 +39,7 @@ const Loader: React.FC<LoaderProps> = ({ onFinished, duration = 3000 }) => {
             className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'
                 }`}
         >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B81] via-[#E75A70] to-[#D86D72] overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-blue-600 to-teal-500 overflow-hidden">
                 <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IGlkPSJwYXR0ZXJuLWJnIiB3aWR0aD0iNDAwJSIgaGVpZ2h0PSI0MDAlIiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDMpIj48L3JlY3Q+PHBhdGggZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA3KSIgZD0iTTAgMGg0MHY0MEgweiI+PC9wYXRoPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgaGVpZ2h0PSIxMDAlIiB3aWR0aD0iMTAwJSI+PC9yZWN0Pjwvc3ZnPg==')]"></div>
 
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-white/10 rounded-full blur-[80px] animate-glow-slow"></div>

@@ -1,12 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, ChevronDown, Sparkles, Bookmark, BellRing } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
-const Hero: React.FC = () => {
+const Hero = () => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const heroRef = useRef<HTMLDivElement>(null);
-    const navigate = useNavigate();
+    const heroRef = useRef(null);
 
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -48,7 +46,7 @@ const Hero: React.FC = () => {
     }, [controls, wordControls]);
 
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
+        const handleMouseMove = (e) => {
             if (heroRef.current) {
                 const rect = heroRef.current.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
@@ -76,7 +74,7 @@ const Hero: React.FC = () => {
     const headingText = "Find Your Lifelong Partner";
     const headingWords = headingText.split(' ');
 
-    // Replaced the floating hearts with subtle floating elements
+    // Subtle floating elements
     const FloatingElements = () => {
         const elements = Array.from({ length: 10 }, (_, i) => {
             const size = Math.random() * 15 + 8;
@@ -107,11 +105,11 @@ const Hero: React.FC = () => {
                     }}
                 >
                     {i % 3 === 0 ? (
-                        <BellRing size={size} className="text-gold/60" />
+                        <BellRing size={size} className="text-indigo-600/60" />
                     ) : i % 3 === 1 ? (
-                        <Bookmark size={size} className="text-sage/60" />
+                        <Bookmark size={size} className="text-teal-600/60" />
                     ) : (
-                        <div className="w-2 h-2 rounded-full bg-cream/40"></div>
+                        <div className="w-2 h-2 rounded-full bg-amber-200/40"></div>
                     )}
                 </motion.div>
             );
@@ -123,16 +121,16 @@ const Hero: React.FC = () => {
     return (
         <section
             ref={heroRef}
-            className="relative bg-black min-h-screen flex items-center justify-center overflow-hidden py-20"
+            className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 min-h-screen flex items-center justify-center overflow-hidden py-20"
             style={{ perspective: '1000px' }}
         >
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-navy via-slate to-navy z-0" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 z-0" />
 
                 <motion.div
                     className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
                     style={{
-                        background: 'radial-gradient(circle, rgba(43,108,176,0.8) 0%, rgba(43,108,176,0) 70%)',
+                        background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, rgba(79,70,229,0) 70%)',
                         x: springX,
                         y: springY
                     }}
@@ -141,7 +139,7 @@ const Hero: React.FC = () => {
                 <motion.div
                     className="absolute -bottom-[30%] -right-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
                     style={{
-                        background: 'radial-gradient(circle, rgba(124,157,150,0.8) 0%, rgba(124,157,150,0) 70%)',
+                        background: 'radial-gradient(circle, rgba(20,184,166,0.4) 0%, rgba(20,184,166,0) 70%)',
                         x: springX,
                         y: springY,
                         scale: 1.2
@@ -174,7 +172,7 @@ const Hero: React.FC = () => {
                         initial="hidden"
                         animate={wordControls}
                     >
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-cream to-white">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-50 to-white">
                             {headingWords.map((word, i) => (
                                 <motion.span
                                     key={i}
@@ -203,37 +201,37 @@ const Hero: React.FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 1.2, duration: 0.5 }}
                     >
-                        <Sparkles size={28} className="text-gold" />
+                        <Sparkles size={28} className="text-amber-400" />
                     </motion.div>
 
                     <motion.p
-                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-navy/30 p-4 rounded-xl border border-white/10"
+                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-slate-900/30 p-4 rounded-xl border border-white/10"
                         custom={1}
                         initial={{ opacity: 0, y: 30 }}
                         animate={controls}
                     >
                         Begin your journey to a meaningful marriage with our thoughtful matchmaking service.
-                        We connect compatible individuals seeking lifelong commitment based on shared values.
+                        We connect compatible individuals seeking lifelong commitment based on shared values,
+                        interests, and life goals.
                     </motion.p>
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-azure to-navy text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
+                            className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-indigo-500 text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
                             custom={2}
                             initial={{ opacity: 0, y: 30 }}
                             animate={controls}
                             whileHover={{
                                 scale: 1.03,
-                                boxShadow: '0 10px 25px -5px rgba(43, 108, 176, 0.4)'
+                                boxShadow: '0 10px 25px -5px rgba(79,70,229,0.4)'
                             }}
                             whileTap={{ scale: 0.97 }}
-                            onClick={() => navigate('/register')}
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
                                 Get Started <ArrowRight size={18} />
                             </span>
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-navy to-azure"
+                                className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-indigo-600"
                                 initial={{ x: '-100%' }}
                                 whileHover={{ x: 0 }}
                                 transition={{ duration: 0.4 }}
@@ -318,11 +316,11 @@ const Hero: React.FC = () => {
                             }}
                         >
                             <div className="w-72 h-auto relative">
-                                <div className="absolute inset-0 bg-gradient-to-tr from-azure/20 to-sage/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
+                                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600/20 to-teal-500/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
                                 <img
-                                    src="https://images.unsplash.com/photo-1511405889574-b01de1da5441?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-                                    alt="Lifetime Partner App"
-                                    className="w-full h-auto rounded-[32px] border-[8px] border-charcoal shadow-2xl relative z-10"
+                                    src="https://images.unsplash.com/photo-1526553743273-a3b6defd6281?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
+                                    alt="miSoulMate App"
+                                    className="w-full h-auto rounded-[32px] border-[8px] border-slate-800 shadow-2xl relative z-10"
                                 />
 
                                 <motion.div
@@ -338,7 +336,7 @@ const Hero: React.FC = () => {
                                     }}
                                     style={{ transform: 'translateZ(60px)' }}
                                 >
-                                    <BellRing size={24} className="text-gold" />
+                                    <BellRing size={24} className="text-amber-400" />
                                 </motion.div>
 
                                 <motion.div
@@ -361,7 +359,7 @@ const Hero: React.FC = () => {
                         </motion.div>
 
                         <div
-                            className="absolute inset-0 bg-gradient-to-r from-azure/40 to-sage/40 rounded-full blur-[80px] -z-10 scale-75"
+                            className="absolute inset-0 bg-gradient-to-r from-indigo-600/40 to-teal-500/40 rounded-full blur-[80px] -z-10 scale-75"
                             style={{ transform: 'translateZ(-20px)' }}
                         ></div>
                     </div>

@@ -1,81 +1,92 @@
-// src/components/Features.tsx
 import React, { useRef } from 'react';
-import { motion, useInView, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion';
-import { ShieldCheck, Heart, MessageSquare, Sparkles } from 'lucide-react';
-import { Feature } from '../types';
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
+import { ShieldCheck, Sparkles, Users, Scale, Lock } from 'lucide-react';
 
-const Features: React.FC = () => {
+const Features = () => {
     const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
     const headingRef = useRef(null);
-    const headingInView = useInView(headingRef, { once: true, amount: 0.6 });
 
-    const features: Feature[] = [
+    const features = [
         {
             id: 1,
             title: 'Verified Profiles',
-            description: 'Every profile is verified to ensure you\'re meeting real, authentic people who are looking for genuine connections.',
+            description: 'Every profile undergoes a thorough verification process to ensure you\'re meeting genuine individuals seeking meaningful relationships.',
             icon: < ShieldCheck size={32} />,
-            iconBgColor: 'from-[#FF6B81] to-[#FF8A9A]',
-            iconColor: 'text-white'
+            iconBgColor: 'from-indigo-600 to-indigo-500',
+            iconColor: 'text-white',
+            detailedPoints: [
+                'Multi-factor authentication',
+                'Secure ID verification',
+                'Social profile cross-checking'
+            ]
         },
         {
             id: 2,
-            title: 'Smart Matching',
-            description: 'Our algorithm learns your preferences over time to suggest matches that are more likely to result in meaningful relationships.',
-            icon: <Heart size={32} />,
-            iconBgColor: 'from-[#A8E0D7] to-[#7DCCBF]',
-            iconColor: 'text-white'
+            title: 'Value-Based Matching',
+            description: 'Our proprietary algorithm matches you based on core values, life goals, and personality traits that lead to lasting relationships.',
+            icon: <Scale size={32} />,
+            iconBgColor: 'from-teal-600 to-teal-500',
+            iconColor: 'text-white',
+            detailedPoints: [
+                'Deep personality assessment',
+                'Core values alignment',
+                'Long-term compatibility focus'
+            ]
         },
         {
             id: 3,
-            title: 'Instant Messaging',
-            description: 'Connect instantly with your matches through our secure, feature-rich messaging platform with photo sharing and video calls.',
-            icon: <MessageSquare size={32} />,
-            iconBgColor: 'from-[#FFE066] to-[#FFCB45]',
-            iconColor: 'text-white'
+            title: 'Safe Communication',
+            description: 'Connect through our encrypted platform featuring video calls, messaging, and guided conversation starters for meaningful interactions.',
+            icon: <Lock size={32} />,
+            iconBgColor: 'from-amber-500 to-amber-400',
+            iconColor: 'text-white',
+            detailedPoints: [
+                'End-to-end encryption',
+                'Profile safety features',
+                'Moderated interactions'
+            ]
+        },
+        {
+            id: 4,
+            title: 'Community Events',
+            description: 'Join virtual and in-person events designed to help you connect with compatible matches in natural, pressure-free environments.',
+            icon: <Users size={32} />,
+            iconBgColor: 'from-blue-600 to-blue-500',
+            iconColor: 'text-white',
+            detailedPoints: [
+                'Curated social gatherings',
+                'Interest-based activities',
+                'Relationship workshops'
+            ]
         }
     ];
 
     const headingWords = "Why Choose miSoulMate".split(' ');
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-                delayChildren: 0.3,
-            }
-        }
+    type Feature = {
+        id: number;
+        title: string;
+        description: string;
+        icon: React.ReactNode;
+        iconBgColor: string;
+        iconColor: string;
+        detailedPoints: string[];
     };
 
-    const wordVariants = {
-        hidden: { y: 100, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                duration: 0.6,
-                ease: [0.33, 1, 0.68, 1],
-            }
-        }
-    };
+    interface FeatureCardProps {
+        feature: Feature;
+        index: number;
+    }
 
-    // Card component with 3D hover effect
-    const FeatureCard: React.FC<{ feature: Feature; index: number }> = ({ feature, index }) => {
-        const cardRef = useRef(null);
-        const cardInView = useInView(cardRef, { once: true, amount: 0.2 });
+    const FeatureCard: React.FC<FeatureCardProps> = ({ feature, index }) => {
+        const cardRef = useRef<HTMLDivElement>(null);
 
         // For 3D tilt effect
         const x = useMotionValue(0);
         const y = useMotionValue(0);
 
-        const rotateX = useTransform(y, [-100, 100], [10, -10]);
-        const rotateY = useTransform(x, [-100, 100], [-10, 10]);
-
-        const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-            const card = cardRef.current as HTMLElement | null;
+        const handleMouseMove = (e: any) => {
+            const card = cardRef.current;
             if (card) {
                 const rect = card.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
@@ -106,11 +117,9 @@ const Features: React.FC = () => {
     `;
 
         return (
-            <motion.div
+            <div
                 ref={cardRef}
-                className="relative group rounded-3xl overflow-hidden"
-                initial={{ opacity: 0, y: 50 }}
-                animate={cardInView ? { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 * index } } : {}}
+                className="relative group rounded-3xl overflow-hidden h-full"
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
             >
@@ -124,145 +133,102 @@ const Features: React.FC = () => {
                 ></motion.div>
 
                 {/* Card content */}
-                <motion.div
-                    className="relative p-8 z-10"
-                    style={{
-                        rotateX,
-                        rotateY,
-                        transformStyle: 'preserve-3d',
-                    }}
-                    whileHover={{ scale: 1.02, boxShadow: '0 20px 30px rgba(0, 0, 0, 0.05)' }}
+                <div
+                    className="relative p-8 z-10 h-full flex flex-col"
                 >
                     {/* Icon with 3D transform */}
-                    <motion.div
+                    <div
                         className={`bg-gradient-to-br ${feature.iconBgColor} p-5 rounded-2xl inline-flex mb-6 shadow-md`}
-                        style={{ transform: 'translateZ(20px)' }}
-                        initial={{ scale: 0 }}
-                        animate={cardInView ? {
-                            scale: 1,
-                            transition: {
-                                type: "spring",
-                                stiffness: 200,
-                                damping: 10,
-                                delay: 0.3 + 0.1 * index
-                            }
-                        } : {}}
-                        whileHover={{
-                            rotate: [0, -5, 5, -5, 0],
-                            transition: { duration: 0.5 }
-                        }}
                     >
                         <div className={feature.iconColor}>{feature.icon}</div>
-                    </motion.div>
+                    </div>
 
                     {/* Content with 3D transform */}
-                    <motion.div style={{ transform: 'translateZ(10px)' }} className="text-left">
-                        <h3 className="text-xl font-bold mb-3 text-[#2B2B2A]">{feature.title}</h3>
-                        <p className="text-gray-600">
+                    <div style={{ transform: 'translateZ(10px)' }} className="text-left flex-grow">
+                        <h3 className="text-xl font-bold mb-3 text-slate-800">{feature.title}</h3>
+                        <p className="text-slate-600 mb-6">
                             {feature.description}
                         </p>
-                    </motion.div>
-                </motion.div>
-            </motion.div>
+
+                        {/* Detailed points */}
+                        <ul className="space-y-2 mt-auto">
+                            {feature.detailedPoints.map((point, i) => (
+                                <li key={i} className="flex items-start">
+                                    <div className="mt-1 mr-2 bg-slate-100 rounded-full p-0.5">
+                                        <div className={`w-1.5 h-1.5 rounded-full ${index === 0 ? 'bg-indigo-500' :
+                                            index === 1 ? 'bg-teal-500' :
+                                                index === 2 ? 'bg-amber-500' : 'bg-blue-500'
+                                            }`}></div>
+                                    </div>
+                                    <span className="text-sm text-slate-700">{point}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         );
     };
 
     return (
-        <section id="features" className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-gray-50" ref={sectionRef}>
+        <section id="features" className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-slate-50" ref={sectionRef}>
             {/* Subtle background accents */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 {/* Gradient orb top-right */}
-                <motion.div
+                <div
                     className="absolute top-0 right-0 w-[40%] h-[40%] rounded-full opacity-10 blur-[120px]"
-                    style={{ background: 'radial-gradient(circle, rgba(255,107,129,0.4) 0%, rgba(255,107,129,0) 70%)' }}
-                    animate={{
-                        scale: [1, 1.1, 1],
-                        x: [0, -10, 0],
-                        y: [0, 10, 0],
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                    }}
+                    style={{ background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, rgba(79,70,229,0) 70%)' }}
                 />
 
                 {/* Gradient orb bottom-left */}
-                <motion.div
+                <div
                     className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full opacity-10 blur-[120px]"
-                    style={{ background: 'radial-gradient(circle, rgba(168,224,215,0.4) 0%, rgba(168,224,215,0) 70%)' }}
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        x: [0, 20, 0],
-                        y: [0, -20, 0],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                    }}
+                    style={{ background: 'radial-gradient(circle, rgba(20,184,166,0.4) 0%, rgba(20,184,166,0) 70%)' }}
                 />
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
-                <motion.div
+                <div
                     ref={headingRef}
                     className="text-center mb-20"
-                    initial={{ opacity: 0 }}
-                    animate={headingInView ? { opacity: 1 } : { opacity: 0 }}
                 >
                     {/* Animated heading with word-by-word reveal */}
-                    <motion.div
+                    <div
                         className="overflow-hidden mb-2 inline-flex flex-wrap justify-center gap-2"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate={headingInView ? "show" : "hidden"}
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#2B2B2A] to-[#555]">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600">
                             {headingWords.map((word, i) => (
-                                <motion.span
+                                <span
                                     key={i}
                                     className="inline-block mr-2"
-                                    variants={wordVariants}
-                                    initial="hidden"
-                                    animate={headingInView ? "visible" : "hidden"}
-                                    custom={i}
                                 >
                                     {word}
-                                </motion.span>
+                                </span>
                             ))}
                         </h2>
-                    </motion.div>
+                    </div>
 
                     {/* Underline accent */}
-                    <motion.div
-                        className="h-1 w-24 bg-gradient-to-r from-[#FF6B81] to-[#A8E0D7] rounded-full mx-auto mb-8"
-                        initial={{ width: 0, opacity: 0 }}
-                        animate={headingInView ? { width: 96, opacity: 1 } : { width: 0, opacity: 0 }}
-                        transition={{ delay: 0.6, duration: 0.6 }}
+                    <div
+                        className="h-1 w-24 bg-gradient-to-r from-indigo-600 to-teal-500 rounded-full mx-auto mb-8"
                     />
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={headingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
+                    <div
                         className="flex items-center justify-center mb-6"
                     >
-                        <Sparkles size={20} className="text-[#FFE066] mr-2" />
-                        <span className="text-gray-600 font-medium">Discover Our Premium Features</span>
-                    </motion.div>
+                        <Sparkles size={20} className="text-amber-500 mr-2" />
+                        <span className="text-slate-600 font-medium">A Comprehensive Matchmaking Experience</span>
+                    </div>
 
-                    <motion.p
-                        className="text-lg text-gray-600 max-w-2xl mx-auto bg-white/70 backdrop-blur-sm p-5 rounded-2xl border border-white/80 shadow-sm"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={headingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                        transition={{ delay: 1, duration: 0.5 }}
+                    <p
+                        className="text-lg text-slate-600 max-w-2xl mx-auto bg-white/70 backdrop-blur-sm p-5 rounded-2xl border border-white/80 shadow-sm"
+
                     >
-                        Our unique approach to dating helps you find meaningful connections with people who share your interests and values.
-                    </motion.p>
-                </motion.div>
+                        Our unique approach focuses on compatibility that matters, connecting you with individuals who share your values, goals, and vision for a meaningful life together.
+                    </p>
+                </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {features.map((feature, index) => (
                         <FeatureCard key={feature.id} feature={feature} index={index} />
                     ))}

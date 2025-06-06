@@ -1,26 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, ChevronUp, Mail, Check, Info } from 'lucide-react';
 
-interface FooterLink {
-    id: string;
-    label: string;
-    href: string;
-    isNew?: boolean;
-}
-
-interface FooterColumn {
-    id: string;
-    title: string;
-    links: FooterLink[];
-}
-
 const Footer: React.FC = () => {
     const [email, setEmail] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
     const [isInView, setIsInView] = useState(false);
-    const footerRef = useRef<HTMLElement | null>(null);
+    const footerRef = useRef(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -43,8 +30,7 @@ const Footer: React.FC = () => {
         };
     }, []);
 
-    const handleSubscribe = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubscribe = () => {
         if (!email) return;
 
         setIsSubmitting(true);
@@ -67,7 +53,7 @@ const Footer: React.FC = () => {
         });
     };
 
-    const footerColumns: FooterColumn[] = [
+    const footerColumns = [
         {
             id: 'company',
             title: 'Company',
@@ -114,7 +100,7 @@ const Footer: React.FC = () => {
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 1200 120"
                     preserveAspectRatio="none"
-                    className="absolute -top-10 left-0 w-full h-20 text-[#2B2B2A]"
+                    className="absolute -top-10 left-0 w-full h-20 text-slate-900"
                 >
                     <path
                         d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
@@ -133,18 +119,18 @@ const Footer: React.FC = () => {
                 </svg>
             </div>
 
-            <div className="pt-16 pb-8 bg-[#2B2B2A] relative">
+            <div className="pt-16 pb-8 bg-slate-900 relative">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5"></div>
 
                     <div
                         className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full opacity-5 blur-[100px] animate-pulse-slow"
-                        style={{ background: 'radial-gradient(circle, rgba(255,107,129,1) 0%, rgba(255,107,129,0) 70%)' }}
+                        style={{ background: 'radial-gradient(circle, rgba(79,70,229,1) 0%, rgba(79,70,229,0) 70%)' }}
                     />
 
                     <div
                         className="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full opacity-5 blur-[100px] animate-pulse-slower"
-                        style={{ background: 'radial-gradient(circle, rgba(168,224,215,1) 0%, rgba(168,224,215,0) 70%)' }}
+                        style={{ background: 'radial-gradient(circle, rgba(20,184,166,1) 0%, rgba(20,184,166,0) 70%)' }}
                     />
                 </div>
 
@@ -173,7 +159,7 @@ const Footer: React.FC = () => {
                                 />
                             </div>
 
-                            <p className="text-gray-400 mb-6">
+                            <p className="text-slate-400 mb-6">
                                 Finding love in the digital age, made simple.
                             </p>
 
@@ -181,30 +167,27 @@ const Footer: React.FC = () => {
                                 <h3 className="text-white text-md font-semibold mb-3">Get Dating Tips & Updates</h3>
                                 {isSuccess ? (
                                     <div
-                                        className="bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-xl p-3 flex items-center transition-all duration-300"
+                                        className="bg-emerald-500/20 backdrop-blur-sm border border-emerald-500/30 rounded-xl p-3 flex items-center transition-all duration-300"
                                     >
-                                        <Check size={16} className="text-green-400 mr-2" />
-                                        <p className="text-green-100 text-sm">Thanks for subscribing!</p>
+                                        <Check size={16} className="text-emerald-400 mr-2" />
+                                        <p className="text-emerald-100 text-sm">Thanks for subscribing!</p>
                                     </div>
                                 ) : (
-                                    <form
-                                        onSubmit={handleSubscribe}
-                                        className="flex"
-                                    >
+                                    <div className="flex">
                                         <div className="relative flex-grow">
-                                            <Mail size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                                            <Mail size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
                                             <input
                                                 type="email"
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="Your email"
-                                                className="w-full pl-9 pr-3 py-2.5 rounded-l-lg bg-gray-700/50 border border-gray-600 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#FF6B81]/50 focus:border-[#FF6B81]/50"
+                                                className="w-full pl-9 pr-3 py-2.5 rounded-l-lg bg-slate-800/50 border border-slate-700 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-600/50 focus:border-indigo-600/50"
                                                 required
                                             />
                                         </div>
                                         <button
-                                            type="submit"
-                                            className="px-4 py-2.5 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] rounded-r-lg text-white hover:scale-105 active:scale-95 transition-transform duration-200"
+                                            onClick={handleSubscribe}
+                                            className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-r-lg text-white hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-200"
                                             disabled={isSubmitting}
                                         >
                                             {isSubmitting ? (
@@ -215,7 +198,7 @@ const Footer: React.FC = () => {
                                                 <Send size={16} />
                                             )}
                                         </button>
-                                    </form>
+                                    </div>
                                 )}
                             </div>
 
@@ -226,7 +209,7 @@ const Footer: React.FC = () => {
                                         <a
                                             key={social.id}
                                             href={social.href}
-                                            className="relative bg-gray-700/30 backdrop-blur-sm hover:bg-gray-700/50 p-2.5 rounded-lg text-gray-400 hover:text-white border border-gray-700/50 hover:scale-110 hover:-translate-y-1 active:scale-95 transition-all duration-200 group"
+                                            className="relative bg-slate-800/30 backdrop-blur-sm hover:bg-slate-700/50 p-2.5 rounded-lg text-slate-400 hover:text-white border border-slate-700/50 hover:scale-110 hover:-translate-y-1 active:scale-95 transition-all duration-200 group"
                                             onMouseEnter={() => setActiveTooltip(social.id)}
                                             onMouseLeave={() => setActiveTooltip(null)}
                                             aria-label={social.label}
@@ -254,7 +237,7 @@ const Footer: React.FC = () => {
 
                                             {activeTooltip === social.id && (
                                                 <div
-                                                    className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 animate-fade-in"
+                                                    className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 animate-fade-in"
                                                 >
                                                     {social.label}
                                                 </div>
@@ -283,12 +266,12 @@ const Footer: React.FC = () => {
                                         >
                                             <a
                                                 href={link.href}
-                                                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center group hover:translate-x-1"
+                                                className="text-slate-400 hover:text-white transition-colors duration-200 flex items-center group hover:translate-x-1"
                                             >
-                                                <span className="inline-block mr-1.5 w-1 h-1 rounded-full bg-gray-600 group-hover:bg-[#FF6B81] transition-colors" />
+                                                <span className="inline-block mr-1.5 w-1 h-1 rounded-full bg-slate-700 group-hover:bg-indigo-600 transition-colors" />
                                                 <span>{link.label}</span>
                                                 {link.isNew && (
-                                                    <span className="ml-2 text-xs bg-[#FF6B81]/20 text-[#FF6B81] px-1.5 py-0.5 rounded-md">
+                                                    <span className="ml-2 text-xs bg-indigo-600/20 text-indigo-400 px-1.5 py-0.5 rounded-md">
                                                         New
                                                     </span>
                                                 )}
@@ -301,20 +284,20 @@ const Footer: React.FC = () => {
                     </div>
 
                     <div
-                        className={`border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center transition-opacity duration-600 ${isInView ? 'opacity-100' : 'opacity-0'
+                        className={`border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center transition-opacity duration-600 ${isInView ? 'opacity-100' : 'opacity-0'
                             }`}
                         style={{ transitionDelay: '600ms' }}
                     >
-                        <p className="text-gray-500 text-sm mb-4 md:mb-0 flex items-center">
+                        <p className="text-slate-500 text-sm mb-4 md:mb-0 flex items-center">
                             <Info size={14} className="mr-1.5" />
                             Made with love in Nairobi Kenya. © 2025 miSoulMate. All rights reserved.
                         </p>
                         <div className="flex items-center">
-                            <a href="#" className="text-gray-400 hover:text-white text-sm mr-6 hover:underline">Beta Program</a>
-                            <a href="#" className="text-gray-400 hover:text-white text-sm mr-6 hover:underline">Partners</a>
+                            <a href="#" className="text-slate-400 hover:text-white text-sm mr-6 hover:underline">Beta Program</a>
+                            <a href="#" className="text-slate-400 hover:text-white text-sm mr-6 hover:underline">Partners</a>
 
                             <button
-                                className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg flex items-center justify-center hover:-translate-y-1 active:scale-95 transition-all duration-200"
+                                className="bg-slate-800 hover:bg-slate-700 text-white p-2 rounded-lg flex items-center justify-center hover:-translate-y-1 active:scale-95 transition-all duration-200"
                                 onClick={scrollToTop}
                                 aria-label="Back to top"
                             >
