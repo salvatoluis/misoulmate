@@ -1,6 +1,5 @@
 import axiosInstance from "./axiosInstance";
 
-// Define basic types for the service
 interface Match {
   id: number;
   name: string;
@@ -88,11 +87,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Pass on a potential match
-   * @param {number} matchId - ID of the match to pass on
-   * @returns {Promise<MatchActionResponse>} Promise with action response
-   */
   passMatch: async (matchId: number): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.post(`/matches/${matchId}/pass`);
@@ -118,13 +112,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Get conversation history with a match
-   * @param {number} matchId - ID of the match
-   * @param {number} page - Page number for pagination
-   * @param {number} limit - Number of messages per page
-   * @returns {Promise<ConversationResponse>} Promise with conversation data
-   */
   getConversation: async (matchId: number, page: number = 1, limit: number = 20): Promise<ConversationResponse> => {
     try {
       const response = await axiosInstance.get(`/matches/${matchId}/conversation`, {
@@ -137,12 +124,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Send a message to a match
-   * @param {number} matchId - ID of the match
-   * @param {string} content - Message content
-   * @returns {Promise<ConversationMessage>} Promise with sent message data
-   */
   sendMessage: async (matchId: number, content: string): Promise<ConversationMessage> => {
     try {
       const response = await axiosInstance.post(`/matches/${matchId}/message`, { content });
@@ -153,11 +134,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Mark conversation as read
-   * @param {number} matchId - ID of the match
-   * @returns {Promise<MatchActionResponse>} Promise with action response
-   */
   markConversationAsRead: async (matchId: number): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.put(`/matches/${matchId}/read`);
@@ -168,10 +144,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Get all interests for filtering
-   * @returns {Promise<string[]>} Promise with array of all available interests
-   */
   getAllInterests: async (): Promise<string[]> => {
     try {
       const response = await axiosInstance.get('/interests');
@@ -182,13 +154,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Report a match for inappropriate behavior
-   * @param {number} matchId - ID of the match to report
-   * @param {string} reason - Reason for reporting
-   * @param {string} details - Additional details
-   * @returns {Promise<MatchActionResponse>} Promise with action response
-   */
   reportMatch: async (matchId: number, reason: string, details?: string): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.post(`/matches/${matchId}/report`, {
@@ -202,11 +167,6 @@ const matchService = {
     }
   },
 
-  /**
-   * Block a match
-   * @param {number} matchId - ID of the match to block
-   * @returns {Promise<MatchActionResponse>} Promise with action response
-   */
   blockMatch: async (matchId: number): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.post(`/matches/${matchId}/block`);
