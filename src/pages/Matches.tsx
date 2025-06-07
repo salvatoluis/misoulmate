@@ -2,177 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, MessageCircle, Filter, Search, User, MapPin, Coffee, Music, BookOpen, Camera, Film, ChevronDown, ChevronUp, Sliders, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { matchService } from '@/services';
-
-const dummyMatches = [
-    {
-        id: 1,
-        name: 'Emma',
-        age: 28,
-        location: 'San Francisco',
-        distance: 3.2,
-        matchPercentage: 96,
-        bio: 'Coffee enthusiast, amateur photographer, and bookworm. Looking for someone to explore the city with!',
-        photos: [
-            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1560535733-540e0b0068b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1604072366595-e75dc92d6bdc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Photography', 'Reading', 'Coffee', 'Hiking'],
-        lastActive: 'Just now',
-        occupation: 'UX Designer',
-    },
-    {
-        id: 2,
-        name: 'Michael',
-        age: 31,
-        location: 'Berkeley',
-        distance: 5.8,
-        matchPercentage: 92,
-        bio: 'Music lover, tech geek, and fitness enthusiast. Looking for someone with similar interests and a good sense of humor.',
-        photos: [
-            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Music', 'Technology', 'Fitness', 'Cooking'],
-        lastActive: '5 minutes ago',
-        occupation: 'Software Engineer',
-    },
-    {
-        id: 3,
-        name: 'Sophia',
-        age: 26,
-        location: 'Oakland',
-        distance: 7.1,
-        matchPercentage: 89,
-        bio: 'Art lover, foodie, and travel enthusiast. Let\'s explore new restaurants and plan weekend getaways!',
-        photos: [
-            'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1496440737103-cd596325d314?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Travel', 'Art', 'Food', 'Yoga'],
-        lastActive: '1 hour ago',
-        occupation: 'Marketing Manager',
-    },
-    {
-        id: 4,
-        name: 'James',
-        age: 32,
-        location: 'San Jose',
-        distance: 12.4,
-        matchPercentage: 87,
-        bio: 'Movie buff, amateur chef, and dog lover. Looking for someone to share movie nights and cooking adventures.',
-        photos: [
-            'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1568990545613-aa37e9353eb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Movies', 'Cooking', 'Dogs', 'Tennis'],
-        lastActive: '3 hours ago',
-        occupation: 'Product Manager',
-    },
-    {
-        id: 5,
-        name: 'Olivia',
-        age: 29,
-        location: 'Palo Alto',
-        distance: 15.7,
-        matchPercentage: 85,
-        bio: 'Book lover, pianist, and nature enthusiast. Looking for someone to share quiet evenings and weekend hikes.',
-        photos: [
-            'https://images.unsplash.com/photo-1532910404247-7ee9488d7292?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Reading', 'Music', 'Hiking', 'Yoga'],
-        lastActive: 'Yesterday',
-        occupation: 'Clinical Psychologist',
-    },
-    {
-        id: 6,
-        name: 'Daniel',
-        age: 27,
-        location: 'Mountain View',
-        distance: 18.2,
-        matchPercentage: 83,
-        bio: 'Photographer, rock climber, and coffee addict. Looking for someone to join my adventures!',
-        photos: [
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Photography', 'Rock Climbing', 'Coffee', 'Travel'],
-        lastActive: 'Yesterday',
-        occupation: 'Photographer',
-    },
-    // Adding 4 more profiles with Unsplash photos
-    {
-        id: 7,
-        name: 'Jasmine',
-        age: 25,
-        location: 'Fremont',
-        distance: 20.3,
-        matchPercentage: 81,
-        bio: 'Dance instructor by day, stargazer by night. Looking for someone who appreciates both art and science. Let\'s dance under the stars!',
-        photos: [
-            'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1516726817505-f5ed825624d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Dancing', 'Astronomy', 'Painting', 'Poetry'],
-        lastActive: '2 days ago',
-        occupation: 'Dance Instructor',
-    },
-    {
-        id: 8,
-        name: 'Ryan',
-        age: 33,
-        location: 'Cupertino',
-        distance: 22.5,
-        matchPercentage: 78,
-        bio: 'Former chef turned tech enthusiast. I still cook a mean pasta carbonara. Looking for someone to share good food and meaningful conversations.',
-        photos: [
-            'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1488161628813-04466f872be2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Cooking', 'Technology', 'Philosophy', 'Wine Tasting'],
-        lastActive: '3 days ago',
-        occupation: 'Solution Architect',
-    },
-    {
-        id: 9,
-        name: 'Alexandra',
-        age: 30,
-        location: 'Sausalito',
-        distance: 9.7,
-        matchPercentage: 76,
-        bio: 'Marine biologist with a passion for environmental conservation. When I\'m not in the lab, you can find me surfing or hiking. Looking for someone who loves nature as much as I do.',
-        photos: [
-            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Surfing', 'Environmental Science', 'Hiking', 'Photography'],
-        lastActive: '4 days ago',
-        occupation: 'Marine Biologist',
-    },
-    {
-        id: 10,
-        name: 'Ethan',
-        age: 28,
-        location: 'Menlo Park',
-        distance: 14.3,
-        matchPercentage: 72,
-        bio: 'Musician and sound engineer who loves everything audio. Collector of vinyl records and vintage instruments. Let\'s go to a concert and discuss our favorite albums afterward.',
-        photos: [
-            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1484515991647-c5760fcecfc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-        ],
-        interests: ['Music Production', 'Vinyl Collecting', 'Concerts', 'Guitar'],
-        lastActive: 'Last week',
-        occupation: 'Sound Engineer',
-    }
-];
+import { conversationService, matchService } from '@/services';
 
 const interestIcons: Record<string, React.ReactNode> = {
     Photography: <Camera size={16} />,
@@ -200,8 +30,22 @@ interface FilterState {
     showFilters: boolean;
 }
 
+interface Match {
+    id: number;
+    name: string;
+    age: number;
+    location: string;
+    distance: number;
+    matchPercentage: number;
+    bio: string;
+    photos: string[];
+    interests: string[];
+    lastActive: string;
+    occupation: string;
+}
+
 const Matches: React.FC = () => {
-    const [matches, setMatches] = useState([]);
+    const [matches, setMatches] = useState<Match[]>([]);
     const [expandedCard, setExpandedCard] = useState<number | null>(null);
     const [selectedPhoto, setSelectedPhoto] = useState<Record<number, number>>({});
     const [isLoading, setIsLoading] = useState(true);
@@ -248,13 +92,35 @@ const Matches: React.FC = () => {
         });
     };
 
-    const handleLike = (id: number) => {
-        setMatches(matches.filter(match => match.id !== id));
+    const handleLike = async (id: number) => {
+        try {
+            await matchService.likeMatch(id);
+            setMatches(matches.filter(match => match.id !== id));
+        } catch (error) {
+            console.error(`Error liking match ${id}:`, error);
+        }
     };
 
-    const handlePass = (id: number) => {
-        setMatches(matches.filter(match => match.id !== id));
-    };
+    const handlePass = async (id: number) => {
+        try {
+            await matchService.passMatch(id);
+            setMatches(matches.filter(match => match.id !== id));
+        } catch (error) {
+            console.error(`Error passing on match ${id}:`, error);
+        }
+      };
+    
+    const handleMessage = async (matchId: number) => {
+        try {
+            // Either navigate to existing conversation or start a new one
+            const response = await conversationService.startConversation(matchId);
+            navigate(`/conversation/${response.conversationId}`, {
+                state: { matchId }
+            });
+        } catch (error) {
+            console.error(`Error starting conversation with match ${matchId}:`, error);
+        }
+      };
 
     const toggleFilters = () => {
         setFilters({
@@ -591,7 +457,7 @@ const Matches: React.FC = () => {
 
                                                 <button
                                                     className="flex-grow mx-2 h-12 flex items-center justify-center rounded-xl bg-[#FF6B81]/10 hover:bg-[#FF6B81]/20 text-[#FF6B81] transition-colors"
-                                                    onClick={() => navigate('/conversation/8910', { state: { matchId: match.id } })}
+                                                    onClick={() => handleMessage(match.id)}
                                                 >
                                                     <MessageCircle className="w-5 h-5 mr-2" />
                                                     Message
