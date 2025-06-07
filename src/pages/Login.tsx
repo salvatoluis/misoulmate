@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 
-
 const Login: React.FC<any> = ({ }) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
