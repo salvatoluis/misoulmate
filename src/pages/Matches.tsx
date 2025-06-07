@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, MessageCircle, Filter, Search, User, MapPin, Coffee, Music, BookOpen, Camera, Film, ChevronDown, ChevronUp, Sliders, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { matchService } from '@/services';
 
 const dummyMatches = [
     {
@@ -200,7 +201,7 @@ interface FilterState {
 }
 
 const Matches: React.FC = () => {
-    const [matches, setMatches] = useState(dummyMatches);
+    const [matches, setMatches] = useState([]);
     const [expandedCard, setExpandedCard] = useState<number | null>(null);
     const [selectedPhoto, setSelectedPhoto] = useState<Record<number, number>>({});
     const [isLoading, setIsLoading] = useState(true);
@@ -213,9 +214,19 @@ const Matches: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
+        const fetchMatches = async () => {
+            try {
+                setIsLoading(true);
+                const response = await matchService.getMatches();
+                setMatches(response.matches);
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error fetching matches:', error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchMatches();
     }, []);
 
     const toggleCardExpansion = (id: number) => {

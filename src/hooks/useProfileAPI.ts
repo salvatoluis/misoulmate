@@ -51,25 +51,11 @@ const useProfileApi = (): UseProfileApiReturn => {
     }
   }, []);
 
-  /**
-   * Create a new profile
-   */
   const createProfile = useCallback(async (data: Record<string, any>): Promise<Profile | null> => {
     try {
       setLoading(true);
       setError(null);
       setValidationErrors([]);
-      
-      // Validate data
-    //   const validation = validateProfile(data);
-      
-    //   if (!validation.isValid) {
-    //     setValidationErrors(validation.errors);
-    //     setLoading(false);
-    //     return null;
-    //   }
-      
-      // Prepare data for API
       const apiData = prepareProfileData(data);
       
       // Send to API
