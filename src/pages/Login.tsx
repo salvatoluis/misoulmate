@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import axios from 'axios';
 
 
 const Login: React.FC<any> = ({ }) => {
@@ -9,15 +10,35 @@ const Login: React.FC<any> = ({ }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
 
         if (!email || !password) {
             setError('Please enter both email and password');
             return;
         }
-        navigate('/matches');
+
+        try {
+            const response = await axios.post('http://localhost:3000/api/v1/auth/login', {
+                email,
+                password,
+            });
+
+            const { user, profile, token } = response.data;
+
+            localStorage.setItem('auth', JSON.stringify({ user, profile, token }));
+
+            navigate('/matches');
+        } catch (err: any) {
+            if (err.response?.data?.message) {
+                setError(err.response.data.message);
+            } else {
+                setError('An error occurred. Please try again.');
+            }
+        }
     };
+    
 
     return (
         <div>
