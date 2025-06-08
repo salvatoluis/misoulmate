@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, MessageCircle, Filter, Search, User, MapPin, Coffee, Music, BookOpen, Camera, Film, ChevronDown, ChevronUp, Sliders, Check } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { conversationService, matchService } from '@/services';
-import axios from 'axios';
+import { Heart, X, Star, Filter, Search, User, MapPin, Coffee, Music, BookOpen, Camera, Film, ChevronDown, ChevronUp, Sliders, Check } from 'lucide-react';
+import { recommendationService } from '@/services';
 
 const interestIcons: Record<string, React.ReactNode> = {
     Photography: <Camera size={16} />,
@@ -28,97 +26,117 @@ interface FilterState {
     ageRange: [number, number];
     distance: number;
     interests: string[];
+    lookingFor: string;
     showFilters: boolean;
 }
 
-interface Match {
-    id: number;
+interface Recommendation {
+    id: string;
     name: string;
     age: number;
+    gender: string;
     location: string;
     distance: number;
-    matchPercentage: number;
+    compatibilityScore: number;
     bio: string;
     photos: string[];
     interests: string[];
     lastActive: string;
     occupation: string;
+    hasLikedYou: boolean;
 }
 
-const Matches: React.FC = () => {
-    const [matches, setMatches] = useState<Match[]>([]);
-    const [expandedCard, setExpandedCard] = useState<number | null>(null);
-    const [selectedPhoto, setSelectedPhoto] = useState<Record<number, number>>({});
+const ForYou: React.FC = () => {
+    const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [expandedCard, setExpandedCard] = useState<string | null>(null);
+    const [selectedPhoto, setSelectedPhoto] = useState<Record<string, number>>({});
     const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState<FilterState>({
         ageRange: [20, 40],
         distance: 30,
         interests: [],
+        lookingFor: '',
         showFilters: false,
     });
-    const navigate = useNavigate();
+
     useEffect(() => {
-        const fetchMatches = async () => {
+        const fetchRecommendations = async () => {
             try {
                 setIsLoading(true);
-                const response = await matchService.getMatches();
-                setMatches(response.matches);
+
+                const params = {
+                    minAge: filters.ageRange[0],
+                    maxAge: filters.ageRange[1],
+                    maxDistance: filters.distance,
+                    interests: filters.interests.length > 0 ? filters.interests : undefined,
+                    lookingFor: filters.lookingFor || undefined
+                };
+
+                const response = await recommendationService.getRecommendations(params);
+                console.log(response);
+                setRecommendations(response.recommendations);
+                setCurrentIndex(0);
                 setIsLoading(false);
             } catch (error) {
-                console.error('Error fetching matches:', error);
+                console.error('Error fetching recommendations:', error);
                 setIsLoading(false);
             }
         };
 
-        fetchMatches();
-    }, []);
+        fetchRecommendations();
+    }, [filters.ageRange, filters.distance, filters.lookingFor]);
 
-    const toggleCardExpansion = (id: number) => {
+    const toggleCardExpansion = (id: string) => {
         setExpandedCard(expandedCard === id ? null : id);
     };
 
-    const navigatePhoto = (matchId: number, direction: 'next' | 'prev') => {
-        const match = matches?.find(m => m.id === matchId);
-        if (!match) return;
+    const navigatePhoto = (recommendationId: string, direction: 'next' | 'prev') => {
+        const recommendation = recommendations?.find(r => r.id === recommendationId);
+        if (!recommendation) return;
 
-        const currentIndex = selectedPhoto[matchId] || 0;
+        const currentIndex = selectedPhoto[recommendationId] || 0;
         const newIndex = direction === 'next'
-            ? (currentIndex + 1) % match.photos.length
-            : (currentIndex - 1 + match.photos.length) % match.photos.length;
+            ? (currentIndex + 1) % recommendation.photos.length
+            : (currentIndex - 1 + recommendation.photos.length) % recommendation.photos.length;
 
         setSelectedPhoto({
             ...selectedPhoto,
-            [matchId]: newIndex
+            [recommendationId]: newIndex
         });
     };
 
-    const handleLike = async (id: number) => {
+    const handleLike = async (id: any) => {
         try {
-            await matchService.likeMatch(id);
-            setMatches(matches.filter(match => match.id !== id));
+            await recommendationService.likeProfile(id);
+            removeRecommendation(id);
         } catch (error) {
-            console.error(`Error liking match ${id}:`, error);
+            console.error(`Error liking profile ${id}:`, error);
         }
     };
 
-    const handlePass = async (id: number) => {
+    const handleSuperLike = async (id: string) => {
         try {
-            await matchService.passMatch(id);
-            setMatches(matches.filter(match => match.id !== id));
+            await recommendationService.superLikeProfile(id);
+            removeRecommendation(id);
         } catch (error) {
-            console.error(`Error passing on match ${id}:`, error);
+            console.error(`Error super-liking profile ${id}:`, error);
         }
     };
 
-    const handleMessage = async (matchId: number) => {
+    const handlePass = async (id: string) => {
         try {
-            // Either navigate to existing conversation or start a new one
-            const response = await conversationService.startConversation(matchId);
-            navigate(`/conversation/${response.conversationId}`, {
-                state: { matchId }
-            });
+            await recommendationService.passProfile(id);
+            removeRecommendation(id);
         } catch (error) {
-            console.error(`Error starting conversation with match ${matchId}:`, error);
+            console.error(`Error passing on profile ${id}:`, error);
+        }
+    };
+
+    const removeRecommendation = (id: string) => {
+        setRecommendations(recommendations.filter(rec => rec.id !== id));
+        if (currentIndex >= recommendations.length - 1) {
+            setCurrentIndex(Math.max(0, recommendations.length - 2));
         }
     };
 
@@ -140,17 +158,24 @@ const Matches: React.FC = () => {
         });
     };
 
+    const refreshRecommendations = async () => {
+        try {
+            setIsLoading(true);
+            const response = await recommendationService.refreshRecommendations();
+            setRecommendations(response.recommendations);
+            setCurrentIndex(0);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error refreshing recommendations:', error);
+            setIsLoading(false);
+        }
+    };
+
     const allInterests = Array.from(
-        new Set(matches.flatMap(match => match.interests))
+        new Set(recommendations.flatMap(rec => rec.interests))
     );
 
-    const filteredMatches = matches.filter(match => {
-        const ageMatch = match.age >= filters.ageRange[0] && match.age <= filters.ageRange[1];
-        const distanceMatch = match.distance <= filters.distance;
-        const interestMatch = filters.interests.length === 0 ||
-            match.interests.some(interest => filters.interests.includes(interest));
-        return ageMatch && distanceMatch && interestMatch;
-    });
+    const relationshipTypes = ['Relationship', 'Casual', 'Friendship', 'Not sure yet'];
 
     const pageVariants = {
         hidden: { opacity: 0 },
@@ -190,7 +215,7 @@ const Matches: React.FC = () => {
                         <div className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-full mr-2">
                             <Heart size={18} className="text-white" />
                         </div>
-                        <h1 className="text-xl font-bold text-[#2B2B2A]">Your Matches</h1>
+                        <h1 className="text-xl font-bold text-[#2B2B2A]">Discover</h1>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -200,7 +225,10 @@ const Matches: React.FC = () => {
                         >
                             <Filter size={20} />
                         </button>
-                        <button className="p-2 rounded-full bg-gray-100 text-gray-600">
+                        <button
+                            className="p-2 rounded-full bg-gray-100 text-gray-600"
+                            onClick={refreshRecommendations}
+                        >
                             <Search size={20} />
                         </button>
                     </div>
@@ -264,6 +292,29 @@ const Matches: React.FC = () => {
                                         />
                                     </div>
 
+                                    {/* Looking For */}
+                                    <div>
+                                        <label className="text-sm font-medium text-gray-700 block mb-2">Looking For:</label>
+                                        <div className="flex flex-wrap gap-2">
+                                            {relationshipTypes.map(type => (
+                                                <button
+                                                    key={type}
+                                                    className={`px-3 py-1.5 text-sm rounded-full transition-colors ${filters.lookingFor === type
+                                                        ? 'bg-[#FF6B81] text-white'
+                                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                        }`}
+                                                    onClick={() => setFilters({
+                                                        ...filters,
+                                                        lookingFor: filters.lookingFor === type ? '' : type
+                                                    })}
+                                                >
+                                                    {type}
+                                                    {filters.lookingFor === type && <Check size={14} className="ml-1" />}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
                                     {/* Interests */}
                                     <div>
                                         <label className="text-sm font-medium text-gray-700 block mb-2">Interests:</label>
@@ -309,43 +360,43 @@ const Matches: React.FC = () => {
                                 <Heart size={20} className="text-[#FF6B81]" />
                             </motion.div>
                         </div>
-                        <p className="mt-4 text-gray-500">Finding your matches...</p>
+                        <p className="mt-4 text-gray-500">Finding people for you...</p>
                     </div>
                 ) : (
                     <>
                         <div className="mb-6 flex justify-between items-center">
                             <h2 className="text-lg font-medium text-gray-800">
-                                {filteredMatches.length} potential {filteredMatches.length === 1 ? 'match' : 'matches'}
+                                {recommendations.length} recommendations
                             </h2>
                             <div className="text-sm text-gray-500 flex items-center gap-1">
                                 <Sliders size={14} />
-                                Sort by: Match %
+                                Sort by: Compatibility
                             </div>
                         </div>
 
-                        {filteredMatches.length === 0 ? (
+                        {recommendations.length === 0 ? (
                             <div className="text-center py-10">
                                 <div className="mb-4 flex justify-center">
                                     <div className="p-4 bg-gray-100 rounded-full inline-flex">
                                         <Heart size={32} className="text-gray-400" />
                                     </div>
                                 </div>
-                                <h3 className="text-lg font-medium text-gray-800 mb-2">No matches found</h3>
+                                <h3 className="text-lg font-medium text-gray-800 mb-2">No recommendations found</h3>
                                 <p className="text-gray-500 max-w-md mx-auto">
-                                    Try adjusting your filters or expanding your search criteria to find more matches.
+                                    Try adjusting your filters or check back later for new recommendations.
                                 </p>
                                 <button
                                     className="mt-4 px-4 py-2 bg-[#FF6B81] text-white rounded-lg hover:bg-[#D86D72] transition-colors"
-                                    onClick={() => setFilters({ ...filters, interests: [], ageRange: [20, 40], distance: 30 })}
+                                    onClick={() => setFilters({ ...filters, interests: [], ageRange: [20, 40], distance: 30, lookingFor: '' })}
                                 >
                                     Reset Filters
                                 </button>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {filteredMatches.map((match, index) => (
+                                {recommendations.map((recommendation, index) => (
                                     <motion.div
-                                        key={match.id}
+                                        key={recommendation.id}
                                         className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300"
                                         custom={index}
                                         variants={cardVariants}
@@ -353,18 +404,18 @@ const Matches: React.FC = () => {
                                     >
                                         <div className="relative aspect-[4/5] overflow-hidden">
                                             <img
-                                                src={match.photos[selectedPhoto[match.id] || 0]}
-                                                alt={match.name}
+                                                src={recommendation.photos[selectedPhoto[recommendation.id] || 0]}
+                                                alt={recommendation.name}
                                                 className="w-full h-full object-cover"
                                             />
 
-                                            {match.photos.length > 1 && (
+                                            {recommendation.photos.length > 1 && (
                                                 <>
                                                     <button
                                                         className="absolute top-1/2 left-2 p-1.5 bg-white/30 hover:bg-white/50 rounded-full backdrop-blur-sm transform -translate-y-1/2 transition-colors"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            navigatePhoto(match.id, 'prev');
+                                                            navigatePhoto(recommendation.id, 'prev');
                                                         }}
                                                     >
                                                         <ChevronUp className="transform -rotate-90 text-white w-5 h-5 drop-shadow-md" />
@@ -373,17 +424,17 @@ const Matches: React.FC = () => {
                                                         className="absolute top-1/2 right-2 p-1.5 bg-white/30 hover:bg-white/50 rounded-full backdrop-blur-sm transform -translate-y-1/2 transition-colors"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            navigatePhoto(match.id, 'next');
+                                                            navigatePhoto(recommendation.id, 'next');
                                                         }}
                                                     >
                                                         <ChevronDown className="transform -rotate-90 text-white w-5 h-5 drop-shadow-md" />
                                                     </button>
 
                                                     <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-                                                        {match.photos.map((_, photoIndex) => (
+                                                        {recommendation.photos.map((_, photoIndex) => (
                                                             <div
                                                                 key={photoIndex}
-                                                                className={`h-1 rounded-full ${(selectedPhoto[match.id] || 0) === photoIndex
+                                                                className={`h-1 rounded-full ${(selectedPhoto[recommendation.id] || 0) === photoIndex
                                                                     ? 'w-5 bg-white'
                                                                     : 'w-1.5 bg-white/50'
                                                                     } transition-all`}
@@ -394,31 +445,37 @@ const Matches: React.FC = () => {
                                             )}
 
                                             <div className="absolute top-3 right-3 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-2.5 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-1">
-                                                <Heart size={12} className="fill-white" /> {match.matchPercentage}%
+                                                <Heart size={12} className="fill-white" /> {recommendation.compatibilityScore}%
                                             </div>
 
+                                            {recommendation.hasLikedYou && (
+                                                <div className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-2.5 py-1 rounded-full text-xs font-medium shadow-md flex items-center gap-1">
+                                                    <Heart size={12} className="fill-white" /> Likes you
+                                                </div>
+                                            )}
+
                                             <div className="absolute bottom-3 left-3 bg-black/30 text-white text-xs px-2 py-0.5 rounded-full backdrop-blur-sm">
-                                                {match.lastActive}
+                                                {recommendation.lastActive}
                                             </div>
                                         </div>
 
                                         <div className="p-4">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
-                                                    <h3 onClick={() => navigate('/match/89')} className="text-lg font-bold text-gray-800">{match.name}, {match.age}</h3>
+                                                    <h3 className="text-lg font-bold text-gray-800">{recommendation.name}, {recommendation.age}</h3>
                                                     <div className="flex items-center text-gray-500 text-sm">
                                                         <MapPin size={14} className="mr-1" />
-                                                        {match.location} • {match.distance} miles away
+                                                        {recommendation.location} • {recommendation.distance} miles away
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="text-gray-700 text-sm mb-3">
-                                                {match.occupation}
+                                                {recommendation.occupation || 'Occupation not specified'}
                                             </div>
 
                                             <div className="flex flex-wrap gap-1.5 mb-3">
-                                                {match.interests.slice(0, 4).map(interest => (
+                                                {recommendation.interests.slice(0, 4).map(interest => (
                                                     <span
                                                         key={interest}
                                                         className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full flex items-center gap-1"
@@ -430,15 +487,17 @@ const Matches: React.FC = () => {
                                             </div>
 
                                             <div className="text-gray-600 text-sm">
-                                                {expandedCard === match.id ? (
-                                                    match.bio
+                                                {expandedCard === recommendation.id ? (
+                                                    recommendation.bio
                                                 ) : (
                                                     <>
-                                                        {match.bio.length > 100 ? `${match.bio.slice(0, 100)}...` : match.bio}
-                                                        {match.bio.length > 100 && (
+                                                        {recommendation.bio && recommendation.bio.length > 100
+                                                            ? `${recommendation.bio.slice(0, 100)}...`
+                                                            : (recommendation.bio || 'No bio available')}
+                                                        {recommendation.bio && recommendation.bio.length > 100 && (
                                                             <button
                                                                 className="text-[#FF6B81] font-medium ml-1 focus:outline-none"
-                                                                onClick={() => toggleCardExpansion(match.id)}
+                                                                onClick={() => toggleCardExpansion(recommendation.id)}
                                                             >
                                                                 more
                                                             </button>
@@ -450,22 +509,21 @@ const Matches: React.FC = () => {
                                             <div className="flex justify-between mt-4 pt-3 border-t border-gray-100">
                                                 <button
                                                     className="w-16 h-12 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
-                                                    onClick={() => handlePass(match.id)}
+                                                    onClick={() => handlePass(recommendation.id)}
                                                 >
                                                     <X className="w-5 h-5" />
                                                 </button>
 
                                                 <button
-                                                    className="flex-grow mx-2 h-12 flex items-center justify-center rounded-xl bg-[#FF6B81]/10 hover:bg-[#FF6B81]/20 text-[#FF6B81] transition-colors"
-                                                    onClick={() => handleMessage(match.id)}
+                                                    className="w-16 h-12 flex items-center justify-center rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white transition-colors"
+                                                    onClick={() => handleSuperLike(recommendation.id)}
                                                 >
-                                                    <MessageCircle className="w-5 h-5 mr-2" />
-                                                    Message
+                                                    <Star className="w-5 h-5" />
                                                 </button>
 
                                                 <button
                                                     className="w-16 h-12 flex items-center justify-center rounded-xl bg-[#FF6B81] hover:bg-[#D86D72] text-white transition-colors"
-                                                    onClick={() => handleLike(match.id)}
+                                                    onClick={() => handleLike(recommendation.id)}
                                                 >
                                                     <Heart className="w-5 h-5" />
                                                 </button>
@@ -482,4 +540,4 @@ const Matches: React.FC = () => {
     );
 };
 
-export default Matches;
+export default ForYou;

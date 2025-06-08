@@ -24,7 +24,7 @@ import Discover from './pages/Discover';
 import SafetyCenter from './pages/SafetyCenter';
 import ContactUs from './pages/ContactUs';
 import CommunityGuidelines from './pages/CommunityGuidelines';
-import Loader from './elements.tsx/Loader';
+import ForYou from './pages/ForYou';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -105,6 +105,13 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <MainLayout>
                 <Matches />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/for-you" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <ForYou />
               </MainLayout>
             </ProtectedRoute>
           } />

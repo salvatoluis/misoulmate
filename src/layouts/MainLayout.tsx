@@ -23,16 +23,25 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 {children}
             </main>
 
-            {/* Bottom Navigation */}
             {!hideNavigation && (
                 <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-top border-t border-gray-200 z-40">
                     <div className="max-w-screen-lg mx-auto px-4">
                         <div className="flex justify-around">
                             <Link
+                                to="/for-you"
+                                className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/for-you'
+                                    ? 'text-[#FF6B81]'
+                                    : 'text-gray-500 hover:text-gray-700'
+                                    }`}
+                            >
+                                <Heart size={24} />
+                                <span className="text-xs mt-1">For You</span>
+                            </Link>
+                            <Link
                                 to="/matches"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/matches'
-                                        ? 'text-[#FF6B81]'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'text-[#FF6B81]'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 <Heart size={24} />
@@ -42,8 +51,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/messages"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/messages'
-                                        ? 'text-[#FF6B81]'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'text-[#FF6B81]'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 <MessageSquare size={24} />
@@ -53,8 +62,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/date-planner"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/date-planner'
-                                        ? 'text-[#FF6B81]'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'text-[#FF6B81]'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 <Calendar size={24} />
@@ -64,8 +73,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/profile"
                                 className={`py-3 px-4 flex flex-col items-center ${['/profile', '/settings', '/blocked-users', '/help'].includes(location.pathname)
-                                        ? 'text-[#FF6B81]'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'text-[#FF6B81]'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 <User size={24} />
