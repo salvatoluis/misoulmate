@@ -50,10 +50,10 @@ const matchService = {
     }
   },
 
-  getMatchById: async (matchId: number): Promise<Match> => {
+  getMatchById: async (matchId: string): Promise<any> => {
     try {
       const response = await axiosInstance.get(`/matches/${matchId}`);
-      return response.data.data;
+      return response.data;
     } catch (error) {
       console.error(`Error fetching match ${matchId}:`, error);
       throw error;

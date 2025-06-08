@@ -181,7 +181,7 @@ const conversationService = {
    * @param {string} initialMessage - First message content
    * @returns {Promise<{conversationId: number, message: Message}>} Promise with new conversation data
    */
-  startConversation: async (matchId: number, initialMessage?: string): Promise<{conversationId: number, message?: Message}> => {
+  startConversation: async (matchId: string, initialMessage?: string): Promise<{conversationId: number, message?: Message}> => {
     try {
       const response = await axiosInstance.post('/conversations', {
         matchId,

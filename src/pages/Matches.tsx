@@ -98,7 +98,7 @@ const Matches: React.FC = () => {
 
     const handleMessage = async (matchId: string) => {
         try {
-            const response = await conversationService.startConversation(Number(matchId));
+            const response = await conversationService.startConversation(matchId);
             navigate(`/conversation/${response.conversationId}`, {
                 state: { matchId }
             });
@@ -428,7 +428,7 @@ const Matches: React.FC = () => {
                                                 <div className="flex space-x-2">
                                                     <button
                                                         className="flex-grow py-2 flex items-center justify-center rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-500 text-sm font-medium transition-colors"
-                                                        onClick={() => navigate(`/match/${otherUser.id}`)}
+                                                        onClick={() => navigate(`/match/${match.id}`)}
                                                     >
                                                         <Eye size={16} className="mr-1" />
                                                         View Profile
