@@ -7,6 +7,7 @@ import {
 import { ExtendedProfile, ProfileQuestion } from '@/types/profile.type';
 import useProfileApi from '@/hooks/useProfileAPI';
 import profileService from '@/services/profile.service';
+import { p } from 'framer-motion/client';
 
 const defaultUserData: ExtendedProfile = {
     name: "",
@@ -290,7 +291,6 @@ const UserProfile: React.FC = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
-            {/* Loading indicator */}
             {loading && (
                 <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
                     <div className="bg-white p-4 rounded-lg shadow-lg">
@@ -300,7 +300,6 @@ const UserProfile: React.FC = () => {
                 </div>
             )}
 
-            {/* Error message */}
             {error && (
                 <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 flex items-center shadow-md">
                     <AlertTriangle size={18} className="mr-2" />
@@ -334,38 +333,8 @@ const UserProfile: React.FC = () => {
                         </button>
                     )}
                 </div>
-
-                <div className="border-b border-gray-200">
-                    <div className="container mx-auto px-4 flex">
-                        <button
-                            className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'profile'
-                                ? 'text-[#FF6B81]'
-                                : 'text-gray-500 hover:text-gray-700'
-                                } transition-colors`}
-                            onClick={() => setActiveTab('profile')}
-                        >
-                            Profile
-                            {activeTab === 'profile' && (
-                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF6B81]"></div>
-                            )}
-                        </button>
-                        <button
-                            className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'settings'
-                                ? 'text-[#FF6B81]'
-                                : 'text-gray-500 hover:text-gray-700'
-                                } transition-colors`}
-                            onClick={() => setActiveTab('settings')}
-                        >
-                            Settings
-                            {activeTab === 'settings' && (
-                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF6B81]"></div>
-                            )}
-                        </button>
-                    </div>
-                </div>
             </header>
 
-            {/* Validation errors */}
             {validationErrors.length > 0 && (
                 <div className="container mx-auto px-4 mt-4">
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -380,769 +349,634 @@ const UserProfile: React.FC = () => {
             )}
 
             <div className="container mx-auto px-4 pt-6 pb-20">
-                {activeTab === 'profile' ? (
-                    <div className="space-y-6">
-                        {/* Basic Information */}
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">Basic Information</h2>
-                            </div>
-                            <div className="p-4 space-y-4">
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">
-                                        Name <span className="text-red-500">*</span>
-                                    </label>
-                                    {editing ? (
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            value={formData.name || ''}
-                                            onChange={handleChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            placeholder="Your name"
-                                            required
-                                        />
-                                    ) : (
-                                        <div className="text-gray-700">{userData.name}</div>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Age</label>
-                                    {editing ? (
-                                        <input
-                                            type="number"
-                                            name="age"
-                                            value={formData.age || ''}
-                                            onChange={handleNumberChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            placeholder="Your age"
-                                            min="18"
-                                        />
-                                    ) : (
-                                        <div className="text-gray-700">{userData.age || 'Not specified'}</div>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Gender</label>
-                                    {editing ? (
-                                        <select
-                                            name="gender"
-                                            value={formData.gender || ''}
-                                            onChange={handleChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                        >
-                                            <option value="">Select gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="non-binary">Non-binary</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    ) : (
-                                        <div className="text-gray-700">{userData.gender || 'Not specified'}</div>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Location</label>
-                                    {editing ? (
-                                        <input
-                                            type="text"
-                                            name="location"
-                                            value={formData.location || ''}
-                                            onChange={handleChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            placeholder="City, State"
-                                        />
-                                    ) : (
-                                        <div className="text-gray-700">{userData.location || 'Not specified'}</div>
-                                    )}
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Dating Preferences */}
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">Dating Preferences</h2>
-                            </div>
-                            <div className="p-4 space-y-4">
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Looking For</label>
-                                    {editing ? (
-                                        <select
-                                            name="lookingFor"
-                                            value={formData.lookingFor || ''}
-                                            onChange={handleChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                        >
-                                            <option value="">Select what you're looking for</option>
-                                            <option value="Relationship">Relationship</option>
-                                            <option value="Casual">Casual</option>
-                                            <option value="Friendship">Friendship</option>
-                                            <option value="Not sure yet">Not sure yet</option>
-                                        </select>
-                                    ) : (
-                                        <div className="text-gray-700">{userData.lookingFor || 'Not specified'}</div>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Show Me</label>
-                                    {editing ? (
-                                        <select
-                                            name="showMe"
-                                            value={formData.showMe || ''}
-                                            onChange={handleChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                        >
-                                            <option value="Everyone">Everyone</option>
-                                            <option value="Women">Women</option>
-                                            <option value="Men">Men</option>
-                                            <option value="Non-binary">Non-binary</option>
-                                        </select>
-                                    ) : (
-                                        <div className="text-gray-700">{userData.showMe || 'Everyone'}</div>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Age Range</label>
-                                    {editing ? (
-                                        <div className="flex items-center space-x-2">
-                                            <input
-                                                type="number"
-                                                value={formData.ageRange ? formData.ageRange[0] : 25}
-                                                onChange={handleMinAgeChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                                min="18"
-                                                max="100"
-                                            />
-                                            <span>to</span>
-                                            <input
-                                                type="number"
-                                                value={formData.ageRange ? formData.ageRange[1] : 35}
-                                                onChange={handleMaxAgeChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                                min="18"
-                                                max="100"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div className="text-gray-700">
-                                            {userData.ageRange ? `${userData.ageRange[0]} to ${userData.ageRange[1]}` : 'Not specified'}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Maximum Distance (miles)</label>
-                                    {editing ? (
-                                        <input
-                                            type="number"
-                                            name="maxDistance"
-                                            value={formData.maxDistance || 25}
-                                            onChange={handleNumberChange}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            min="1"
-                                            max="100"
-                                        />
-                                    ) : (
-                                        <div className="text-gray-700">{userData.maxDistance || 25} miles</div>
-                                    )}
-                                </div>
-                            </div>
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">Photos</h2>
-                            </div>
-
-                            <div className="p-4">
-                                <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-                                    {userData.photos && userData.photos.map((photo, index) => (
-                                        <div
-                                            key={index}
-                                            className="aspect-square rounded-lg overflow-hidden relative group"
-                                        >
-                                            <img
-                                                src={photo}
-                                                alt={`User photo ${index + 1}`}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            {editing && (
-                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
-                                                    <button
-                                                        className="p-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white"
-                                                        onClick={() => handleRemovePhoto(index)}
-                                                    >
-                                                        <Edit size={16} />
-                                                    </button>
-                                                    <button className="p-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white">
-                                                        <ChevronRight size={16} />
-                                                    </button>
-                                                </div>
-                                            )}
-                                            {index === 0 && (
-                                                <div className="absolute bottom-2 left-2 bg-[#FF6B81] text-white text-xs px-2 py-0.5 rounded-full">
-                                                    Main
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                    {editing && (
-                                        <button
-                                            className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:text-gray-500 hover:border-gray-400 transition-colors"
-                                            onClick={handleAddPhoto}
-                                        >
-                                            <Camera size={24} />
-                                            <span className="mt-1 text-xs">Add Photo</span>
-                                            <input
-                                                type="file"
-                                                ref={fileInputRef}
-                                                className="hidden"
-                                                accept="image/*"
-                                                onChange={handleFileChange}
-                                            />
-                                        </button>
-                                    )}
-                                </div>
-
-                                {editing && (
-                                    <div className="mt-4 text-sm text-gray-500">
-                                        Drag to reorder. First photo will be your main profile photo.
-                                    </div>
-                                )}
-                            </div>
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">About</h2>
-                            </div>
-
-                            <div className="p-4">
+                <div className="space-y-6">
+                    <section className="bg-white rounded-xl shadow-sm">
+                        <div className="p-4 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-800">Basic Information</h2>
+                        </div>
+                        <div className="p-4 space-y-4">
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">
+                                    Name <span className="text-red-500">*</span>
+                                </label>
                                 {editing ? (
-                                    <textarea
-                                        name="bio"
-                                        value={formData.bio}
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name || ''}
                                         onChange={handleChange}
-                                        className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                        placeholder="Tell others about yourself..."
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        placeholder="Your name"
+                                        required
                                     />
                                 ) : (
-                                    <div className="text-gray-700 space-y-3">
-                                        {userData.bio ? userData.bio.split('\n\n').map((paragraph, i) => (
-                                            <p key={i}>{paragraph}</p>
-                                        )) : (
-                                            <p className="text-gray-400 italic">No bio added yet.</p>
-                                        )}
+                                    <div className="text-gray-700">{userData.name}</div>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Age</label>
+                                {editing ? (
+                                    <input
+                                        type="number"
+                                        name="age"
+                                        value={formData.age || ''}
+                                        onChange={handleNumberChange}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        placeholder="Your age"
+                                        min="18"
+                                    />
+                                ) : (
+                                    <div className="text-gray-700">{userData.age || 'Not specified'}</div>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Gender</label>
+                                {editing ? (
+                                    <select
+                                        name="gender"
+                                        value={formData.gender || ''}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                    >
+                                        <option value="">Select gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="non-binary">Non-binary</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                ) : (
+                                    <div className="text-gray-700">{userData.gender || 'Not specified'}</div>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Location</label>
+                                {editing ? (
+                                    <input
+                                        type="text"
+                                        name="location"
+                                        value={formData.location || ''}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        placeholder="City, State"
+                                    />
+                                ) : (
+                                    <div className="text-gray-700">{userData.location || 'Not specified'}</div>
+                                )}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Dating Preferences */}
+                    <section className="bg-white rounded-xl shadow-sm">
+                        <div className="p-4 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-800">Dating Preferences</h2>
+                        </div>
+                        <div className="p-4 space-y-4">
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Looking For</label>
+                                {editing ? (
+                                    <select
+                                        name="lookingFor"
+                                        value={formData.lookingFor || ''}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                    >
+                                        <option value="">Select what you're looking for</option>
+                                        <option value="Relationship">Relationship</option>
+                                        <option value="Casual">Casual</option>
+                                        <option value="Friendship">Friendship</option>
+                                        <option value="Not sure yet">Not sure yet</option>
+                                    </select>
+                                ) : (
+                                    <div className="text-gray-700">{userData.lookingFor || 'Not specified'}</div>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Show Me</label>
+                                {editing ? (
+                                    <select
+                                        name="showMe"
+                                        value={formData.showMe || ''}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                    >
+                                        <option value="Everyone">Everyone</option>
+                                        <option value="Women">Women</option>
+                                        <option value="Men">Men</option>
+                                        <option value="Non-binary">Non-binary</option>
+                                    </select>
+                                ) : (
+                                    <div className="text-gray-700">{userData.showMe || 'Everyone'}</div>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Age Range</label>
+                                {editing ? (
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            type="number"
+                                            value={formData.ageRange ? formData.ageRange[0] : 25}
+                                            onChange={handleMinAgeChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                            min="18"
+                                            max="100"
+                                        />
+                                        <span>to</span>
+                                        <input
+                                            type="number"
+                                            value={formData.ageRange ? formData.ageRange[1] : 35}
+                                            onChange={handleMaxAgeChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                            min="18"
+                                            max="100"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="text-gray-700">
+                                        {userData.ageRange ? `${userData.ageRange[0]} to ${userData.ageRange[1]}` : 'Not specified'}
                                     </div>
                                 )}
                             </div>
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div
-                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleSection('work')}
-                            >
-                                <h2 className="text-lg font-bold text-gray-800">Work & Education</h2>
-                                <ChevronDown
-                                    size={20}
-                                    className={`text-gray-400 transition-transform ${expandedSection === 'work' ? 'rotate-180' : ''
-                                        }`}
-                                />
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Maximum Distance (miles)</label>
+                                {editing ? (
+                                    <input
+                                        type="number"
+                                        name="maxDistance"
+                                        value={formData.maxDistance || 25}
+                                        onChange={handleNumberChange}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        min="1"
+                                        max="100"
+                                    />
+                                ) : (
+                                    <div className="text-gray-700">{userData.maxDistance || 25} miles</div>
+                                )}
                             </div>
+                        </div>
+                    </section>
 
-                            {expandedSection === 'work' && (
-                                <div className="p-4 space-y-4">
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Occupation</label>
-                                        {editing ? (
-                                            <input
-                                                type="text"
-                                                name="occupation"
-                                                value={formData.occupation}
-                                                onChange={handleChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                                placeholder="What do you do?"
-                                            />
-                                        ) : (
-                                            <div className="text-gray-700">
-                                                {userData.occupation || <span className="text-gray-400 italic">Not specified</span>}
-                                            </div>
-                                        )}
-                                    </div>
+                    <section className="bg-white rounded-xl shadow-sm">
+                        <div className="p-4 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-800">Photos</h2>
+                        </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Education</label>
-                                        {editing ? (
-                                            <input
-                                                type="text"
-                                                name="education"
-                                                value={formData.education}
-                                                onChange={handleChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                                placeholder="Your education background"
-                                            />
-                                        ) : (
-                                            <div className="text-gray-700">
-                                                {userData.education || <span className="text-gray-400 italic">Not specified</span>}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div
-                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleSection('basic')}
-                            >
-                                <h2 className="text-lg font-bold text-gray-800">Basic Info</h2>
-                                <ChevronDown
-                                    size={20}
-                                    className={`text-gray-400 transition-transform ${expandedSection === 'basic' ? 'rotate-180' : ''
-                                        }`}
-                                />
-                            </div>
-
-                            {expandedSection === 'basic' && (
-                                <div className="p-4 space-y-4">
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Height</label>
-                                        {editing ? (
-                                            <input
-                                                type="text"
-                                                name="height"
-                                                value={formData.height}
-                                                onChange={handleChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                                placeholder="Your height (e.g. 5'10)"
-                                            />
-                                        ) : (
-                                            <div className="text-gray-700">
-                                                {userData.height || <span className="text-gray-400 italic">Not specified</span>}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Drinking</label>
-                                        {editing ? (
-                                            <select
-                                                name="drinking"
-                                                value={formData.drinking || ''}
-                                                onChange={handleChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            >
-                                                <option value="">Prefer not to say</option>
-                                                <option value="Non-drinker">Non-drinker</option>
-                                                <option value="Social drinker">Social drinker</option>
-                                                <option value="Regular drinker">Regular drinker</option>
-                                            </select>
-                                        ) : (
-                                            <div className="text-gray-700">
-                                                {userData.drinking || <span className="text-gray-400 italic">Not specified</span>}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Smoking</label>
-                                        {editing ? (
-                                            <select
-                                                name="smoking"
-                                                value={formData.smoking || ''}
-                                                onChange={handleChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            >
-                                                <option value="">Prefer not to say</option>
-                                                <option value="Non-smoker">Non-smoker</option>
-                                                <option value="Social smoker">Social smoker</option>
-                                                <option value="Regular smoker">Regular smoker</option>
-                                            </select>
-                                        ) : (
-                                            <div className="text-gray-700">
-                                                {userData.smoking || <span className="text-gray-400 italic">Not specified</span>}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Zodiac</label>
-                                        {editing ? (
-                                            <select
-                                                name="zodiac"
-                                                value={formData.zodiac || ''}
-                                                onChange={handleChange}
-                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                            >
-                                                <option value="">Select zodiac sign</option>
-                                                <option value="Aries">Aries</option>
-                                                <option value="Taurus">Taurus</option>
-                                                <option value="Gemini">Gemini</option>
-                                                <option value="Cancer">Cancer</option>
-                                                <option value="Leo">Leo</option>
-                                                <option value="Virgo">Virgo</option>
-                                                <option value="Libra">Libra</option>
-                                                <option value="Scorpio">Scorpio</option>
-                                                <option value="Sagittarius">Sagittarius</option>
-                                                <option value="Capricorn">Capricorn</option>
-                                                <option value="Aquarius">Aquarius</option>
-                                                <option value="Pisces">Pisces</option>
-                                            </select>
-                                        ) : (
-                                            <div className="text-gray-700">
-                                                {userData.zodiac || <span className="text-gray-400 italic">Not specified</span>}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div
-                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleSection('interests')}
-                            >
-                                <h2 className="text-lg font-bold text-gray-800">Interests</h2>
-                                <ChevronDown
-                                    size={20}
-                                    className={`text-gray-400 transition-transform ${expandedSection === 'interests' ? 'rotate-180' : ''
-                                        }`}
-                                />
-                            </div>
-
-                            {expandedSection === 'interests' && (
-                                <div className="p-4">
-                                    <div className="flex flex-wrap gap-2">
-                                        {formData.interests && formData.interests.length > 0 ? (
-                                            formData.interests.map((interest, index) => (
-                                                <div
-                                                    key={index}
-                                                    className={`px-3 py-1.5 rounded-full text-sm ${editing
-                                                        ? 'bg-gray-100 text-gray-700 pr-1.5 group'
-                                                        : 'bg-gray-100 text-gray-700'
-                                                        }`}
-                                                >
-                                                    {interest}
-                                                    {editing && (
-                                                        <button
-                                                            className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                            onClick={() => handleRemoveInterest(index)}
-                                                        >
-                                                            <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24">
-                                                                <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            !editing && <div className="text-gray-400 italic">No interests added yet.</div>
-                                        )}
-
+                        <div className="p-4">
+                            <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                                {userData.photos && userData.photos.map((photo, index) => (
+                                    <div
+                                        key={index}
+                                        className="aspect-square rounded-lg overflow-hidden relative group"
+                                    >
+                                        <img
+                                            src={photo}
+                                            alt={`User photo ${index + 1}`}
+                                            className="w-full h-full object-cover"
+                                        />
                                         {editing && (
-                                            <button
-                                                className="px-2 py-1.5 rounded-full text-sm bg-[#FF6B81]/10 text-[#FF6B81] flex items-center hover:bg-[#FF6B81]/20 transition-colors"
-                                                onClick={handleAddInterest}
-                                            >
-                                                <Plus size={16} className="mr-1" />
-                                                Add
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div
-                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleSection('languages')}
-                            >
-                                <h2 className="text-lg font-bold text-gray-800">Languages</h2>
-                                <ChevronDown
-                                    size={20}
-                                    className={`text-gray-400 transition-transform ${expandedSection === 'languages' ? 'rotate-180' : ''
-                                        }`}
-                                />
-                            </div>
-
-                            {expandedSection === 'languages' && (
-                                <div className="p-4">
-                                    <div className="flex flex-wrap gap-2">
-                                        {formData.languages && formData.languages.length > 0 ? (
-                                            formData.languages.map((language, index) => (
-                                                <div
-                                                    key={index}
-                                                    className={`px-3 py-1.5 rounded-full text-sm ${editing
-                                                        ? 'bg-gray-100 text-gray-700 pr-1.5 group'
-                                                        : 'bg-gray-100 text-gray-700'
-                                                        }`}
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
+                                                <button
+                                                    className="p-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white"
+                                                    onClick={() => handleRemovePhoto(index)}
                                                 >
-                                                    {language}
-                                                    {editing && (
-                                                        <button
-                                                            className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                            onClick={() => handleRemoveLanguage(index)}
-                                                        >
-                                                            <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24">
-                                                                <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            !editing && <div className="text-gray-400 italic">No languages added yet.</div>
+                                                    <Edit size={16} />
+                                                </button>
+                                                <button className="p-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white">
+                                                    <ChevronRight size={16} />
+                                                </button>
+                                            </div>
                                         )}
-
-                                        {editing && (
-                                            <button
-                                                className="px-2 py-1.5 rounded-full text-sm bg-[#FF6B81]/10 text-[#FF6B81] flex items-center hover:bg-[#FF6B81]/20 transition-colors"
-                                                onClick={handleAddLanguage}
-                                            >
-                                                <Plus size={16} className="mr-1" />
-                                                Add
-                                            </button>
+                                        {index === 0 && (
+                                            <div className="absolute bottom-2 left-2 bg-[#FF6B81] text-white text-xs px-2 py-0.5 rounded-full">
+                                                Main
+                                            </div>
                                         )}
                                     </div>
-                                </div>
-                            )}
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div
-                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleSection('questions')}
-                            >
-                                <h2 className="text-lg font-bold text-gray-800">Questions</h2>
-                                <ChevronDown
-                                    size={20}
-                                    className={`text-gray-400 transition-transform ${expandedSection === 'questions' ? 'rotate-180' : ''
-                                        }`}
-                                />
+                                ))}
+                                {editing && (
+                                    <button
+                                        className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:text-gray-500 hover:border-gray-400 transition-colors"
+                                        onClick={handleAddPhoto}
+                                    >
+                                        <Camera size={24} />
+                                        <span className="mt-1 text-xs">Add Photo</span>
+                                        <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                        />
+                                    </button>
+                                )}
                             </div>
 
-                            {expandedSection === 'questions' && (
-                                <div className="p-4 space-y-5">
-                                    {formData.questions && formData.questions.length > 0 ? (
-                                        formData.questions.map((item, idx) => (
-                                            <div key={idx} className="border-l-2 border-[#FF6B81] pl-4 py-1">
-                                                <div className="text-gray-500 mb-1">{item.question}</div>
-                                                {editing ? (
-                                                    <input
-                                                        type="text"
-                                                        value={item.answer}
-                                                        onChange={(e) => handleUpdateQuestion(idx, e.target.value)}
-                                                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                                                    />
-                                                ) : (
-                                                    <div className="text-gray-700">{item.answer}</div>
+                            {editing && (
+                                <div className="mt-4 text-sm text-gray-500">
+                                    Drag to reorder. First photo will be your main profile photo.
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    <section className="bg-white rounded-xl shadow-sm">
+                        <div className="p-4 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-800">About</h2>
+                        </div>
+
+                        <div className="p-4">
+                            {editing ? (
+                                <textarea
+                                    name="bio"
+                                    value={formData.bio}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                    placeholder="Tell others about yourself..."
+                                />
+                            ) : (
+                                <div className="text-gray-700 space-y-3">
+                                    {userData.bio ? userData.bio.split('\n\n').map((paragraph, i) => (
+                                        <p key={i}>{paragraph}</p>
+                                    )) : (
+                                        <p className="text-gray-400 italic">No bio added yet.</p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div
+                            className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                            onClick={() => toggleSection('work')}
+                        >
+                            <h2 className="text-lg font-bold text-gray-800">Work & Education</h2>
+                            <ChevronDown
+                                size={20}
+                                className={`text-gray-400 transition-transform ${expandedSection === 'work' ? 'rotate-180' : ''
+                                    }`}
+                            />
+                        </div>
+
+                        {expandedSection === 'work' && (
+                            <div className="p-4 space-y-4">
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Occupation</label>
+                                    {editing ? (
+                                        <input
+                                            type="text"
+                                            name="occupation"
+                                            value={formData.occupation}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                            placeholder="What do you do?"
+                                        />
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.occupation || <span className="text-gray-400 italic">Not specified</span>}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Education</label>
+                                    {editing ? (
+                                        <input
+                                            type="text"
+                                            name="education"
+                                            value={formData.education}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                            placeholder="Your education background"
+                                        />
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.education || <span className="text-gray-400 italic">Not specified</span>}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </section>
+
+                    <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div
+                            className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                            onClick={() => toggleSection('basic')}
+                        >
+                            <h2 className="text-lg font-bold text-gray-800">Basic Info</h2>
+                            <ChevronDown
+                                size={20}
+                                className={`text-gray-400 transition-transform ${expandedSection === 'basic' ? 'rotate-180' : ''
+                                    }`}
+                            />
+                        </div>
+
+                        {expandedSection === 'basic' && (
+                            <div className="p-4 space-y-4">
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Height</label>
+                                    {editing ? (
+                                        <input
+                                            type="text"
+                                            name="height"
+                                            value={formData.height}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                            placeholder="Your height (e.g. 5'10)"
+                                        />
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.height || <span className="text-gray-400 italic">Not specified</span>}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Drinking</label>
+                                    {editing ? (
+                                        <select
+                                            name="drinking"
+                                            value={formData.drinking || ''}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        >
+                                            <option value="">Prefer not to say</option>
+                                            <option value="Non-drinker">Non-drinker</option>
+                                            <option value="Social drinker">Social drinker</option>
+                                            <option value="Regular drinker">Regular drinker</option>
+                                        </select>
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.drinking || <span className="text-gray-400 italic">Not specified</span>}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Smoking</label>
+                                    {editing ? (
+                                        <select
+                                            name="smoking"
+                                            value={formData.smoking || ''}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        >
+                                            <option value="">Prefer not to say</option>
+                                            <option value="Non-smoker">Non-smoker</option>
+                                            <option value="Social smoker">Social smoker</option>
+                                            <option value="Regular smoker">Regular smoker</option>
+                                        </select>
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.smoking || <span className="text-gray-400 italic">Not specified</span>}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Zodiac</label>
+                                    {editing ? (
+                                        <select
+                                            name="zodiac"
+                                            value={formData.zodiac || ''}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        >
+                                            <option value="">Select zodiac sign</option>
+                                            <option value="Aries">Aries</option>
+                                            <option value="Taurus">Taurus</option>
+                                            <option value="Gemini">Gemini</option>
+                                            <option value="Cancer">Cancer</option>
+                                            <option value="Leo">Leo</option>
+                                            <option value="Virgo">Virgo</option>
+                                            <option value="Libra">Libra</option>
+                                            <option value="Scorpio">Scorpio</option>
+                                            <option value="Sagittarius">Sagittarius</option>
+                                            <option value="Capricorn">Capricorn</option>
+                                            <option value="Aquarius">Aquarius</option>
+                                            <option value="Pisces">Pisces</option>
+                                        </select>
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.zodiac || <span className="text-gray-400 italic">Not specified</span>}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </section>
+
+                    <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div
+                            className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                            onClick={() => toggleSection('interests')}
+                        >
+                            <h2 className="text-lg font-bold text-gray-800">Interests</h2>
+                            <ChevronDown
+                                size={20}
+                                className={`text-gray-400 transition-transform ${expandedSection === 'interests' ? 'rotate-180' : ''
+                                    }`}
+                            />
+                        </div>
+
+                        {expandedSection === 'interests' && (
+                            <div className="p-4">
+                                <div className="flex flex-wrap gap-2">
+                                    {formData.interests && formData.interests.length > 0 ? (
+                                        formData.interests.map((interest, index) => (
+                                            <div
+                                                key={index}
+                                                className={`px-3 py-1.5 rounded-full text-sm ${editing
+                                                    ? 'bg-gray-100 text-gray-700 pr-1.5 group'
+                                                    : 'bg-gray-100 text-gray-700'
+                                                    }`}
+                                            >
+                                                {interest}
+                                                {editing && (
+                                                    <button
+                                                        className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        onClick={() => handleRemoveInterest(index)}
+                                                    >
+                                                        <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24">
+                                                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                        </svg>
+                                                    </button>
                                                 )}
                                             </div>
                                         ))
                                     ) : (
-                                        !editing && <div className="text-gray-400 italic">No questions answered yet.</div>
+                                        !editing && <div className="text-gray-400 italic">No interests added yet.</div>
                                     )}
 
                                     {editing && (
                                         <button
-                                            className="w-full mt-3 py-2 flex items-center justify-center text-[#FF6B81] bg-[#FF6B81]/5 hover:bg-[#FF6B81]/10 rounded-lg transition-colors"
-                                            onClick={handleAddQuestion}
+                                            className="px-2 py-1.5 rounded-full text-sm bg-[#FF6B81]/10 text-[#FF6B81] flex items-center hover:bg-[#FF6B81]/20 transition-colors"
+                                            onClick={handleAddInterest}
                                         >
-                                            <Plus size={16} className="mr-1.5" />
-                                            Add Another Question
+                                            <Plus size={16} className="mr-1" />
+                                            Add
                                         </button>
                                     )}
                                 </div>
-                            )}
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div
-                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleSection('accounts')}
-                            >
-                                <h2 className="text-lg font-bold text-gray-800">Connected Accounts</h2>
-                                <ChevronDown
-                                    size={20}
-                                    className={`text-gray-400 transition-transform ${expandedSection === 'accounts' ? 'rotate-180' : ''
-                                        }`}
-                                />
                             </div>
+                        )}
+                    </section>
 
-                            {expandedSection === 'accounts' && (
-                                <div className="divide-y divide-gray-100">
-                                    <div className="p-4 flex justify-between items-center">
-                                        <div className="flex items-center">
-                                            <Instagram className="text-pink-500 mr-3" size={20} />
-                                            <div>
-                                                <div className="font-medium">Instagram</div>
-                                                <div className="text-gray-500 text-sm">
-                                                    {userData.instagram || 'Not connected'}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button className="text-[#FF6B81] text-sm font-medium">
-                                            {userData.instagram ? 'Disconnect' : 'Connect'}
-                                        </button>
-                                    </div>
-
-                                    <div className="p-4 flex justify-between items-center">
-                                        <div className="flex items-center">
-                                            <Music className="text-green-500 mr-3" size={20} />
-                                            <div>
-                                                <div className="font-medium">Spotify</div>
-                                                <div className="text-gray-500 text-sm">
-                                                    {userData.spotifyArtists && userData.spotifyArtists.length > 0
-                                                        ? `${userData.spotifyArtists.length} artists connected`
-                                                        : 'Not connected'}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors">
-                                            {userData.spotifyArtists && userData.spotifyArtists.length > 0 ? 'Manage' : 'Connect'}
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </section>
-                    </div>
-                ) : (
-                    <div className="space-y-6">
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">Account</h2>
-                            </div>
-
-                            <div className="divide-y divide-gray-100">
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <User className="text-gray-400 mr-3" size={20} />
-                                        <div>Personal Information</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <CreditCard className="text-gray-400 mr-3" size={20} />
-                                        <div>
-                                            <div>Subscription</div>
-                                            <div className="text-sm text-gray-500">{userData.subscription}</div>
-                                        </div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <Heart className="text-gray-400 mr-3" size={20} />
-                                        <div>Dating Preferences</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-                            </div>
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">Privacy & Safety</h2>
-                            </div>
-
-                            <div className="divide-y divide-gray-100">
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <Shield className="text-gray-400 mr-3" size={20} />
-                                        <div>Privacy Settings</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <Lock className="text-gray-400 mr-3" size={20} />
-                                        <div>Blocked Users</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <Bell className="text-gray-400 mr-3" size={20} />
-                                        <div>
-                                            <div>Notifications</div>
-                                            <div className="text-sm text-gray-500">{userData.notifications ? 'Enabled' : 'Disabled'}</div>
-                                        </div>
-                                    </div>
-                                    <div className="relative inline-block w-10 h-6 transition-colors duration-200 ease-in-out rounded-full bg-gray-200">
-                                        <label
-                                            htmlFor="toggle"
-                                            className={`absolute left-0 w-6 h-6 transition-transform duration-200 ease-in-out transform ${userData.notifications ? 'translate-x-4 bg-[#FF6B81]' : 'translate-x-0 bg-white'
-                                                } border rounded-full cursor-pointer top-0 border-gray-200 shadow-sm`}
-                                        ></label>
-                                        <input
-                                            type="checkbox"
-                                            id="toggle"
-                                            name="toggle"
-                                            className="w-full h-full appearance-none focus:outline-none"
-                                            checked={userData.notifications}
-                                            onChange={handleToggleNotifications}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <section className="bg-white rounded-xl shadow-sm">
-                            <div className="p-4 border-b border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-800">Help & Support</h2>
-                            </div>
-
-                            <div className="divide-y divide-gray-100">
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <HelpCircle className="text-gray-400 mr-3" size={20} />
-                                        <div>Help Center</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <Settings className="text-gray-400 mr-3" size={20} />
-                                        <div>Report a Problem</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-
-                                <div className="p-4 flex justify-between items-center">
-                                    <div className="flex items-center">
-                                        <Shield className="text-gray-400 mr-3" size={20} />
-                                        <div>Community Guidelines</div>
-                                    </div>
-                                    <ChevronRight size={18} className="text-gray-400" />
-                                </div>
-                            </div>
-                        </section>
-
-                        <button
-                            className="w-full py-4 text-[#FF6B81] font-medium bg-white rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
-                            onClick={handleSignOut}
+                    <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div
+                            className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                            onClick={() => toggleSection('languages')}
                         >
-                            <div className="flex items-center justify-center">
-                                <LogOut size={18} className="mr-2" />
-                                Sign Out
-                            </div>
-                        </button>
-
-                        <div className="text-center text-gray-500 text-sm py-2">
-                            Version 1.0.0
+                            <h2 className="text-lg font-bold text-gray-800">Languages</h2>
+                            <ChevronDown
+                                size={20}
+                                className={`text-gray-400 transition-transform ${expandedSection === 'languages' ? 'rotate-180' : ''
+                                    }`}
+                            />
                         </div>
-                    </div>
-                )}
+
+                        {expandedSection === 'languages' && (
+                            <div className="p-4">
+                                <div className="flex flex-wrap gap-2">
+                                    {formData.languages && formData.languages.length > 0 ? (
+                                        formData.languages.map((language, index) => (
+                                            <div
+                                                key={index}
+                                                className={`px-3 py-1.5 rounded-full text-sm ${editing
+                                                    ? 'bg-gray-100 text-gray-700 pr-1.5 group'
+                                                    : 'bg-gray-100 text-gray-700'
+                                                    }`}
+                                            >
+                                                {language}
+                                                {editing && (
+                                                    <button
+                                                        className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        onClick={() => handleRemoveLanguage(index)}
+                                                    >
+                                                        <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24">
+                                                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                        </svg>
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        !editing && <div className="text-gray-400 italic">No languages added yet.</div>
+                                    )}
+
+                                    {editing && (
+                                        <button
+                                            className="px-2 py-1.5 rounded-full text-sm bg-[#FF6B81]/10 text-[#FF6B81] flex items-center hover:bg-[#FF6B81]/20 transition-colors"
+                                            onClick={handleAddLanguage}
+                                        >
+                                            <Plus size={16} className="mr-1" />
+                                            Add
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </section>
+
+                    <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div
+                            className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                            onClick={() => toggleSection('questions')}
+                        >
+                            <h2 className="text-lg font-bold text-gray-800">Questions</h2>
+                            <ChevronDown
+                                size={20}
+                                className={`text-gray-400 transition-transform ${expandedSection === 'questions' ? 'rotate-180' : ''
+                                    }`}
+                            />
+                        </div>
+
+                        {expandedSection === 'questions' && (
+                            <div className="p-4 space-y-5">
+                                {formData.questions && formData.questions.length > 0 ? (
+                                    formData.questions.map((item, idx) => (
+                                        <div key={idx} className="border-l-2 border-[#FF6B81] pl-4 py-1">
+                                            <div className="text-gray-500 mb-1">{item.question}</div>
+                                            {editing ? (
+                                                <input
+                                                    type="text"
+                                                    value={item.answer}
+                                                    onChange={(e) => handleUpdateQuestion(idx, e.target.value)}
+                                                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                                />
+                                            ) : (
+                                                <div className="text-gray-700">{item.answer}</div>
+                                            )}
+                                        </div>
+                                    ))
+                                ) : (
+                                    !editing && <div className="text-gray-400 italic">No questions answered yet.</div>
+                                )}
+
+                                {editing && (
+                                    <button
+                                        className="w-full mt-3 py-2 flex items-center justify-center text-[#FF6B81] bg-[#FF6B81]/5 hover:bg-[#FF6B81]/10 rounded-lg transition-colors"
+                                        onClick={handleAddQuestion}
+                                    >
+                                        <Plus size={16} className="mr-1.5" />
+                                        Add Another Question
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </section>
+
+                    <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div
+                            className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                            onClick={() => toggleSection('accounts')}
+                        >
+                            <h2 className="text-lg font-bold text-gray-800">Connected Accounts</h2>
+                            <ChevronDown
+                                size={20}
+                                className={`text-gray-400 transition-transform ${expandedSection === 'accounts' ? 'rotate-180' : ''
+                                    }`}
+                            />
+                        </div>
+
+                        {expandedSection === 'accounts' && (
+                            <div className="divide-y divide-gray-100">
+                                <div className="p-4 flex justify-between items-center">
+                                    <div className="flex items-center">
+                                        <Instagram className="text-pink-500 mr-3" size={20} />
+                                        <div>
+                                            <div className="font-medium">Instagram</div>
+                                            <div className="text-gray-500 text-sm">
+                                                {userData.instagram || 'Not connected'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className="text-[#FF6B81] text-sm font-medium">
+                                        {userData.instagram ? 'Disconnect' : 'Connect'}
+                                    </button>
+                                </div>
+
+                                <div className="p-4 flex justify-between items-center">
+                                    <div className="flex items-center">
+                                        <Music className="text-green-500 mr-3" size={20} />
+                                        <div>
+                                            <div className="font-medium">Spotify</div>
+                                            <div className="text-gray-500 text-sm">
+                                                {userData.spotifyArtists && userData.spotifyArtists.length > 0
+                                                    ? `${userData.spotifyArtists.length} artists connected`
+                                                    : 'Not connected'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors">
+                                        {userData.spotifyArtists && userData.spotifyArtists.length > 0 ? 'Manage' : 'Connect'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+                </div>
             </div>
         </div>
     );
