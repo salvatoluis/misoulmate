@@ -106,9 +106,9 @@ const ForYou: React.FC = () => {
         });
     };
 
-    const handleLike = async (id: any) => {
+    const handleLike = async (id: string) => {
         try {
-            await recommendationService.likeProfile(id);
+            await recommendationService.createInteraction(id, 'like');
             removeRecommendation(id);
         } catch (error) {
             console.error(`Error liking profile ${id}:`, error);
@@ -117,7 +117,7 @@ const ForYou: React.FC = () => {
 
     const handleSuperLike = async (id: string) => {
         try {
-            await recommendationService.superLikeProfile(id);
+            await recommendationService.createInteraction(id, 'superlike');
             removeRecommendation(id);
         } catch (error) {
             console.error(`Error super-liking profile ${id}:`, error);
@@ -126,7 +126,7 @@ const ForYou: React.FC = () => {
 
     const handlePass = async (id: string) => {
         try {
-            await recommendationService.passProfile(id);
+            await recommendationService.createInteraction(id, 'dislike');
             removeRecommendation(id);
         } catch (error) {
             console.error(`Error passing on profile ${id}:`, error);

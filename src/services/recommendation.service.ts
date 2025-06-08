@@ -54,32 +54,40 @@ const recommendationService = {
     }
   },
 
-  likeProfile: async (recommendationId: string): Promise<RecommendationActionResponse> => {
+  createInteraction: async (likedId: any, status: string) => {
     try {
-      const response = await axiosInstance.post(`/recommendations/${recommendationId}/like`);
+      const response = await axiosInstance.post('/matches/likes', { 
+        likedId,
+        status
+      });
       return response.data;
     } catch (error) {
-      console.error(`Error liking recommendation ${recommendationId}:`, error);
       throw error;
     }
   },
 
-  superLikeProfile: async (recommendationId: string): Promise<RecommendationActionResponse> => {
-    try {
-      const response = await axiosInstance.post(`/recommendations/${recommendationId}/superlike`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error super-liking recommendation ${recommendationId}:`, error);
-      throw error;
-    }
+  // Keep these as convenience methods that call the unified method
+  likeProfile: async (likedId: string) => {
+    return recommendationService.createInteraction(likedId, 'like');
   },
 
-  passProfile: async (recommendationId: string): Promise<RecommendationActionResponse> => {
+  superLikeProfile: async (likedId: string) => {
+    return recommendationService.createInteraction(likedId, 'superlike');
+  },
+
+  passProfile: async (likedId: string) => {
+    return recommendationService.createInteraction(likedId, 'dislike');
+  },
+
+  viewProfile: async (profileId: string, duration: any, source = 'recommendations') => {
     try {
-      const response = await axiosInstance.post(`/recommendations/${recommendationId}/pass`);
+      const response = await axiosInstance.post('/api/recommendations/view', {
+        profileId,
+        duration,
+        source
+      });
       return response.data;
     } catch (error) {
-      console.error(`Error passing on recommendation ${recommendationId}:`, error);
       throw error;
     }
   },

@@ -59,7 +59,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                                 <span className="text-xs mt-1">Messages</span>
                             </Link>
 
-                            <Link
+                            {/* <Link
                                 to="/date-planner"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/date-planner'
                                     ? 'text-[#FF6B81]'
@@ -68,7 +68,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             >
                                 <Calendar size={24} />
                                 <span className="text-xs mt-1">Dates</span>
-                            </Link>
+                            </Link> */}
 
                             <Link
                                 to="/profile"
