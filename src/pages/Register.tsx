@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import authService from '@/services/auth.service';
 
-// Define interest options with icons
 const interestOptions = [
     { value: 'Photography', icon: <Camera size={16} /> },
     { value: 'Reading', icon: <BookOpen size={16} /> },
@@ -28,7 +27,6 @@ const interestOptions = [
     { value: 'Yoga', icon: <User size={16} /> }
 ];
 
-// Define language options
 const languageOptions = [
     'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese',
     'Korean', 'Italian', 'Portuguese', 'Russian', 'Arabic', 'Hindi'
@@ -41,32 +39,30 @@ const Register: React.FC = () => {
     const [error, setError] = useState<string>('');
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
-    // Initialize form data to match the Joi schema
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         confirmPassword: '',
         profile: {
             name: '',
-            birthdate: '', // We'll convert this to age when submitting
+            birthdate: '',
             bio: '',
             location: '',
             photos: [] as string[],
             interests: [] as string[],
             languages: [] as string[],
-            lookingFor: 'Relationship', // Default value
-            showMe: 'Women', // Default value
-            ageRange: [25, 35] as [number, number], // Default range
-            maxDistance: 25, // Default value in miles
+            lookingFor: 'Relationship',
+            showMe: 'Women',
+            gender: '',
+            ageRange: [25, 35] as [number, number], 
+            maxDistance: 25,
             questions: [] as Array<{ question: string, answer: string }>
         }
     });
 
-    // Handle input changes for top-level fields
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        // Check if the field is a profile field
         if (name.includes('.')) {
             const [parent, field] = name.split('.');
             setFormData(prev => ({
@@ -83,7 +79,6 @@ const Register: React.FC = () => {
             }));
         }
 
-        // Clear validation error for this field
         if (validationErrors[name]) {
             setValidationErrors(prev => ({
                 ...prev,
@@ -92,7 +87,6 @@ const Register: React.FC = () => {
         }
     };
 
-    // Handle interest selection
     const toggleInterest = (interest: string) => {
         setFormData(prev => {
             const currentInterests = prev.profile.interests;
@@ -110,7 +104,6 @@ const Register: React.FC = () => {
         });
     };
 
-    // Handle language selection
     const toggleLanguage = (language: string) => {
         setFormData(prev => {
             const currentLanguages = prev.profile.languages;
@@ -128,7 +121,6 @@ const Register: React.FC = () => {
         });
     };
 
-    // Handle age range change
     const handleAgeRangeChange = (index: number, value: number) => {
         setFormData(prev => {
             const newRange = [...prev.profile.ageRange] as [number, number];
@@ -143,7 +135,6 @@ const Register: React.FC = () => {
         });
     };
 
-    // Handle adding a question
     const addQuestion = () => {
         setFormData(prev => ({
             ...prev,
@@ -157,7 +148,6 @@ const Register: React.FC = () => {
         }));
     };
 
-    // Handle updating a question
     const updateQuestion = (index: number, field: 'question' | 'answer', value: string) => {
         setFormData(prev => {
             const newQuestions = [...prev.profile.questions];
@@ -176,7 +166,6 @@ const Register: React.FC = () => {
         });
     };
 
-    // Handle removing a question
     const removeQuestion = (index: number) => {
         setFormData(prev => {
             const newQuestions = [...prev.profile.questions];
@@ -192,11 +181,8 @@ const Register: React.FC = () => {
         });
     };
 
-    // Handle file upload for photos
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            // In a real app, you would upload to a server and get back URLs
-            // For now, we'll create object URLs for preview
             const fileURL = URL.createObjectURL(e.target.files[0]);
 
             setFormData(prev => ({
@@ -209,7 +195,6 @@ const Register: React.FC = () => {
         }
     };
 
-    // Handle removing a photo
     const removePhoto = (index: number) => {
         setFormData(prev => {
             const newPhotos = [...prev.profile.photos];
@@ -236,12 +221,11 @@ const Register: React.FC = () => {
         return age;
     };
 
-    // Validate each step
     const validateStep = (): boolean => {
         const errors: Record<string, string> = {};
 
         switch (step) {
-            case 1: // Account details
+            case 1:
                 if (!formData.email) {
                     errors.email = 'Email is required';
                 } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -259,7 +243,7 @@ const Register: React.FC = () => {
                 }
                 break;
 
-            case 2: // Basic profile
+            case 2: 
                 if (!formData.profile.name) {
                     errors.name = 'Name is required';
                 }
@@ -278,13 +262,13 @@ const Register: React.FC = () => {
                 }
                 break;
 
-            case 3: // Bio and interests
+            case 3: 
                 if (formData.profile.interests.length === 0) {
                     errors.interests = 'Please select at least one interest';
                 }
                 break;
 
-            case 4: // Photos
+            case 4:
                 if (formData.profile.photos.length === 0) {
                     errors.photos = 'Please upload at least one photo';
                 }
@@ -298,14 +282,12 @@ const Register: React.FC = () => {
         return Object.keys(errors).length === 0;
     };
 
-    // Go to next step
     const nextStep = () => {
         if (validateStep()) {
             setStep(step + 1);
         }
     };
 
-    // Go to previous step
     const prevStep = () => {
         setStep(step - 1);
     };
@@ -324,11 +306,9 @@ const Register: React.FC = () => {
         });
     };
 
-    // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Final validation
         if (!validateStep()) {
             return;
         }
@@ -341,7 +321,6 @@ const Register: React.FC = () => {
                 formData.profile.photos.map(photo => convertBlobToBase64(photo))
             );
 
-            // Calculate age from birthdate
             const age = calculateAge(formData.profile.birthdate);
 
             const { birthdate, ...profileWithoutBirthdate } = formData.profile;
@@ -350,7 +329,7 @@ const Register: React.FC = () => {
                 password: formData.password,
                 profile: {
                     ...profileWithoutBirthdate,
-                    photos: base64Photos, // Use base64 photos instead of blob URLs
+                    photos: base64Photos,
                     age,
                     questions: formData.profile.questions.filter(
                         q => q.question.trim() !== '' && q.answer.trim() !== ''
@@ -358,18 +337,15 @@ const Register: React.FC = () => {
                 }
             };
 
-            // Call register API
             await authService.register(registerData);
 
             navigate('/matches');
         } catch (err: any) {
             console.error('Registration error:', err);
 
-            // Handle API error responses
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);
             } else if (err.response && err.response.data && err.response.data.errors) {
-                // Handle validation errors from API
                 const apiErrors = err.response.data.errors;
                 const formattedErrors: Record<string, string> = {};
 
@@ -380,7 +356,6 @@ const Register: React.FC = () => {
 
                 setValidationErrors(formattedErrors);
 
-                // Go to the appropriate step based on the error
                 if (formattedErrors.email || formattedErrors.password) {
                     setStep(1);
                 } else if (formattedErrors.name || formattedErrors.age || formattedErrors.location) {
@@ -400,7 +375,6 @@ const Register: React.FC = () => {
         }
     };
 
-    // Render progress indicator
     const renderProgress = () => {
         return (
             <div className="flex justify-between items-center mb-8">
@@ -428,7 +402,6 @@ const Register: React.FC = () => {
         );
     };
 
-    // Render step titles
     const getStepTitle = () => {
         switch (step) {
             case 1:
@@ -446,7 +419,6 @@ const Register: React.FC = () => {
         }
     };
 
-    // Render form based on current step
     const renderForm = () => {
         switch (step) {
             case 1:
@@ -804,6 +776,23 @@ const Register: React.FC = () => {
                                 <option value="Casual">Casual Dating</option>
                                 <option value="Friendship">Friendship</option>
                                 <option value="Marriage">Marriage</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm text-gray-700 mb-1" htmlFor="profile.gender">
+                                Gender
+                            </label>
+                            <select
+                                id="profile.gender"
+                                name="profile.gender"
+                                value={formData.profile.gender}
+                                onChange={handleChange}
+                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                            >
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
 

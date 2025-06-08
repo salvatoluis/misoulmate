@@ -22,9 +22,9 @@ const profileService = {
     }
   },
 
-  updateProfile: async (profileData: Profile): Promise<Profile> => {
+  updateProfile: async (profileData: any, id: string): Promise<any> => {
     try {
-      const response = await axiosInstance.put<ApiResponse<Profile>>('/profile', profileData);
+      const response = await axiosInstance.patch<ApiResponse<Profile>>(`/profiles/${id}`, profileData);
       return response.data.data;
     } catch (error) {
       console.error('Error updating profile:', error);

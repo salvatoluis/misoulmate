@@ -1,6 +1,5 @@
 import { Profile, ValidationResult } from "@/types/profile.type";
 
-// Define schema rules
 interface SchemaRule {
   required: boolean;
   type: 'string' | 'number' | 'array' | 'object' | 'boolean';
@@ -10,13 +9,13 @@ interface SchemaRule {
   length?: number;
 }
 
-// Schema that matches the backend Joi schema
 const profileSchema: Record<keyof Profile | string, SchemaRule> = {
   name: { required: true, type: 'string' },
   age: { required: false, type: 'number', min: 18 },
   bio: { required: false, type: 'string' },
   location: { required: false, type: 'string' },
   occupation: { required: false, type: 'string' },
+  gender: { required: false, type: 'string' },
   education: { required: false, type: 'string' },
   height: { required: false, type: 'string' },
   photos: { required: false, type: 'array' },
@@ -94,13 +93,7 @@ export const validateProfile = (data: Partial<Profile>): ValidationResult => {
   };
 };
 
-/**
- * Prepare profile data for API submission by ensuring it matches the schema
- * @param {object} userData - User data from form
- * @returns {Profile} Cleaned data object ready for API
- */
 export const prepareProfileData = (userData: Record<string, any>): Profile => {
-  // Extract only the fields that are in the schema
   const cleanData: Partial<Profile> = {};
   
   Object.keys(profileSchema).forEach(field => {
@@ -109,7 +102,6 @@ export const prepareProfileData = (userData: Record<string, any>): Profile => {
     }
   });
   
-  // Ensure name exists as it's required by the schema
   if (!cleanData.name && userData.name) {
     cleanData.name = userData.name;
   }

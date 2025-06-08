@@ -10,7 +10,7 @@ interface UseProfileApiReturn {
   validationErrors: string[];
   fetchProfile: () => Promise<Profile | null>;
   createProfile: (data: Record<string, any>) => Promise<Profile | null>;
-  updateProfile: (data: Record<string, any>) => Promise<Profile | null>;
+  updateProfile: (data: Record<string, any>, id: string) => Promise<Profile | null>;
   uploadPhoto: (file: File) => Promise<string | null>;
   deletePhoto: (photoUrl: string) => Promise<boolean>;
   reorderPhotos: (photoUrls: string[]) => Promise<string[] | null>;
@@ -18,9 +18,6 @@ interface UseProfileApiReturn {
   clearError: () => void;
 }
 
-/**
- * Custom hook for profile API operations
- */
 const useProfileApi = (): UseProfileApiReturn => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,9 +28,7 @@ const useProfileApi = (): UseProfileApiReturn => {
     setError(null);
   }, []);
 
-  /**
-   * Fetch user profile
-   */
+
   const fetchProfile = useCallback(async (): Promise<Profile | null> => {
     try {
       setLoading(true);
@@ -58,7 +53,6 @@ const useProfileApi = (): UseProfileApiReturn => {
       setValidationErrors([]);
       const apiData = prepareProfileData(data);
       
-      // Send to API
       const newProfile = await profileService.createProfile(apiData);
       
       setProfile(newProfile);
@@ -72,40 +66,36 @@ const useProfileApi = (): UseProfileApiReturn => {
     }
   }, []);
 
-  /**
-   * Update user profile
-   */
-  const updateProfile = useCallback(async (data: Record<string, any>): Promise<Profile | null> => {
-    try {
-      setLoading(true);
-      setError(null);
-      setValidationErrors([]);
-      
-      // Validate data
-      const validation = validateProfile(data);
-      
-      if (!validation.isValid) {
-        setValidationErrors(validation.errors);
+  const updateProfile = useCallback(
+    async (data: Record<string, any>, id: string): Promise<Profile | null> => {
+      try {
+        setLoading(true);
+        setError(null);
+        setValidationErrors([]);
+  
+        const validation = validateProfile(data);
+        if (!validation.isValid) {
+          setValidationErrors(validation.errors);
+          setLoading(false);
+          return null;
+        }
+  
+        const apiData = prepareProfileData(data);
+        const updatedProfile = await profileService.updateProfile(apiData, id);
+  
+        setProfile(updatedProfile);
+        setLoading(false);
+        return updatedProfile;
+      } catch (err) {
+        console.error('Error updating profile:', err);
+        setError('Failed to update profile. Please try again.');
         setLoading(false);
         return null;
       }
-      
-      // Prepare data for API
-      const apiData = prepareProfileData(data);
-      
-      // Send to API
-      const updatedProfile = await profileService.updateProfile(apiData);
-      
-      setProfile(updatedProfile);
-      setLoading(false);
-      return updatedProfile;
-    } catch (err) {
-      console.error('Error updating profile:', err);
-      setError('Failed to update profile. Please try again.');
-      setLoading(false);
-      return null;
-    }
-  }, []);
+    },
+    []
+  );
+  
 
   /**
    * Upload a photo

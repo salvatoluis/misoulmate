@@ -175,7 +175,17 @@ const matchService = {
       console.error(`Error blocking match ${matchId}:`, error);
       throw error;
     }
-  }
+  },
+
+  getRecommendations: async (filters?: any): Promise<any> => {
+    try {
+      const response = await axiosInstance.get('/recommendations', { params: filters });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+      throw error;
+    }
+  },
 };
 
 export default matchService;

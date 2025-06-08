@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, MessageCircle, Filter, Search, User, MapPin, Coffee, Music, BookOpen, Camera, Film, ChevronDown, ChevronUp, Sliders, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { conversationService, matchService } from '@/services';
+import axios from 'axios';
 
 const interestIcons: Record<string, React.ReactNode> = {
     Photography: <Camera size={16} />,
@@ -49,6 +50,7 @@ const Matches: React.FC = () => {
     const [expandedCard, setExpandedCard] = useState<number | null>(null);
     const [selectedPhoto, setSelectedPhoto] = useState<Record<number, number>>({});
     const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState<any>([]);
     const [filters, setFilters] = useState<FilterState>({
         ageRange: [20, 40],
         distance: 30,
@@ -57,6 +59,19 @@ const Matches: React.FC = () => {
     });
     const navigate = useNavigate();
 
+    const fetchData = async () => {
+        try {
+            const response = await matchService.getRecommendations();
+            console.log(response)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+
+    useEffect(() => {
+        fetchData();
+    }, []);
     useEffect(() => {
         const fetchMatches = async () => {
             try {
@@ -108,8 +123,8 @@ const Matches: React.FC = () => {
         } catch (error) {
             console.error(`Error passing on match ${id}:`, error);
         }
-      };
-    
+    };
+
     const handleMessage = async (matchId: number) => {
         try {
             // Either navigate to existing conversation or start a new one
@@ -120,7 +135,7 @@ const Matches: React.FC = () => {
         } catch (error) {
             console.error(`Error starting conversation with match ${matchId}:`, error);
         }
-      };
+    };
 
     const toggleFilters = () => {
         setFilters({

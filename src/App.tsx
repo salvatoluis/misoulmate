@@ -55,8 +55,7 @@ const App: React.FC = () => {
   };
 
   return (
-   <>
-      {loading && <Loader onFinished={() => setLoading(false)} />}
+    <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
@@ -209,7 +208,7 @@ const App: React.FC = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
-   </>
+    </>
   );
 };
 

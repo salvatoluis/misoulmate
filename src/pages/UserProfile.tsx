@@ -2,14 +2,12 @@ import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import {
     Camera, Edit, ChevronRight, LogOut, Bell, Shield,
     CreditCard, Heart, User, Lock, Settings, HelpCircle,
-    ChevronDown, Plus, ArrowLeft, Instagram,
-    Music, AlertTriangle
+    ChevronDown, Plus, ArrowLeft, Instagram, Music, AlertTriangle
 } from 'lucide-react';
-import { ExtendedProfile, ProfileFormData, ProfileQuestion } from '@/types/profile.type';
+import { ExtendedProfile, ProfileQuestion } from '@/types/profile.type';
 import useProfileApi from '@/hooks/useProfileAPI';
 import profileService from '@/services/profile.service';
 
-// Default user data for new profiles
 const defaultUserData: ExtendedProfile = {
     name: "",
     photos: [],
@@ -26,9 +24,7 @@ const UserProfile: React.FC = () => {
     const [editing, setEditing] = useState<boolean>(false);
     const [expandedSection, setExpandedSection] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [isNewProfile, setIsNewProfile] = useState<boolean>(false);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
 
     const {
         loading,
@@ -36,20 +32,27 @@ const UserProfile: React.FC = () => {
         validationErrors,
         updateProfile,
         uploadPhoto,
-        deletePhoto,
-        createProfile
+        deletePhoto
     } = useProfileApi();
 
-    const [formData, setFormData] = useState<ProfileFormData>({
+    const [formData, setFormData] = useState<any>({
+        name: '',
+        age: '',
+        gender: '',
         bio: '',
         occupation: '',
         education: '',
+        location: '',
         interests: [],
         languages: [],
         height: '',
         drinking: '',
         smoking: '',
         zodiac: '',
+        lookingFor: '',
+        showMe: '',
+        ageRange: [25, 35],
+        maxDistance: 25,
         questions: []
     });
 
@@ -61,27 +64,28 @@ const UserProfile: React.FC = () => {
                     setUserData({ ...profile, notifications: true, subscription: profile.subscription || "Free" });
                     setFormData({
                         name: profile.name || '',
+                        age: profile.age || '',
+                        gender: profile.gender || '',
                         bio: profile.bio || '',
                         occupation: profile.occupation || '',
                         education: profile.education || '',
+                        location: profile.location || '',
                         interests: [...(profile.interests || [])],
                         languages: [...(profile.languages || [])],
                         height: profile.height || '',
                         drinking: profile.drinking || '',
                         smoking: profile.smoking || '',
                         zodiac: profile.zodiac || '',
+                        lookingFor: profile.lookingFor || '',
+                        showMe: profile.showMe || 'Everyone',
+                        ageRange: profile.ageRange || [25, 35],
+                        maxDistance: profile.maxDistance || 25,
                         questions: profile.questions ? [...profile.questions] : []
                     });
-                    setIsNewProfile(false);
-                } else {
-                    setIsNewProfile(true);
-                    setEditing(true);
                 }
-
                 setIsLoaded(true);
             } catch (err) {
                 console.error("Failed to fetch profile", err);
-
                 setIsLoaded(true);
             }
         };
@@ -94,6 +98,30 @@ const UserProfile: React.FC = () => {
         setFormData({
             ...formData,
             [name]: value
+        });
+    };
+
+    const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: parseInt(value, 10)
+        });
+    };
+
+    const handleMinAgeChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const minAge = parseInt(e.target.value, 10);
+        setFormData({
+            ...formData,
+            ageRange: [minAge, formData.ageRange ? formData.ageRange[1] : 35]
+        });
+    };
+
+    const handleMaxAgeChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const maxAge = parseInt(e.target.value, 10);
+        setFormData({
+            ...formData,
+            ageRange: [formData.ageRange ? formData.ageRange[0] : 25, maxAge]
         });
     };
 
@@ -126,7 +154,6 @@ const UserProfile: React.FC = () => {
         const success = await deletePhoto(photoUrl);
 
         if (success) {
-            // Update user data by removing the photo
             const updatedPhotos = userData.photos.filter((_, i) => i !== index);
             setUserData({
                 ...userData,
@@ -140,7 +167,6 @@ const UserProfile: React.FC = () => {
     };
 
     const handleAddInterest = () => {
-        // Simple implementation - in a real app, you'd show a modal or input field
         const newInterest = prompt("Add a new interest:");
         if (newInterest && newInterest.trim()) {
             setFormData({
@@ -156,6 +182,25 @@ const UserProfile: React.FC = () => {
         setFormData({
             ...formData,
             interests: updatedInterests
+        });
+    };
+
+    const handleAddLanguage = () => {
+        const newLanguage = prompt("Add a language:");
+        if (newLanguage && newLanguage.trim()) {
+            setFormData({
+                ...formData,
+                languages: [...(formData.languages || []), newLanguage.trim()]
+            });
+        }
+    };
+
+    const handleRemoveLanguage = (index: number) => {
+        const updatedLanguages = [...(formData.languages || [])];
+        updatedLanguages.splice(index, 1);
+        setFormData({
+            ...formData,
+            languages: updatedLanguages
         });
     };
 
@@ -175,7 +220,6 @@ const UserProfile: React.FC = () => {
     };
 
     const handleAddQuestion = () => {
-        // Simple implementation - in a real app, you'd show a modal with input fields
         const question = prompt("Enter a new question:");
         const answer = prompt("Enter your answer:");
 
@@ -194,34 +238,21 @@ const UserProfile: React.FC = () => {
 
     const toggleEdit = () => {
         if (editing) {
-            // Save changes
             saveChanges();
         } else {
-            // Enter edit mode
             setEditing(true);
         }
     };
 
     const saveChanges = async () => {
-        // Prepare data for API
         const updatedProfile = {
             ...userData,
             ...formData
         };
 
-        // If it's a new profile, create it, otherwise update it
-        let profile;
-        if (isNewProfile) {
-            profile = await createProfile(updatedProfile);
-            if (profile) {
-                setIsNewProfile(false);
-            }
-        } else {
-            profile = await updateProfile(updatedProfile);
-        }
+        const profile = await updateProfile(updatedProfile, userData.id || '');
 
         if (profile) {
-            // Update local state with response data
             setUserData({
                 ...profile,
                 notifications: userData.notifications,
@@ -233,7 +264,6 @@ const UserProfile: React.FC = () => {
     };
 
     const handleSignOut = () => {
-        // Handle sign out logic
         localStorage.removeItem('authToken');
         alert("User signed out");
         // Redirect to login page
@@ -241,8 +271,6 @@ const UserProfile: React.FC = () => {
 
     const handleToggleNotifications = async () => {
         try {
-            // This would typically use the updateSettings method from the hook
-            // For now, just update the local state
             setUserData({
                 ...userData,
                 notifications: !userData.notifications
@@ -252,7 +280,6 @@ const UserProfile: React.FC = () => {
         }
     };
 
-    // If profile is still loading, show loading spinner
     if (!isLoaded && !loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -278,10 +305,7 @@ const UserProfile: React.FC = () => {
                 <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 flex items-center shadow-md">
                     <AlertTriangle size={18} className="mr-2" />
                     <span>{error}</span>
-                    <button
-                        className="ml-4 text-red-700"
-                    // onClick={() => setError(null)}
-                    >
+                    <button className="ml-4 text-red-700">
                         &times;
                     </button>
                 </div>
@@ -294,7 +318,7 @@ const UserProfile: React.FC = () => {
                             <ArrowLeft size={24} className="text-gray-700" />
                         </button>
                         <h1 className="text-xl font-bold text-gray-800">
-                            {isNewProfile ? 'Create Profile' : 'Profile & Settings'}
+                            Profile & Settings
                         </h1>
                     </div>
                     {activeTab === 'profile' && (
@@ -306,41 +330,39 @@ const UserProfile: React.FC = () => {
                             onClick={toggleEdit}
                             disabled={loading}
                         >
-                            {editing ? (isNewProfile ? 'Create' : 'Save') : 'Edit'}
+                            {editing ? 'Save' : 'Edit'}
                         </button>
                     )}
                 </div>
 
-                {!isNewProfile && (
-                    <div className="border-b border-gray-200">
-                        <div className="container mx-auto px-4 flex">
-                            <button
-                                className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'profile'
-                                    ? 'text-[#FF6B81]'
-                                    : 'text-gray-500 hover:text-gray-700'
-                                    } transition-colors`}
-                                onClick={() => setActiveTab('profile')}
-                            >
-                                Profile
-                                {activeTab === 'profile' && (
-                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF6B81]"></div>
-                                )}
-                            </button>
-                            <button
-                                className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'settings'
-                                    ? 'text-[#FF6B81]'
-                                    : 'text-gray-500 hover:text-gray-700'
-                                    } transition-colors`}
-                                onClick={() => setActiveTab('settings')}
-                            >
-                                Settings
-                                {activeTab === 'settings' && (
-                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF6B81]"></div>
-                                )}
-                            </button>
-                        </div>
+                <div className="border-b border-gray-200">
+                    <div className="container mx-auto px-4 flex">
+                        <button
+                            className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'profile'
+                                ? 'text-[#FF6B81]'
+                                : 'text-gray-500 hover:text-gray-700'
+                                } transition-colors`}
+                            onClick={() => setActiveTab('profile')}
+                        >
+                            Profile
+                            {activeTab === 'profile' && (
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF6B81]"></div>
+                            )}
+                        </button>
+                        <button
+                            className={`py-3 px-4 text-sm font-medium relative ${activeTab === 'settings'
+                                ? 'text-[#FF6B81]'
+                                : 'text-gray-500 hover:text-gray-700'
+                                } transition-colors`}
+                            onClick={() => setActiveTab('settings')}
+                        >
+                            Settings
+                            {activeTab === 'settings' && (
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF6B81]"></div>
+                            )}
+                        </button>
                     </div>
-                )}
+                </div>
             </header>
 
             {/* Validation errors */}
@@ -357,30 +379,20 @@ const UserProfile: React.FC = () => {
                 </div>
             )}
 
-            {/* New Profile Creation Message */}
-            {isNewProfile && (
-                <div className="container mx-auto px-4 mt-4">
-                    <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-6">
-                        <p className="font-bold">Welcome! Let's set up your profile.</p>
-                        <p>Please fill in the required information to get started.</p>
-                    </div>
-                </div>
-            )}
-
             <div className="container mx-auto px-4 pt-6 pb-20">
-                {(activeTab === 'profile' || isNewProfile) ? (
+                {activeTab === 'profile' ? (
                     <div className="space-y-6">
-                        {/* Basic Information (Required for new profiles) */}
-                        {isNewProfile && (
-                            <section className="bg-white rounded-xl shadow-sm">
-                                <div className="p-4 border-b border-gray-100">
-                                    <h2 className="text-lg font-bold text-gray-800">Basic Information</h2>
-                                </div>
-                                <div className="p-4 space-y-4">
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Name <span className="text-red-500">*</span>
-                                        </label>
+                        {/* Basic Information */}
+                        <section className="bg-white rounded-xl shadow-sm">
+                            <div className="p-4 border-b border-gray-100">
+                                <h2 className="text-lg font-bold text-gray-800">Basic Information</h2>
+                            </div>
+                            <div className="p-4 space-y-4">
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">
+                                        Name <span className="text-red-500">*</span>
+                                    </label>
+                                    {editing ? (
                                         <input
                                             type="text"
                                             name="name"
@@ -390,21 +402,48 @@ const UserProfile: React.FC = () => {
                                             placeholder="Your name"
                                             required
                                         />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Age</label>
+                                    ) : (
+                                        <div className="text-gray-700">{userData.name}</div>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Age</label>
+                                    {editing ? (
                                         <input
                                             type="number"
                                             name="age"
                                             value={formData.age || ''}
-                                            onChange={handleChange}
+                                            onChange={handleNumberChange}
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
                                             placeholder="Your age"
                                             min="18"
                                         />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">Location</label>
+                                    ) : (
+                                        <div className="text-gray-700">{userData.age || 'Not specified'}</div>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Gender</label>
+                                    {editing ? (
+                                        <select
+                                            name="gender"
+                                            value={formData.gender || ''}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        >
+                                            <option value="">Select gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="non-binary">Non-binary</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    ) : (
+                                        <div className="text-gray-700">{userData.gender || 'Not specified'}</div>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Location</label>
+                                    {editing ? (
                                         <input
                                             type="text"
                                             name="location"
@@ -413,10 +452,102 @@ const UserProfile: React.FC = () => {
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
                                             placeholder="City, State"
                                         />
-                                    </div>
+                                    ) : (
+                                        <div className="text-gray-700">{userData.location || 'Not specified'}</div>
+                                    )}
                                 </div>
-                            </section>
-                        )}
+                            </div>
+                        </section>
+
+                        {/* Dating Preferences */}
+                        <section className="bg-white rounded-xl shadow-sm">
+                            <div className="p-4 border-b border-gray-100">
+                                <h2 className="text-lg font-bold text-gray-800">Dating Preferences</h2>
+                            </div>
+                            <div className="p-4 space-y-4">
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Looking For</label>
+                                    {editing ? (
+                                        <select
+                                            name="lookingFor"
+                                            value={formData.lookingFor || ''}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        >
+                                            <option value="">Select what you're looking for</option>
+                                            <option value="Relationship">Relationship</option>
+                                            <option value="Casual">Casual</option>
+                                            <option value="Friendship">Friendship</option>
+                                            <option value="Not sure yet">Not sure yet</option>
+                                        </select>
+                                    ) : (
+                                        <div className="text-gray-700">{userData.lookingFor || 'Not specified'}</div>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Show Me</label>
+                                    {editing ? (
+                                        <select
+                                            name="showMe"
+                                            value={formData.showMe || ''}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                        >
+                                            <option value="Everyone">Everyone</option>
+                                            <option value="Women">Women</option>
+                                            <option value="Men">Men</option>
+                                            <option value="Non-binary">Non-binary</option>
+                                        </select>
+                                    ) : (
+                                        <div className="text-gray-700">{userData.showMe || 'Everyone'}</div>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Age Range</label>
+                                    {editing ? (
+                                        <div className="flex items-center space-x-2">
+                                            <input
+                                                type="number"
+                                                value={formData.ageRange ? formData.ageRange[0] : 25}
+                                                onChange={handleMinAgeChange}
+                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                                min="18"
+                                                max="100"
+                                            />
+                                            <span>to</span>
+                                            <input
+                                                type="number"
+                                                value={formData.ageRange ? formData.ageRange[1] : 35}
+                                                onChange={handleMaxAgeChange}
+                                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                                min="18"
+                                                max="100"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="text-gray-700">
+                                            {userData.ageRange ? `${userData.ageRange[0]} to ${userData.ageRange[1]}` : 'Not specified'}
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Maximum Distance (miles)</label>
+                                    {editing ? (
+                                        <input
+                                            type="number"
+                                            name="maxDistance"
+                                            value={formData.maxDistance || 25}
+                                            onChange={handleNumberChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                                            min="1"
+                                            max="100"
+                                        />
+                                    ) : (
+                                        <div className="text-gray-700">{userData.maxDistance || 25} miles</div>
+                                    )}
+                                </div>
+                            </div>
+                        </section>
 
                         <section className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 border-b border-gray-100">
@@ -476,12 +607,6 @@ const UserProfile: React.FC = () => {
                                 {editing && (
                                     <div className="mt-4 text-sm text-gray-500">
                                         Drag to reorder. First photo will be your main profile photo.
-                                    </div>
-                                )}
-
-                                {isNewProfile && !userData.photos?.length && (
-                                    <div className="mt-4 text-sm text-gray-500">
-                                        Adding at least one photo is highly recommended.
                                     </div>
                                 )}
                             </div>
@@ -734,6 +859,62 @@ const UserProfile: React.FC = () => {
                         <section className="bg-white rounded-xl shadow-sm overflow-hidden">
                             <div
                                 className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleSection('languages')}
+                            >
+                                <h2 className="text-lg font-bold text-gray-800">Languages</h2>
+                                <ChevronDown
+                                    size={20}
+                                    className={`text-gray-400 transition-transform ${expandedSection === 'languages' ? 'rotate-180' : ''
+                                        }`}
+                                />
+                            </div>
+
+                            {expandedSection === 'languages' && (
+                                <div className="p-4">
+                                    <div className="flex flex-wrap gap-2">
+                                        {formData.languages && formData.languages.length > 0 ? (
+                                            formData.languages.map((language, index) => (
+                                                <div
+                                                    key={index}
+                                                    className={`px-3 py-1.5 rounded-full text-sm ${editing
+                                                        ? 'bg-gray-100 text-gray-700 pr-1.5 group'
+                                                        : 'bg-gray-100 text-gray-700'
+                                                        }`}
+                                                >
+                                                    {language}
+                                                    {editing && (
+                                                        <button
+                                                            className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                            onClick={() => handleRemoveLanguage(index)}
+                                                        >
+                                                            <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24">
+                                                                <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                            </svg>
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            !editing && <div className="text-gray-400 italic">No languages added yet.</div>
+                                        )}
+
+                                        {editing && (
+                                            <button
+                                                className="px-2 py-1.5 rounded-full text-sm bg-[#FF6B81]/10 text-[#FF6B81] flex items-center hover:bg-[#FF6B81]/20 transition-colors"
+                                                onClick={handleAddLanguage}
+                                            >
+                                                <Plus size={16} className="mr-1" />
+                                                Add
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </section>
+
+                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                            <div
+                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
                                 onClick={() => toggleSection('questions')}
                             >
                                 <h2 className="text-lg font-bold text-gray-800">Questions</h2>
@@ -779,69 +960,55 @@ const UserProfile: React.FC = () => {
                             )}
                         </section>
 
-                        {!isNewProfile && (
-                            <section className="bg-white rounded-xl shadow-sm overflow-hidden">
-                                <div
-                                    className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
-                                    onClick={() => toggleSection('accounts')}
-                                >
-                                    <h2 className="text-lg font-bold text-gray-800">Connected Accounts</h2>
-                                    <ChevronDown
-                                        size={20}
-                                        className={`text-gray-400 transition-transform ${expandedSection === 'accounts' ? 'rotate-180' : ''
-                                            }`}
-                                    />
-                                </div>
-
-                                {expandedSection === 'accounts' && (
-                                    <div className="divide-y divide-gray-100">
-                                        <div className="p-4 flex justify-between items-center">
-                                            <div className="flex items-center">
-                                                <Instagram className="text-pink-500 mr-3" size={20} />
-                                                <div>
-                                                    <div className="font-medium">Instagram</div>
-                                                    <div className="text-gray-500 text-sm">
-                                                        {userData.instagram || 'Not connected'}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button className="text-[#FF6B81] text-sm font-medium">
-                                                {userData.instagram ? 'Disconnect' : 'Connect'}
-                                            </button>
-                                        </div>
-
-                                        <div className="p-4 flex justify-between items-center">
-                                            <div className="flex items-center">
-                                                <Music className="text-green-500 mr-3" size={20} />
-                                                <div>
-                                                    <div className="font-medium">Spotify</div>
-                                                    <div className="text-gray-500 text-sm">
-                                                        {userData.spotifyArtists && userData.spotifyArtists.length > 0
-                                                            ? `${userData.spotifyArtists.length} artists connected`
-                                                            : 'Not connected'}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors">
-                                                {userData.spotifyArtists && userData.spotifyArtists.length > 0 ? 'Manage' : 'Connect'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </section>
-                        )}
-
-                        {isNewProfile && (
-                            <div className="mt-6">
-                                <button
-                                    className="w-full py-3 bg-[#FF6B81] text-white rounded-xl font-medium hover:bg-[#FF5A70] transition-colors"
-                                    onClick={saveChanges}
-                                    disabled={loading}
-                                >
-                                    Create Profile
-                                </button>
+                        <section className="bg-white rounded-xl shadow-sm overflow-hidden">
+                            <div
+                                className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
+                                onClick={() => toggleSection('accounts')}
+                            >
+                                <h2 className="text-lg font-bold text-gray-800">Connected Accounts</h2>
+                                <ChevronDown
+                                    size={20}
+                                    className={`text-gray-400 transition-transform ${expandedSection === 'accounts' ? 'rotate-180' : ''
+                                        }`}
+                                />
                             </div>
-                        )}
+
+                            {expandedSection === 'accounts' && (
+                                <div className="divide-y divide-gray-100">
+                                    <div className="p-4 flex justify-between items-center">
+                                        <div className="flex items-center">
+                                            <Instagram className="text-pink-500 mr-3" size={20} />
+                                            <div>
+                                                <div className="font-medium">Instagram</div>
+                                                <div className="text-gray-500 text-sm">
+                                                    {userData.instagram || 'Not connected'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className="text-[#FF6B81] text-sm font-medium">
+                                            {userData.instagram ? 'Disconnect' : 'Connect'}
+                                        </button>
+                                    </div>
+
+                                    <div className="p-4 flex justify-between items-center">
+                                        <div className="flex items-center">
+                                            <Music className="text-green-500 mr-3" size={20} />
+                                            <div>
+                                                <div className="font-medium">Spotify</div>
+                                                <div className="text-gray-500 text-sm">
+                                                    {userData.spotifyArtists && userData.spotifyArtists.length > 0
+                                                        ? `${userData.spotifyArtists.length} artists connected`
+                                                        : 'Not connected'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors">
+                                            {userData.spotifyArtists && userData.spotifyArtists.length > 0 ? 'Manage' : 'Connect'}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </section>
                     </div>
                 ) : (
                     <div className="space-y-6">
