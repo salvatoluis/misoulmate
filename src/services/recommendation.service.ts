@@ -66,7 +66,6 @@ const recommendationService = {
     }
   },
 
-  // Keep these as convenience methods that call the unified method
   likeProfile: async (likedId: string) => {
     return recommendationService.createInteraction(likedId, 'like');
   },
