@@ -204,9 +204,9 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="relative w-16 h-16">
-                    <div className="absolute inset-0 rounded-full border-2 border-[#FF6B81] border-t-transparent animate-spin" />
+                    <div className="absolute inset-0 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <Heart size={20} className="text-[#FF6B81]" />
+                        <Heart size={20} className="text-green-600" />
                     </div>
                 </div>
             </div>
@@ -216,7 +216,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
     if (error || !otherUser || !otherUser.profile) {
         return (
             <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 text-center">
-                <AlertTriangle size={40} className="text-[#FF6B81] mb-4" />
+                <AlertTriangle size={40} className="text-green-600 mb-4" />
                 <h2 className="text-xl font-bold text-gray-800 mb-2">
                     {error || "Profile not found"}
                 </h2>
@@ -225,7 +225,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                 </p>
                 <div className="flex gap-3">
                     <button
-                        className="px-5 py-2 bg-[#FF6B81] text-white rounded-lg hover:bg-[#FF6B81]/90 transition-colors"
+                        className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-600/90 transition-colors"
                         onClick={() => navigate('/matches')}
                     >
                         Back to Matches
@@ -249,7 +249,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
     if (!profile.photos || profile.photos.length === 0) {
         return (
             <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 text-center">
-                <AlertTriangle size={40} className="text-[#FF6B81] mb-4" />
+                <AlertTriangle size={40} className="text-green-600 mb-4" />
                 <h2 className="text-xl font-bold text-gray-800 mb-2">
                     No photos available
                 </h2>
@@ -257,7 +257,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                     This profile doesn't have any photos yet.
                 </p>
                 <button
-                    className="px-5 py-2 bg-[#FF6B81] text-white rounded-lg"
+                    className="px-5 py-2 bg-green-600 text-white rounded-lg"
                     onClick={() => navigate('/matches')}
                 >
                     Back to Matches
@@ -318,7 +318,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                             src={profile.photos[safePhotoIndex]}
                             alt={`${profile.name} photo ${safePhotoIndex + 1}`}
                             className="w-full h-full object-cover"
-                            onError={(e: any) => {
+                            onError={() => {
                                 console.error('Image failed to load:', profile.photos[safePhotoIndex]);
                             }}
                         />
@@ -339,7 +339,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                     ))}
                 </div>
 
-                <div className="absolute top-24 right-4 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-lg flex items-center gap-1.5">
+                <div className="absolute top-24 right-4 bg-gradient-to-r from-green-600 to-green-700 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-lg flex items-center gap-1.5">
                     <Heart size={14} className="fill-white" /> {match?.compatibilityScore || 0}% Match
                 </div>
 
@@ -523,7 +523,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                                 </h2>
                                 <div className="space-y-5">
                                     {profile.questions.map((item: any, idx: any) => (
-                                        <div key={idx} className="border-l-2 border-[#FF6B81] pl-4 py-1">
+                                        <div key={idx} className="border-l-2 border-green-600 pl-4 py-1">
                                             <div className="text-gray-500 mb-1">{item.question}</div>
                                             <div className="text-gray-800">{item.answer}</div>
                                         </div>
@@ -574,7 +574,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                                     <X size={24} className="text-gray-500" />
                                 </button>
                                 <button
-                                    className="flex-grow h-14 rounded-full bg-[#FF6B81]/10 hover:bg-[#FF6B81]/20 text-[#FF6B81] flex items-center justify-center gap-2 transition-colors font-medium"
+                                    className="flex-grow h-14 rounded-full bg-green-600/10 hover:bg-green-600/20 text-green-600 flex items-center justify-center gap-2 transition-colors font-medium"
                                     onClick={() => {
                                         const textarea = document.getElementById('message-textarea');
                                         if (textarea) textarea.focus();
@@ -591,13 +591,13 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                                     <textarea
                                         id="message-textarea"
                                         placeholder="Type your message..."
-                                        className="w-full p-4 pr-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81] resize-none h-24"
+                                        className="w-full p-4 pr-12 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-600/30 focus:border-green-600 resize-none h-24"
                                         value={messageText}
                                         onChange={(e) => setMessageText(e.target.value)}
                                     ></textarea>
                                     <button
                                         className={`absolute bottom-3 right-3 p-1.5 rounded-full ${messageText.trim()
-                                            ? 'bg-[#FF6B81] text-white'
+                                            ? 'bg-green-600 text-white'
                                             : 'bg-gray-100 text-gray-400'
                                             }`}
                                         onClick={handleSendMessage}
@@ -634,10 +634,10 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                         >
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <span className="text-[#FF6B81]">{compatibilityDetails.overall}%</span> Compatibility
+                                    <span className="text-green-600">{compatibilityDetails.overall}%</span> Compatibility
                                 </h2>
                                 <button
-                                    className="text-[#FF6B81] text-sm font-medium"
+                                    className="text-green-600 text-sm font-medium"
                                     onClick={() => setShowCompatibility(!showCompatibility)}
                                 >
                                     {showCompatibility ? 'Hide' : 'Show'} details
@@ -645,7 +645,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                             </div>
 
                             <motion.div
-                                className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] h-2.5 rounded-full mb-4"
+                                className="bg-gradient-to-r from-green-600 to-green-700 h-2.5 rounded-full mb-4"
                                 initial={{ width: 0 }}
                                 animate={{ width: '100%' }}
                                 transition={{ delay: 0.3, duration: 0.8 }}
@@ -670,7 +670,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                                                     </div>
                                                     <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                                                         <motion.div
-                                                            className="h-full bg-[#FF6B81]/70 rounded-full"
+                                                            className="h-full bg-green-600/70 rounded-full"
                                                             initial={{ width: 0 }}
                                                             animate={{ width: `${value}%` }}
                                                             transition={{ delay: 0.4, duration: 0.8 }}

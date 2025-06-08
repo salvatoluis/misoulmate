@@ -211,7 +211,7 @@ const ForYou: React.FC = () => {
             <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 shadow-sm border-b border-gray-100 py-4">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                     <div className="flex items-center">
-                        <div className="bg-gradient-to-r from-[#FF6B81] to-[#D86D72] p-1.5 rounded-full mr-2">
+                        <div className="bg-gradient-to-r from-green-500 to-green-700 p-1.5 rounded-full mr-2">
                             <Heart size={18} className="text-white" />
                         </div>
                         <h1 className="text-xl font-bold text-[#2B2B2A]">Discover</h1>
@@ -219,7 +219,7 @@ const ForYou: React.FC = () => {
 
                     <div className="flex items-center gap-2">
                         <button
-                            className={`p-2 rounded-full ${filters.showFilters ? 'bg-[#FF6B81]/10 text-[#FF6B81]' : 'bg-gray-100 text-gray-600'}`}
+                            className={`p-2 rounded-full ${filters.showFilters ? 'bg-green-500/10 text-green-500' : 'bg-gray-100 text-gray-600'}`}
                             onClick={toggleFilters}
                         >
                             <Filter size={20} />
@@ -259,7 +259,7 @@ const ForYou: React.FC = () => {
                                                     ...filters,
                                                     ageRange: [parseInt(e.target.value), filters.ageRange[1]]
                                                 })}
-                                                className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#FF6B81]"
+                                                className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-green-500"
                                             />
                                             <input
                                                 type="range"
@@ -270,7 +270,7 @@ const ForYou: React.FC = () => {
                                                     ...filters,
                                                     ageRange: [filters.ageRange[0], parseInt(e.target.value)]
                                                 })}
-                                                className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#FF6B81]"
+                                                className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-green-500"
                                             />
                                         </div>
                                     </div>
@@ -286,7 +286,7 @@ const ForYou: React.FC = () => {
                                             max="100"
                                             value={filters.distance}
                                             onChange={(e) => setFilters({ ...filters, distance: parseInt(e.target.value) })}
-                                            className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#FF6B81]"
+                                            className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-green-500"
                                         />
                                     </div>
 
@@ -298,7 +298,7 @@ const ForYou: React.FC = () => {
                                                 <button
                                                     key={type}
                                                     className={`px-3 py-1.5 text-sm rounded-full transition-colors ${filters.lookingFor === type
-                                                        ? 'bg-[#FF6B81] text-white'
+                                                        ? 'bg-green-500 text-white'
                                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                                         }`}
                                                     onClick={() => setFilters({
@@ -321,7 +321,7 @@ const ForYou: React.FC = () => {
                                                 <button
                                                     key={interest}
                                                     className={`px-3 py-1.5 text-sm rounded-full flex items-center gap-1.5 transition-colors ${filters.interests.includes(interest)
-                                                        ? 'bg-[#FF6B81] text-white'
+                                                        ? 'bg-green-500 text-white'
                                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                                         }`}
                                                     onClick={() => filterByInterest(interest)}
@@ -345,7 +345,7 @@ const ForYou: React.FC = () => {
                     <div className="flex flex-col items-center justify-center pt-10">
                         <div className="relative w-16 h-16">
                             <motion.div
-                                className="absolute inset-0 rounded-full border-2 border-[#FF6B81] border-t-transparent"
+                                className="absolute inset-0 rounded-full border-2 border-green-500 border-t-transparent"
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                             />
@@ -355,7 +355,7 @@ const ForYou: React.FC = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.3, duration: 0.3 }}
                             >
-                                <Heart size={20} className="text-[#FF6B81]" />
+                                <Heart size={20} className="text-green-500" />
                             </motion.div>
                         </div>
                         <p className="mt-4 text-gray-500">Finding people for you...</p>
@@ -384,7 +384,7 @@ const ForYou: React.FC = () => {
                                     Try adjusting your filters or check back later for new recommendations.
                                 </p>
                                 <button
-                                    className="mt-4 px-4 py-2 bg-[#FF6B81] text-white rounded-lg hover:bg-[#D86D72] transition-colors"
+                                    className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition-colors"
                                     onClick={() => setFilters({ ...filters, interests: [], ageRange: [20, 40], distance: 30, lookingFor: '' })}
                                 >
                                     Reset Filters
@@ -442,7 +442,7 @@ const ForYou: React.FC = () => {
                                                 </>
                                             )}
 
-                                            <div className="absolute top-3 right-3 bg-gradient-to-r from-[#FF6B81] to-[#D86D72] text-white px-2.5 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-1">
+                                            <div className="absolute top-3 right-3 bg-gradient-to-r from-green-500 to-green-700 text-white px-2.5 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-1">
                                                 <Heart size={12} className="fill-white" /> {recommendation.compatibilityScore}%
                                             </div>
 
@@ -494,7 +494,7 @@ const ForYou: React.FC = () => {
                                                             : (recommendation.bio || 'No bio available')}
                                                         {recommendation.bio && recommendation.bio.length > 100 && (
                                                             <button
-                                                                className="text-[#FF6B81] font-medium ml-1 focus:outline-none"
+                                                                className="text-green-500 font-medium ml-1 focus:outline-none"
                                                                 onClick={() => toggleCardExpansion(recommendation.id)}
                                                             >
                                                                 more
@@ -520,7 +520,7 @@ const ForYou: React.FC = () => {
                                                 </button>
 
                                                 <button
-                                                    className="w-16 h-12 flex items-center justify-center rounded-xl bg-[#FF6B81] hover:bg-[#D86D72] text-white transition-colors"
+                                                    className="w-16 h-12 flex items-center justify-center rounded-xl bg-green-500 hover:bg-green-700 text-white transition-colors"
                                                     onClick={() => handleLike(recommendation.id)}
                                                 >
                                                     <Heart className="w-5 h-5" />
