@@ -14,23 +14,6 @@ interface Match {
   occupation: string;
 }
 
-interface MatchesResponse {
-  data: Match[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
-interface MatchFilters {
-  ageRange?: [number, number];
-  distance?: number;
-  interests?: string[];
-  page?: number;
-  limit?: number;
-  sortBy?: 'matchPercentage' | 'distance' | 'lastActive';
-  sortOrder?: 'asc' | 'desc';
-}
-
 interface MatchActionResponse {
   success: boolean;
   message: string;
@@ -57,7 +40,7 @@ interface ConversationResponse {
 }
 
 const matchService = {
-  getMatches: async (filters?: MatchFilters): Promise<MatchesResponse> => {
+  getMatches: async (filters?: any): Promise<any> => {
     try {
       const response = await axiosInstance.get('/matches', { params: filters });
       return response.data;
@@ -73,6 +56,16 @@ const matchService = {
       return response.data.data;
     } catch (error) {
       console.error(`Error fetching match ${matchId}:`, error);
+      throw error;
+    }
+  },
+
+  unmatchUser: async (matchId: string): Promise<any> => {
+    try {
+      const response = await axiosInstance.delete(`/matches/${matchId}/unmatch`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error unmatching user with match ID ${matchId}:`, error);
       throw error;
     }
   },
