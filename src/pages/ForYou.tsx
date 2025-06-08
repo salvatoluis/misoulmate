@@ -208,7 +208,6 @@ const ForYou: React.FC = () => {
             exit="exit"
             variants={pageVariants}
         >
-            {/* Header */}
             <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 shadow-sm border-b border-gray-100 py-4">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                     <div className="flex items-center">
@@ -234,7 +233,6 @@ const ForYou: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Filters section */}
                 <AnimatePresence>
                     {filters.showFilters && (
                         <motion.div
@@ -393,7 +391,7 @@ const ForYou: React.FC = () => {
                                 </button>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6">
                                 {recommendations.map((recommendation, index) => (
                                     <motion.div
                                         key={recommendation.id}
