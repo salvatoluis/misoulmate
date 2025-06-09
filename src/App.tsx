@@ -25,6 +25,7 @@ import SafetyCenter from './pages/SafetyCenter';
 import ContactUs from './pages/ContactUs';
 import CommunityGuidelines from './pages/CommunityGuidelines';
 import ForYou from './pages/ForYou';
+import ConversationPage from './pages/ConversationPage';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -144,6 +145,13 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <MainLayout>
                 <Conversation />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/messages/:id" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <ConversationPage />
               </MainLayout>
             </ProtectedRoute>
           } />
