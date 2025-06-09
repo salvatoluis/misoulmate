@@ -1,5 +1,11 @@
 import axiosInstance from './axiosInstance';
 
+const getConversations = async (options: any = {}) => {
+    const { page = 1, limit = 20 } = options;
+    const response = await axiosInstance.get(`/messages/conversations?page=${page}&limit=${limit}`);
+    return response.data;
+  };
+
 const getMessagesByMatchId = async (matchId: string) => {
     let url = `/messages/matches/${matchId}`;
 
@@ -44,5 +50,6 @@ export default {
     getMessageById,
     markAsRead,
     markAllAsRead,
-    getUnreadCount
+    getUnreadCount,
+    getConversations
 };
