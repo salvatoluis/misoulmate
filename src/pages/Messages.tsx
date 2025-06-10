@@ -185,7 +185,7 @@ const Messages: React.FC = () => {
                             return (
                                 <Link
                                     key={conversation.id}
-                                    to={`/conversation/${conversation.id}`}
+                                    to={`/messages/${conversation.id}`}
                                     className="flex items-center p-3 rounded-xl hover:bg-gray-100 transition-colors"
                                 >
                                     <div className="relative mr-4">
