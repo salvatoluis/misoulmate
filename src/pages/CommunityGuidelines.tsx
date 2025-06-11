@@ -118,8 +118,8 @@ const CommunityGuidelines: React.FC = () => {
                         </li>
                     </ul>
 
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-4">
-                        <p className="text-blue-800 text-sm">
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-100 mt-4">
+                        <p className="text-green-800 text-sm">
                             <Info size={16} className="inline mr-1" />
                             Verified profiles receive a badge and are prioritized in search results.
                             <Link to="/verification" className="text-[#FF6B81] ml-1 hover:underline">Get verified</Link>
@@ -329,25 +329,25 @@ const CommunityGuidelines: React.FC = () => {
 
                     <ul className="space-y-2 mt-2">
                         <li className="flex items-start">
-                            <Info size={16} className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
                             <span>Issuing warnings to users</span>
                         </li>
                         <li className="flex items-start">
-                            <Info size={16} className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
                             <span>Removing inappropriate content</span>
                         </li>
                         <li className="flex items-start">
-                            <Info size={16} className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
                             <span>Temporarily suspending accounts</span>
                         </li>
                         <li className="flex items-start">
-                            <Info size={16} className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
                             <span>Permanently banning serious or repeat offenders</span>
                         </li>
                     </ul>
 
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-4">
-                        <p className="text-blue-800 text-sm">
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-100 mt-4">
+                        <p className="text-green-800 text-sm">
                             <Shield size={16} className="inline mr-1" />
                             All reports are confidential. The reported user will not know who reported them.
                         </p>
@@ -493,10 +493,10 @@ const CommunityGuidelines: React.FC = () => {
                         Violating these guidelines may result in content removal, account suspension, or permanent banning.
                     </p>
 
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                         <div className="flex">
-                            <Info size={20} className="text-blue-600 mr-3 flex-shrink-0" />
-                            <p className="text-blue-800 text-sm">
+                            <Info size={20} className="text-green-600 mr-3 flex-shrink-0" />
+                            <p className="text-green-800 text-sm">
                                 These guidelines apply to all interactions on miSoulMate, including profiles, messages, and any other content shared on the platform.
                             </p>
                         </div>

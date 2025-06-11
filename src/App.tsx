@@ -26,9 +26,37 @@ import ContactUs from './pages/ContactUs';
 import CommunityGuidelines from './pages/CommunityGuidelines';
 import ForYou from './pages/ForYou';
 import ConversationPage from './pages/ConversationPage';
+import socketService from './services/socket.service';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Initialize socket if user is authenticated
+    const authData = localStorage.getItem('auth');
+    if (authData) {
+      try {
+        const parsedAuth = JSON.parse(authData);
+        if (parsedAuth.token && parsedAuth.user?.id) {
+          socketService.initialize(parsedAuth.token, parsedAuth.user.id);
+        }
+      } catch (error) {
+        console.error('Error initializing socket:', error);
+      }
+    }
+
+    const reloadListener = () => {
+      setLoading(true);
+    };
+
+    window.addEventListener('beforeunload', reloadListener);
+
+    return () => {
+      window.removeEventListener('beforeunload', reloadListener);
+      // Disconnect socket when component unmounts
+      socketService.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const reloadListener = () => {

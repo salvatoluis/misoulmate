@@ -1,7 +1,6 @@
-// src/layouts/MainLayout.tsx
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, MessageSquare, User, Calendar } from 'lucide-react';
+import { Heart, MessageSquare, User } from 'lucide-react';
 
 interface MainLayoutProps {
     children: React.ReactNode;

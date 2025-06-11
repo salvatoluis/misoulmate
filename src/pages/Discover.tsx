@@ -652,7 +652,7 @@ const Discover: React.FC = () => {
 
                                     {/* Verified Badge */}
                                     {profile.isVerified && (
-                                        <div className="absolute top-3 right-3 bg-blue-500 text-white rounded-full p-1">
+                                        <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-1">
                                             <Check size={14} />
                                         </div>
                                     )}
@@ -745,7 +745,7 @@ const Discover: React.FC = () => {
 
                                         {/* Verified Badge */}
                                         {profile.isVerified && (
-                                            <div className="absolute top-3 right-3 bg-blue-500 text-white rounded-full p-1">
+                                            <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-1">
                                                 <Check size={14} />
                                             </div>
                                         )}
@@ -875,7 +875,7 @@ const Discover: React.FC = () => {
                                 </p>
                                 <Link
                                     to="/subscription"
-                                    className="inline-block px-6 py-2.5 bg-white text-indigo-600 rounded-lg font-medium hover:bg-white/90 transition-colors"
+                                    className="inline-block px-6 py-2.5 bg-white text-green-600 rounded-lg font-medium hover:bg-white/90 transition-colors"
                                 >
                                     Get Premium
                                 </Link>

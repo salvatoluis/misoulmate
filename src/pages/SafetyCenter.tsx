@@ -67,9 +67,9 @@ const SafetyCenter: React.FC = () => {
                         <li>Stay sober and alert during your first meeting</li>
                         <li>Trust your instincts – if something feels off, leave the situation</li>
                     </ul>
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex">
-                        <Info size={18} className="text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-blue-700 text-sm">miSoulMate offers a "Share My Date" feature that lets you share your location and date details with trusted contacts.</p>
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
+                        <Info size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-green-700 text-sm">miSoulMate offers a "Share My Date" feature that lets you share your location and date details with trusted contacts.</p>
                     </div>
                 </div>
             )
@@ -88,9 +88,9 @@ const SafetyCenter: React.FC = () => {
                         <li>Be cautious of users who ask a lot of personal questions early in your conversations</li>
                         <li>Never share financial information or send money to someone you've met online</li>
                     </ul>
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex">
-                        <Lock size={18} className="text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-blue-700 text-sm">miSoulMate messages are encrypted and our systems scan for suspicious behavior patterns.</p>
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
+                        <Lock size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-green-700 text-sm">miSoulMate messages are encrypted and our systems scan for suspicious behavior patterns.</p>
                     </div>
                 </div>
             )
@@ -148,9 +148,9 @@ const SafetyCenter: React.FC = () => {
                         <li>Be cautious about sharing specific locations you frequent (gym, coffee shop, workplace)</li>
                         <li>Don't share your home address until you have established significant trust</li>
                     </ul>
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex">
-                        <Info size={18} className="text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-blue-700 text-sm">miSoulMate allows you to hide your distance or set a custom location for privacy.</p>
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
+                        <Info size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-green-700 text-sm">miSoulMate allows you to hide your distance or set a custom location for privacy.</p>
                     </div>
                 </div>
             )
@@ -355,8 +355,8 @@ const SafetyCenter: React.FC = () => {
                                 </div>
                                 <div className="p-4 space-y-4">
                                     <div className="flex items-start">
-                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
-                                            <Bell size={16} className="text-blue-600" />
+                                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5">
+                                            <Bell size={16} className="text-green-600" />
                                         </div>
                                         <div>
                                             <h3 className="font-medium text-gray-800">Emergency Contact</h3>
@@ -484,10 +484,10 @@ const SafetyCenter: React.FC = () => {
                                             />
                                         </div>
 
-                                        <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                        <div className="bg-green-50 p-3 rounded-lg border border-green-100">
                                             <div className="flex items-start">
-                                                <Info size={18} className="text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
-                                                <p className="text-sm text-blue-700">
+                                                <Info size={18} className="text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                                                <p className="text-sm text-green-700">
                                                     Your report is confidential and will be reviewed by our safety team.
                                                     We may reach out for additional information if needed.
                                                 </p>
@@ -545,7 +545,7 @@ const SafetyCenter: React.FC = () => {
                                                         href={resource.link}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-sm hover:bg-blue-100 transition-colors"
+                                                        className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-sm hover:bg-green-100 transition-colors"
                                                     >
                                                         Website
                                                         <ChevronRight size={14} className="ml-1" />

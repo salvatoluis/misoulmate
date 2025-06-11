@@ -82,9 +82,9 @@ const Testimonials: React.FC = () => {
                 <div className="text-center mb-16">
                     {/* Decorative element */}
                     <div className="w-16 h-16 mx-auto mb-6 relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-teal-500/30 rounded-full blur-md"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-600/30 to-teal-500/30 rounded-full blur-md"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <Heart size={24} className="text-indigo-600" fill="rgb(79, 70, 229)" />
+                            <Heart size={24} className="text-green-600" fill="rgb(79, 70, 229)" />
                         </div>
                     </div>
 
@@ -96,7 +96,7 @@ const Testimonials: React.FC = () => {
                         Success Stories
                     </h2>
 
-                    <div className="h-1 w-24 bg-gradient-to-r from-indigo-600 to-teal-500 rounded-full mx-auto mb-6" />
+                    <div className="h-1 w-24 bg-gradient-to-r from-green-600 to-teal-500 rounded-full mx-auto mb-6" />
 
                     <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                         Hear from couples who found each other through miSoulMate.
@@ -106,7 +106,7 @@ const Testimonials: React.FC = () => {
                 {/* Testimonial Carousel */}
                 <div className="max-w-6xl mx-auto relative">
                     {/* Large quote mark */}
-                    <div className="absolute -top-10 -left-4 md:-left-10 text-[80px] md:text-[120px] text-indigo-600/10 z-0 pointer-events-none">
+                    <div className="absolute -top-10 -left-4 md:-left-10 text-[80px] md:text-[120px] text-green-600/10 z-0 pointer-events-none">
                         <Quote size="100%" />
                     </div>
 
@@ -146,7 +146,7 @@ const Testimonials: React.FC = () => {
                                             />
 
                                             {testimonials[activeIndex].matchRate && (
-                                                <div className="absolute top-4 right-4 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center z-20">
+                                                <div className="absolute top-4 right-4 bg-gradient-to-r from-green-600 to-green-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center z-20">
                                                     <Heart size={14} className="mr-1" fill="white" />
                                                     {testimonials[activeIndex].matchRate}% Match
                                                 </div>
@@ -221,7 +221,7 @@ const Testimonials: React.FC = () => {
 
                                         {/* Message button */}
                                         <div className="mt-6">
-                                            <button className="flex items-center text-indigo-600 font-medium hover:underline">
+                                            <button className="flex items-center text-green-600 font-medium hover:underline">
                                                 <MessageSquare size={16} className="mr-2" />
                                                 Share your success story
                                             </button>
@@ -238,7 +238,7 @@ const Testimonials: React.FC = () => {
                             <button
                                 key={index}
                                 className={`w-3 h-3 rounded-full ${index === activeIndex
-                                    ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 w-8'
+                                    ? 'bg-gradient-to-r from-green-600 to-green-500 w-8'
                                     : 'bg-slate-300'
                                     } transition-all duration-300`}
                                 onClick={() => {

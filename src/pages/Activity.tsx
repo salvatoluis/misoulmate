@@ -121,7 +121,7 @@ const Activity: React.FC = () => {
     const getActivityIcon = (type: string) => {
         switch (type) {
             case 'view':
-                return <Eye size={18} className="text-blue-500" />;
+                return <Eye size={18} className="text-green-500" />;
             case 'like':
                 return <Heart size={18} className="text-[#FF6B81]" />;
             case 'match':
@@ -171,8 +171,8 @@ const Activity: React.FC = () => {
                         <div className="flex space-x-2 overflow-x-auto pb-2">
                             <button
                                 className={`px-4 py-2 rounded-full text-sm ${timeFilter === 'all'
-                                        ? 'bg-[#FF6B81] text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-[#FF6B81] text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     } transition-colors`}
                                 onClick={() => setTimeFilter('all')}
                             >
@@ -180,8 +180,8 @@ const Activity: React.FC = () => {
                             </button>
                             <button
                                 className={`px-4 py-2 rounded-full text-sm flex items-center ${timeFilter === 'today'
-                                        ? 'bg-[#FF6B81] text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-[#FF6B81] text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     } transition-colors`}
                                 onClick={() => setTimeFilter('today')}
                             >
@@ -190,8 +190,8 @@ const Activity: React.FC = () => {
                             </button>
                             <button
                                 className={`px-4 py-2 rounded-full text-sm flex items-center ${timeFilter === 'week'
-                                        ? 'bg-[#FF6B81] text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-[#FF6B81] text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     } transition-colors`}
                                 onClick={() => setTimeFilter('week')}
                             >
@@ -200,8 +200,8 @@ const Activity: React.FC = () => {
                             </button>
                             <button
                                 className={`px-4 py-2 rounded-full text-sm flex items-center ${timeFilter === 'month'
-                                        ? 'bg-[#FF6B81] text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-[#FF6B81] text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     } transition-colors`}
                                 onClick={() => setTimeFilter('month')}
                             >
@@ -219,8 +219,8 @@ const Activity: React.FC = () => {
                     <div className="flex space-x-2 overflow-x-auto">
                         <button
                             className={`py-3 px-4 font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === 'all'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('all')}
                         >
@@ -228,8 +228,8 @@ const Activity: React.FC = () => {
                         </button>
                         <button
                             className={`py-3 px-4 font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === 'views'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('views')}
                         >
@@ -237,8 +237,8 @@ const Activity: React.FC = () => {
                         </button>
                         <button
                             className={`py-3 px-4 font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === 'likes'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('likes')}
                         >
@@ -246,8 +246,8 @@ const Activity: React.FC = () => {
                         </button>
                         <button
                             className={`py-3 px-4 font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === 'matches'
-                                    ? 'border-[#FF6B81] text-[#FF6B81]'
-                                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                                ? 'border-[#FF6B81] text-[#FF6B81]'
+                                : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                             onClick={() => setActiveTab('matches')}
                         >

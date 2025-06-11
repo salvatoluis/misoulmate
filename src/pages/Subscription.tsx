@@ -316,8 +316,8 @@ const Subscription: React.FC = () => {
 
                 {/* Current Plan Highlight */}
                 <div className="bg-white rounded-xl shadow-sm p-4 mb-6 flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                        <Gift size={20} className="text-blue-600" />
+                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                        <Gift size={20} className="text-green-600" />
                     </div>
                     <div className="flex-grow">
                         <h3 className="font-medium text-gray-700">Your current plan: Basic (Free)</h3>

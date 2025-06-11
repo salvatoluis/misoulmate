@@ -46,17 +46,17 @@ const AIAssistantModal: React.FC = () => {
                     <div className="p-4">
                         <h3 className="font-bold text-lg mb-3">Suggested Ice Breakers</h3>
                         <div className="space-y-3">
-                            <div className="bg-indigo-50 p-3 rounded-lg">
+                            <div className="bg-green-50 p-3 rounded-lg">
                                 "I noticed you're into hiking - what's the most breathtaking view you've ever hiked to?"
                             </div>
-                            <div className="bg-indigo-50 p-3 rounded-lg">
+                            <div className="bg-green-50 p-3 rounded-lg">
                                 "Your taste in music is fantastic! If you could see any artist live, who would it be?"
                             </div>
-                            <div className="bg-indigo-50 p-3 rounded-lg">
+                            <div className="bg-green-50 p-3 rounded-lg">
                                 "That photo of you at the cooking class looks fun! What's your signature dish?"
                             </div>
                         </div>
-                        <button className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full text-sm font-medium w-full transition-colors duration-200">
+                        <button className="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full text-sm font-medium w-full transition-colors duration-200">
                             Generate More Ice Breakers
                         </button>
                     </div>
@@ -66,7 +66,7 @@ const AIAssistantModal: React.FC = () => {
                     <div className="p-4">
                         <h3 className="font-bold text-lg mb-3">Perfect Date Ideas</h3>
                         <div className="space-y-3">
-                            <div className="bg-indigo-50 p-3 rounded-lg flex items-start">
+                            <div className="bg-green-50 p-3 rounded-lg flex items-start">
                                 <img
                                     src="https://images.unsplash.com/photo-1517638851339-a711cfcf3279?w=100&h=100&fit=crop"
                                     alt="Cooking class"
@@ -77,7 +77,7 @@ const AIAssistantModal: React.FC = () => {
                                     <p className="text-sm text-slate-600">Learn to make pasta together at Maria's Cooking Studio</p>
                                 </div>
                             </div>
-                            <div className="bg-indigo-50 p-3 rounded-lg flex items-start">
+                            <div className="bg-green-50 p-3 rounded-lg flex items-start">
                                 <img
                                     src="https://images.unsplash.com/photo-1508485861230-7d8fca3bab22?w=100&h=100&fit=crop"
                                     alt="Botanical garden"
@@ -89,7 +89,7 @@ const AIAssistantModal: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <button className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full text-sm font-medium w-full transition-colors duration-200">
+                        <button className="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full text-sm font-medium w-full transition-colors duration-200">
                             Find More Date Ideas
                         </button>
                     </div>
@@ -98,7 +98,7 @@ const AIAssistantModal: React.FC = () => {
                 return (
                     <div className="p-4">
                         <h3 className="font-bold text-lg mb-3">Profile Feedback</h3>
-                        <div className="bg-indigo-50 p-3 rounded-lg mb-3">
+                        <div className="bg-green-50 p-3 rounded-lg mb-3">
                             <h4 className="font-semibold text-indigo-600">What's Working Well</h4>
                             <ul className="mt-2 space-y-1 text-sm">
                                 <li>• Your authentic smile in photo #2 creates trust</li>

@@ -105,7 +105,7 @@ const Hero = () => {
                     }}
                 >
                     {i % 3 === 0 ? (
-                        <BellRing size={size} className="text-indigo-600/60" />
+                        <BellRing size={size} className="text-green-600/60" />
                     ) : i % 3 === 1 ? (
                         <Bookmark size={size} className="text-teal-600/60" />
                     ) : (
@@ -217,7 +217,7 @@ const Hero = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-indigo-500 text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
+                            className="relative overflow-hidden bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
                             custom={2}
                             initial={{ opacity: 0, y: 30 }}
                             animate={controls}
@@ -231,7 +231,7 @@ const Hero = () => {
                                 Get Started <ArrowRight size={18} />
                             </span>
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-indigo-600"
+                                className="absolute inset-0 bg-gradient-to-r from-green-700 to-green-600"
                                 initial={{ x: '-100%' }}
                                 whileHover={{ x: 0 }}
                                 transition={{ duration: 0.4 }}
@@ -316,7 +316,7 @@ const Hero = () => {
                             }}
                         >
                             <div className="w-72 h-auto relative">
-                                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600/20 to-teal-500/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
+                                <div className="absolute inset-0 bg-gradient-to-tr from-green-600/20 to-teal-500/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
                                 <img
                                     src="https://images.unsplash.com/photo-1526553743273-a3b6defd6281?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
                                     alt="miSoulMate App"
@@ -359,7 +359,7 @@ const Hero = () => {
                         </motion.div>
 
                         <div
-                            className="absolute inset-0 bg-gradient-to-r from-indigo-600/40 to-teal-500/40 rounded-full blur-[80px] -z-10 scale-75"
+                            className="absolute inset-0 bg-gradient-to-r from-green-600/40 to-teal-500/40 rounded-full blur-[80px] -z-10 scale-75"
                             style={{ transform: 'translateZ(-20px)' }}
                         ></div>
                     </div>

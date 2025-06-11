@@ -447,7 +447,7 @@ const ForYou: React.FC = () => {
                                             </div>
 
                                             {recommendation.hasLikedYou && (
-                                                <div className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-2.5 py-1 rounded-full text-xs font-medium shadow-md flex items-center gap-1">
+                                                <div className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-green-600 text-white px-2.5 py-1 rounded-full text-xs font-medium shadow-md flex items-center gap-1">
                                                     <Heart size={12} className="fill-white" /> Likes you
                                                 </div>
                                             )}
@@ -513,7 +513,7 @@ const ForYou: React.FC = () => {
                                                 </button>
 
                                                 <button
-                                                    className="w-16 h-12 flex items-center justify-center rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white transition-colors"
+                                                    className="w-16 h-12 flex items-center justify-center rounded-xl bg-green-500 hover:bg-green-600 text-white transition-colors"
                                                     onClick={() => handleSuperLike(recommendation.id)}
                                                 >
                                                     <Star className="w-5 h-5" />
