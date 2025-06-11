@@ -99,22 +99,22 @@ const AIAssistantModal: React.FC = () => {
                     <div className="p-4">
                         <h3 className="font-bold text-lg mb-3">Profile Feedback</h3>
                         <div className="bg-green-50 p-3 rounded-lg mb-3">
-                            <h4 className="font-semibold text-indigo-600">What's Working Well</h4>
+                            <h4 className="font-semibold text-green-600">What's Working Well</h4>
                             <ul className="mt-2 space-y-1 text-sm">
                                 <li>• Your authentic smile in photo #2 creates trust</li>
                                 <li>• Mentioning your passion for cooking shows depth</li>
                                 <li>• Your travel stories demonstrate adventurousness</li>
                             </ul>
                         </div>
-                        <div className="bg-indigo-50 p-3 rounded-lg">
-                            <h4 className="font-semibold text-indigo-600">Suggestions</h4>
+                        <div className="bg-green-50 p-3 rounded-lg">
+                            <h4 className="font-semibold text-green-600">Suggestions</h4>
                             <ul className="mt-2 space-y-1 text-sm">
                                 <li>• Add a photo showing one of your hobbies in action</li>
                                 <li>• Include a conversation starter question in your bio</li>
                                 <li>• Share a specific goal or dream to create connection</li>
                             </ul>
                         </div>
-                        <button className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full text-sm font-medium w-full transition-colors duration-200">
+                        <button className="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full text-sm font-medium w-full transition-colors duration-200">
                             Get Complete Profile Analysis
                         </button>
                     </div>
@@ -130,8 +130,8 @@ const AIAssistantModal: React.FC = () => {
                                     alt="Your profile"
                                     className="w-10 h-10 rounded-full object-cover"
                                 />
-                                <div className="w-24 h-2 bg-indigo-200 mx-2">
-                                    <div className="w-20 h-2 bg-indigo-500"></div>
+                                <div className="w-24 h-2 bg-green-200 mx-2">
+                                    <div className="w-20 h-2 bg-green-500"></div>
                                 </div>
                                 <img
                                     src="https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=100&h=100&fit=crop"
@@ -139,19 +139,19 @@ const AIAssistantModal: React.FC = () => {
                                     className="w-10 h-10 rounded-full object-cover"
                                 />
                             </div>
-                            <span className="text-xl font-bold text-indigo-600">86%</span>
+                            <span className="text-xl font-bold text-green-600">86%</span>
                         </div>
-                        <div className="bg-indigo-50 p-3 rounded-lg mb-3">
+                        <div className="bg-green-50 p-3 rounded-lg mb-3">
                             <h4 className="font-semibold">Shared Interests</h4>
                             <div className="flex flex-wrap gap-2 mt-2">
                                 {['Hiking', 'Photography', 'Asian Cuisine', 'Jazz'].map(interest => (
-                                    <span key={interest} className="px-2 py-1 bg-indigo-100 text-indigo-600 rounded-full text-xs">
+                                    <span key={interest} className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs">
                                         {interest}
                                     </span>
                                 ))}
                             </div>
                         </div>
-                        <div className="bg-indigo-50 p-3 rounded-lg">
+                        <div className="bg-green-50 p-3 rounded-lg">
                             <h4 className="font-semibold">Conversation Topics</h4>
                             <ul className="mt-2 space-y-1 text-sm">
                                 <li>• Both traveled to Japan - share experiences</li>
@@ -171,7 +171,7 @@ const AIAssistantModal: React.FC = () => {
             {/* Floating button */}
             <button
                 onClick={toggleModal}
-                className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-shadow duration-300"
+                className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-green-600 to-green-500 shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-shadow duration-300"
             >
                 {isOpen ? <X size={24} /> : <Sparkles size={24} />}
             </button>
@@ -180,7 +180,7 @@ const AIAssistantModal: React.FC = () => {
             {isOpen && (
                 <div className="fixed bottom-24 right-6 z-50 w-80 bg-white rounded-xl shadow-xl overflow-hidden">
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-indigo-600 to-indigo-500 p-4 text-white">
+                    <div className="bg-gradient-to-r from-green-600 to-green-500 p-4 text-white">
                         <div className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <Sparkles size={20} className="mr-2" />
@@ -190,7 +190,7 @@ const AIAssistantModal: React.FC = () => {
                                 <X size={20} />
                             </button>
                         </div>
-                        <p className="text-xs text-indigo-100 mt-1">
+                        <p className="text-xs text-green-100 mt-1">
                             AI-powered help to enhance your dating experience
                         </p>
                     </div>
@@ -218,10 +218,10 @@ const AIAssistantModal: React.FC = () => {
                             {features.map(feature => (
                                 <button
                                     key={feature.id}
-                                    className="w-full p-4 text-left flex items-start hover:bg-indigo-50 transition-colors"
+                                    className="w-full p-4 text-left flex items-start hover:bg-green-50 transition-colors"
                                     onClick={() => setActiveFeature(feature.id)}
                                 >
-                                    <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg mr-3">
+                                    <div className="bg-green-100 text-green-600 p-2 rounded-lg mr-3">
                                         {feature.icon}
                                     </div>
                                     <div>
@@ -239,7 +239,7 @@ const AIAssistantModal: React.FC = () => {
                     {/* Footer */}
                     <div className="p-3 bg-slate-50 border-t text-center text-xs text-slate-500">
                         <div className="flex items-center justify-center">
-                            <Zap size={12} className="text-indigo-500 mr-1" />
+                            <Zap size={12} className="text-green-500 mr-1" />
                             <span>Powered by AI - Personalized for your dating journey</span>
                         </div>
                     </div>

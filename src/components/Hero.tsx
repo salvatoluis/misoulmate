@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, ChevronDown, Sparkles, Bookmark, BellRing } from 'lucide-react';
+import PhoneApp from './PhoneApp';
 
-const Hero = () => {
+const Hero: React.FC = () => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const heroRef = useRef(null);
+    const heroRef = useRef<HTMLElement | null>(null);
 
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -46,7 +47,7 @@ const Hero = () => {
     }, [controls, wordControls]);
 
     useEffect(() => {
-        const handleMouseMove = (e) => {
+        const handleMouseMove = (e: any) => {
             if (heroRef.current) {
                 const rect = heroRef.current.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
@@ -105,11 +106,11 @@ const Hero = () => {
                     }}
                 >
                     {i % 3 === 0 ? (
-                        <BellRing size={size} className="text-green-600/60" />
+                        <BellRing size={size} className="text-emerald-600/60" />
                     ) : i % 3 === 1 ? (
                         <Bookmark size={size} className="text-teal-600/60" />
                     ) : (
-                        <div className="w-2 h-2 rounded-full bg-amber-200/40"></div>
+                        <div className="w-2 h-2 rounded-full bg-green-200/40"></div>
                     )}
                 </motion.div>
             );
@@ -121,16 +122,16 @@ const Hero = () => {
     return (
         <section
             ref={heroRef}
-            className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 min-h-screen flex items-center justify-center overflow-hidden py-20"
+            className="relative bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-900 min-h-[100vh] flex items-center justify-center overflow-hidden py-20"
             style={{ perspective: '1000px' }}
         >
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 z-0" />
+                <div className="absolute inset-0 bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-900 z-0" />
 
                 <motion.div
                     className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
                     style={{
-                        background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, rgba(79,70,229,0) 70%)',
+                        background: 'radial-gradient(circle, rgba(16,185,129,0.4) 0%, rgba(16,185,129,0) 70%)',
                         x: springX,
                         y: springY
                     }}
@@ -172,7 +173,7 @@ const Hero = () => {
                         initial="hidden"
                         animate={wordControls}
                     >
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-50 to-white">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-green-50 to-white">
                             {headingWords.map((word, i) => (
                                 <motion.span
                                     key={i}
@@ -201,11 +202,11 @@ const Hero = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 1.2, duration: 0.5 }}
                     >
-                        <Sparkles size={28} className="text-amber-400" />
+                        <Sparkles size={28} className="text-green-400" />
                     </motion.div>
 
                     <motion.p
-                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-slate-900/30 p-4 rounded-xl border border-white/10"
+                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-emerald-900/30 p-4 rounded-xl border border-emerald-500/10"
                         custom={1}
                         initial={{ opacity: 0, y: 30 }}
                         animate={controls}
@@ -217,13 +218,13 @@ const Hero = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
+                            className="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-500 text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
                             custom={2}
                             initial={{ opacity: 0, y: 30 }}
                             animate={controls}
                             whileHover={{
                                 scale: 1.03,
-                                boxShadow: '0 10px 25px -5px rgba(79,70,229,0.4)'
+                                boxShadow: '0 10px 25px -5px rgba(16,185,129,0.4)'
                             }}
                             whileTap={{ scale: 0.97 }}
                         >
@@ -239,12 +240,12 @@ const Hero = () => {
                         </motion.button>
 
                         <motion.button
-                            className="backdrop-blur-md bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3.5 rounded-full font-medium transition-all duration-300"
+                            className="backdrop-blur-md bg-white/10 hover:bg-white/20 text-white border border-emerald-500/20 px-8 py-3.5 rounded-full font-medium transition-all duration-300"
                             custom={3}
                             initial={{ opacity: 0, y: 30 }}
                             animate={controls}
                             whileHover={{
-                                borderColor: 'rgba(255, 255, 255, 0.4)',
+                                borderColor: 'rgba(16,185,129, 0.4)',
                                 backgroundColor: 'rgba(255, 255, 255, 0.15)',
                             }}
                             whileTap={{ scale: 0.97 }}
@@ -297,73 +298,9 @@ const Hero = () => {
                     </motion.div>
                 </div>
 
-                <motion.div
-                    className="w-full md:w-1/2 flex justify-center items-center pt-10 md:pt-0"
-                    style={{
-                        rotateX: rotateX,
-                        rotateY: rotateY,
-                        transformStyle: 'preserve-3d',
-                    }}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8, duration: 0.8 }}
-                >
-                    <div className="relative" style={{ transformStyle: 'preserve-3d' }}>
-                        <motion.div
-                            className="relative z-20"
-                            style={{
-                                transform: 'translateZ(40px)',
-                            }}
-                        >
-                            <div className="w-72 h-auto relative">
-                                <div className="absolute inset-0 bg-gradient-to-tr from-green-600/20 to-teal-500/20 rounded-[40px] backdrop-blur-sm p-3 -m-3 z-0 opacity-70"></div>
-                                <img
-                                    src="https://images.unsplash.com/photo-1526553743273-a3b6defd6281?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-                                    alt="miSoulMate App"
-                                    className="w-full h-auto rounded-[32px] border-[8px] border-slate-800 shadow-2xl relative z-10"
-                                />
-
-                                <motion.div
-                                    className="absolute -top-6 -right-4 z-20 bg-white/10 backdrop-blur-md p-3 rounded-full shadow-lg border border-white/30"
-                                    animate={{
-                                        y: [0, -10, 0],
-                                        rotate: [0, 10, 0],
-                                    }}
-                                    transition={{
-                                        duration: 4,
-                                        repeat: Infinity,
-                                        repeatType: "reverse"
-                                    }}
-                                    style={{ transform: 'translateZ(60px)' }}
-                                >
-                                    <BellRing size={24} className="text-amber-400" />
-                                </motion.div>
-
-                                <motion.div
-                                    className="absolute -bottom-8 -left-6 z-20 bg-white/10 backdrop-blur-md p-2 rounded-lg shadow-lg border border-white/30"
-                                    animate={{
-                                        y: [0, 10, 0],
-                                        rotate: [0, -10, 0],
-                                    }}
-                                    transition={{
-                                        duration: 5,
-                                        repeat: Infinity,
-                                        repeatType: "reverse",
-                                        delay: 1
-                                    }}
-                                    style={{ transform: 'translateZ(50px)' }}
-                                >
-                                    <span className="text-white text-sm">97% Compatible</span>
-                                </motion.div>
-                            </div>
-                        </motion.div>
-
-                        <div
-                            className="absolute inset-0 bg-gradient-to-r from-green-600/40 to-teal-500/40 rounded-full blur-[80px] -z-10 scale-75"
-                            style={{ transform: 'translateZ(-20px)' }}
-                        ></div>
-                    </div>
-                </motion.div>
+                <div className="w-full md:w-1/2">
+                    <PhoneApp />
+                </div>
             </div>
 
             <motion.div
