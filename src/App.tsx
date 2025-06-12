@@ -29,6 +29,7 @@ import ConversationPage from './pages/ConversationPage';
 import socketService from './services/socket.service';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookiePolicy from './pages/CoookiePolicy';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -214,6 +215,13 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <MainLayout>
                 <FAQHelp />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/cookie-policy" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <CookiePolicy />
               </MainLayout>
             </ProtectedRoute>
           } />
