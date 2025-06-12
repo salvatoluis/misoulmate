@@ -121,13 +121,13 @@ const Activity: React.FC = () => {
     const getActivityIcon = (type: string) => {
         switch (type) {
             case 'view':
-                return <Eye size={18} className="text-green-500" />;
+                return <Eye size={18} className="text-primary" />;
             case 'like':
                 return <Heart size={18} className="text-[#FF6B81]" />;
             case 'match':
                 return <Star size={18} className="text-yellow-500" />;
             case 'message':
-                return <MessageSquare size={18} className="text-green-500" />;
+                return <MessageSquare size={18} className="text-primary" />;
             case 'interaction':
                 return <MessageSquare size={18} className="text-purple-500" />;
             default:

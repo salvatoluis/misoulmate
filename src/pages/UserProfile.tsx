@@ -959,7 +959,7 @@ const UserProfile: React.FC = () => {
 
                                 <div className="p-4 flex justify-between items-center">
                                     <div className="flex items-center">
-                                        <Music className="text-green-500 mr-3" size={20} />
+                                        <Music className="text-primary mr-3" size={20} />
                                         <div>
                                             <div className="font-medium">Spotify</div>
                                             <div className="text-gray-500 text-sm">

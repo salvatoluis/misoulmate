@@ -12,7 +12,7 @@ const Features = () => {
             title: 'Verified Profiles',
             description: 'Every profile undergoes a thorough verification process to ensure you\'re meeting genuine individuals seeking meaningful relationships.',
             icon: < ShieldCheck size={32} />,
-            iconBgColor: 'from-green-600 to-green-500',
+            iconBgColor: 'from-primary to-primary',
             iconColor: 'text-white',
             detailedPoints: [
                 'Multi-factor authentication',
@@ -51,7 +51,7 @@ const Features = () => {
             title: 'Community Events',
             description: 'Join virtual and in-person events designed to help you connect with compatible matches in natural, pressure-free environments.',
             icon: <Users size={32} />,
-            iconBgColor: 'from-green-600 to-green-500',
+            iconBgColor: 'from-primary to-primary',
             iconColor: 'text-white',
             detailedPoints: [
                 'Curated social gatherings',
@@ -155,9 +155,9 @@ const Features = () => {
                             {feature.detailedPoints.map((point, i) => (
                                 <li key={i} className="flex items-start">
                                     <div className="mt-1 mr-2 bg-slate-100 rounded-full p-0.5">
-                                        <div className={`w-1.5 h-1.5 rounded-full ${index === 0 ? 'bg-green-500' :
+                                        <div className={`w-1.5 h-1.5 rounded-full ${index === 0 ? 'bg-primary' :
                                             index === 1 ? 'bg-teal-500' :
-                                                index === 2 ? 'bg-amber-500' : 'bg-green-500'
+                                                index === 2 ? 'bg-amber-500' : 'bg-primary'
                                             }`}></div>
                                     </div>
                                     <span className="text-sm text-slate-700">{point}</span>
@@ -210,7 +210,7 @@ const Features = () => {
 
                     {/* Underline accent */}
                     <div
-                        className="h-1 w-24 bg-gradient-to-r from-green-600 to-teal-500 rounded-full mx-auto mb-8"
+                        className="h-1 w-24 bg-gradient-to-r from-primary to-teal-500 rounded-full mx-auto mb-8"
                     />
 
                     <div

@@ -122,8 +122,8 @@ const AppPreview: React.FC = () => {
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
                     <div className="order-2 md:order-1">
-                        <div className="inline-flex items-center bg-gradient-to-r from-green-600/10 to-teal-500/10 backdrop-blur-sm px-4 py-2 rounded-full border border-green-600/20 mb-6">
-                            <Bell size={16} className="text-green-600 mr-2" />
+                        <div className="inline-flex items-center bg-gradient-to-r from-primary/10 to-teal-500/10 backdrop-blur-sm px-4 py-2 rounded-full border border-primary/20 mb-6">
+                            <Bell size={16} className="text-primary mr-2" />
                             <span className="text-sm font-medium text-slate-700">Coming Soon</span>
                         </div>
 
@@ -139,10 +139,10 @@ const AppPreview: React.FC = () => {
                             {appScreens.map((screen, index) => (
                                 <div
                                     key={screen.id}
-                                    className={`flex items-start p-3 rounded-xl transition-colors duration-300 ${activeScreen === index ? 'bg-gradient-to-r from-green-600/5 to-transparent' : 'hover:bg-slate-50'}`}
+                                    className={`flex items-start p-3 rounded-xl transition-colors duration-300 ${activeScreen === index ? 'bg-gradient-to-r from-primary/5 to-transparent' : 'hover:bg-slate-50'}`}
                                     onMouseEnter={() => setActiveScreen(index)}
                                 >
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mr-4 ${index === 0 ? 'bg-gradient-to-br from-green-600 to-green-500' :
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mr-4 ${index === 0 ? 'bg-gradient-to-br from-primary to-primary' :
                                         index === 1 ? 'bg-gradient-to-br from-teal-600 to-teal-500' :
                                             'bg-gradient-to-br from-amber-500 to-amber-400'
                                         }`}>
@@ -174,7 +174,7 @@ const AppPreview: React.FC = () => {
                                         <input
                                             type="email"
                                             placeholder="Your email address"
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-slate-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 transition-all duration-300 outline-none"
+                                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 outline-none"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
@@ -182,7 +182,7 @@ const AppPreview: React.FC = () => {
                                     </div>
                                     <button
                                         onClick={handleSubscribe}
-                                        className={`bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-xl font-medium shadow-md whitespace-nowrap hover:shadow-lg hover:scale-[1.02] transition-all duration-200 ${isSubmitting ? 'opacity-70' : ''}`}
+                                        className={`bg-gradient-to-r from-primary to-primary text-white px-6 py-3 rounded-xl font-medium shadow-md whitespace-nowrap hover:shadow-lg hover:scale-[1.02] transition-all duration-200 ${isSubmitting ? 'opacity-70' : ''}`}
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? 'Joining...' : 'Join Waitlist'}
@@ -223,7 +223,7 @@ const AppPreview: React.FC = () => {
                                     transformStyle: 'preserve-3d',
                                 }}
                             >
-                                <div className="absolute -top-6 -right-6 z-30 bg-gradient-to-r from-green-600 to-green-500 text-white px-4 py-2 rounded-full shadow-lg font-bold text-sm flex items-center gap-1 whitespace-nowrap border-2 border-white">
+                                <div className="absolute -top-6 -right-6 z-30 bg-gradient-to-r from-primary to-primary text-white px-4 py-2 rounded-full shadow-lg font-bold text-sm flex items-center gap-1 whitespace-nowrap border-2 border-white">
                                     <Bell size={14} className="animate-pulse" />
                                     Coming Soon
                                 </div>
@@ -278,7 +278,7 @@ const AppPreview: React.FC = () => {
                                     </div>
 
                                     <div className="absolute -top-4 -right-3 z-40 bg-white rounded-full p-2 shadow-lg border border-slate-100">
-                                        <Heart size={16} className="text-green-600" fill="rgb(79, 70, 229)" />
+                                        <Heart size={16} className="text-primary" fill="rgb(79, 70, 229)" />
                                     </div>
 
                                     <div className="absolute top-1/4 -left-6 z-40 bg-gradient-to-r from-teal-600 to-teal-500 rounded-lg px-3 py-1.5 shadow-lg text-white text-sm">
@@ -295,7 +295,7 @@ const AppPreview: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-to-r from-green-600/20 to-teal-500/20 blur-3xl -z-10 opacity-70"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-to-r from-primary/20 to-teal-500/20 blur-3xl -z-10 opacity-70"></div>
                         </div>
                     </div>
                 </div>

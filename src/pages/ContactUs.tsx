@@ -319,7 +319,7 @@ const ContactUs: React.FC = () => {
                             {submitted ? (
                                 <div className="text-center py-6">
                                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Check size={32} className="text-green-600" />
+                                        <Check size={32} className="text-primary" />
                                     </div>
                                     <h3 className="text-xl font-medium text-gray-800 mb-2">Message Sent!</h3>
                                     <p className="text-gray-600 mb-6">

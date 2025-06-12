@@ -36,15 +36,15 @@ const CommunityGuidelines: React.FC = () => {
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Treat everyone with respect and kindness</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Be open-minded and considerate of different perspectives</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Report any behavior that makes you feel uncomfortable</span>
                         </li>
                     </ul>
@@ -85,15 +85,15 @@ const CommunityGuidelines: React.FC = () => {
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Use recent photos that clearly show your face</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Provide accurate information about yourself (age, location, etc.)</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Consider getting your profile verified</span>
                         </li>
                     </ul>
@@ -119,7 +119,7 @@ const CommunityGuidelines: React.FC = () => {
                     </ul>
 
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 mt-4">
-                        <p className="text-green-800 text-sm">
+                        <p className="text-primary text-sm">
                             <Info size={16} className="inline mr-1" />
                             Verified profiles receive a badge and are prioritized in search results.
                             <Link to="/verification" className="text-[#FF6B81] ml-1 hover:underline">Get verified</Link>
@@ -139,23 +139,23 @@ const CommunityGuidelines: React.FC = () => {
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Take time to get to know someone before sharing personal details</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Meet in public places for your first few dates</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Tell a friend or family member about your date plans</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Use the app's built-in messaging system until you build trust</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Report suspicious behavior immediately</span>
                         </li>
                     </ul>
@@ -200,15 +200,15 @@ const CommunityGuidelines: React.FC = () => {
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Start conversations with thoughtful messages related to the person's profile</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Be respectful of boundaries and take "no" for an answer</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Engage in genuine conversations that build connection</span>
                         </li>
                     </ul>
@@ -253,19 +253,19 @@ const CommunityGuidelines: React.FC = () => {
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Acceptable photos:</h4>
                     <ul className="space-y-2">
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Clear, recent photos of yourself</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Photos that show your face clearly (at least in your main photo)</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Photos that showcase your interests and personality</span>
                         </li>
                         <li className="flex items-start">
-                            <Check size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Check size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Appropriate, fully-clothed photos</span>
                         </li>
                     </ul>
@@ -299,7 +299,7 @@ const CommunityGuidelines: React.FC = () => {
                     </ul>
 
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 mt-4">
-                        <p className="text-green-800 text-sm">
+                        <p className="text-primary text-sm">
                             <ThumbsUp size={16} className="inline mr-1" />
                             Tip: Upload 4-6 varied photos to give others a better sense of who you are.
                         </p>
@@ -329,25 +329,25 @@ const CommunityGuidelines: React.FC = () => {
 
                     <ul className="space-y-2 mt-2">
                         <li className="flex items-start">
-                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Issuing warnings to users</span>
                         </li>
                         <li className="flex items-start">
-                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Removing inappropriate content</span>
                         </li>
                         <li className="flex items-start">
-                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Temporarily suspending accounts</span>
                         </li>
                         <li className="flex items-start">
-                            <Info size={16} className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                            <Info size={16} className="text-primary mt-1 mr-2 flex-shrink-0" />
                             <span>Permanently banning serious or repeat offenders</span>
                         </li>
                     </ul>
 
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 mt-4">
-                        <p className="text-green-800 text-sm">
+                        <p className="text-primary text-sm">
                             <Shield size={16} className="inline mr-1" />
                             All reports are confidential. The reported user will not know who reported them.
                         </p>
@@ -495,8 +495,8 @@ const CommunityGuidelines: React.FC = () => {
 
                     <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                         <div className="flex">
-                            <Info size={20} className="text-green-600 mr-3 flex-shrink-0" />
-                            <p className="text-green-800 text-sm">
+                            <Info size={20} className="text-primary mr-3 flex-shrink-0" />
+                            <p className="text-primary text-sm">
                                 These guidelines apply to all interactions on miSoulMate, including profiles, messages, and any other content shared on the platform.
                             </p>
                         </div>

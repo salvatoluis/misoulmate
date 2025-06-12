@@ -188,7 +188,7 @@ const Matches: React.FC = () => {
             <header className="sticky top-0 left-0 right-0 bg-white/90 backdrop-blur-md z-40 shadow-sm border-b border-gray-100">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center">
-                        <div className="bg-gradient-to-r from-green-500 to-green-700 p-1.5 rounded-full mr-2">
+                        <div className="bg-gradient-to-r from-primary to-primary p-1.5 rounded-full mr-2">
                             <Heart size={18} className="text-white" />
                         </div>
                         <h1 className="text-xl font-bold text-[#2B2B2A]">Your Matches</h1>
@@ -197,13 +197,13 @@ const Matches: React.FC = () => {
                     <div className="flex items-center gap-2">
                         <button
                             className={`relative p-2 rounded-full ${filters.showFilters
-                                ? 'bg-green-500/10 text-green-500'
+                                ? 'bg-primary/10 text-primary'
                                 : 'bg-gray-100 text-gray-600'}`}
                             onClick={toggleFilters}
                         >
                             <Sliders size={20} />
                             {activeFilters > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                                     {activeFilters}
                                 </span>
                             )}
@@ -217,7 +217,7 @@ const Matches: React.FC = () => {
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="font-medium">Filter Matches</h3>
                                 <button
-                                    className="text-sm text-green-500 font-medium flex items-center gap-1"
+                                    className="text-sm text-primary font-medium flex items-center gap-1"
                                     onClick={resetFilters}
                                 >
                                     <FilterX size={14} />
@@ -241,7 +241,7 @@ const Matches: React.FC = () => {
                                                 ...filters,
                                                 ageRange: [parseInt(e.target.value), filters.ageRange[1]]
                                             })}
-                                            className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-green-500"
+                                            className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary"
                                         />
                                         <input
                                             type="range"
@@ -252,7 +252,7 @@ const Matches: React.FC = () => {
                                                 ...filters,
                                                 ageRange: [filters.ageRange[0], parseInt(e.target.value)]
                                             })}
-                                            className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-green-500"
+                                            className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary"
                                         />
                                     </div>
                                 </div>
@@ -265,7 +265,7 @@ const Matches: React.FC = () => {
                                             <button
                                                 key={String(interest)}
                                                 className={`px-3 py-1.5 text-xs rounded-full flex items-center gap-1.5 transition-colors ${filters.interests.includes(interest as string)
-                                                    ? 'bg-green-500 text-white'
+                                                    ? 'bg-primary text-white'
                                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                                     }`}
                                                 onClick={() => filterByInterest(interest as string)}
@@ -287,9 +287,9 @@ const Matches: React.FC = () => {
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center pt-10">
                         <div className="relative w-16 h-16">
-                            <div className="absolute inset-0 rounded-full border-2 border-green-500 border-t-transparent animate-spin" />
+                            <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin" />
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <Heart size={20} className="text-green-500" />
+                                <Heart size={20} className="text-primary" />
                             </div>
                         </div>
                         <p className="mt-4 text-gray-500">Finding your matches...</p>
@@ -309,8 +309,8 @@ const Matches: React.FC = () => {
                         {filteredMatches.length === 0 ? (
                             <div className="text-center py-12 bg-white rounded-xl shadow-sm mt-4">
                                 <div className="mb-4 flex justify-center">
-                                    <div className="p-4 bg-green-500/10 rounded-full inline-flex">
-                                        <Heart size={32} className="text-green-500" />
+                                    <div className="p-4 bg-primary/10 rounded-full inline-flex">
+                                        <Heart size={32} className="text-primary" />
                                     </div>
                                 </div>
                                 <h3 className="text-lg font-medium text-gray-800 mb-2">No matches found</h3>
@@ -321,7 +321,7 @@ const Matches: React.FC = () => {
                                 </p>
                                 {activeFilters > 0 && (
                                     <button
-                                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors"
                                         onClick={resetFilters}
                                     >
                                         Clear Filters
@@ -381,7 +381,7 @@ const Matches: React.FC = () => {
                                                     </>
                                                 )}
 
-                                                <div className="absolute top-3 right-3 bg-gradient-to-r from-green-500 to-green-700 text-white px-2.5 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-1">
+                                                <div className="absolute top-3 right-3 bg-gradient-to-r from-primary to-primary text-white px-2.5 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-1">
                                                     <Heart size={12} className="fill-white" /> {match.compatibilityScore}%
                                                 </div>
 
@@ -427,7 +427,7 @@ const Matches: React.FC = () => {
                                             <div className="px-3 pb-3 flex flex-col space-y-2">
                                                 <div className="flex space-x-2">
                                                     <button
-                                                        className="flex-grow py-2 flex items-center justify-center rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-500 text-sm font-medium transition-colors"
+                                                        className="flex-grow py-2 flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors"
                                                         onClick={() => navigate(`/match/${match.id}`)}
                                                     >
                                                         <Eye size={16} className="mr-1" />
@@ -435,7 +435,7 @@ const Matches: React.FC = () => {
                                                     </button>
 
                                                     <button
-                                                        className="flex-grow py-2 flex items-center justify-center rounded-lg bg-green-500 hover:bg-green-700 text-white text-sm font-medium transition-colors"
+                                                        className="flex-grow py-2 flex items-center justify-center rounded-lg bg-primary hover:bg-primary text-white text-sm font-medium transition-colors"
                                                         onClick={() => handleMessage(match.id)}
                                                     >
                                                         <MessageCircle size={16} className="mr-1" />

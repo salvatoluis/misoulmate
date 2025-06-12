@@ -29,7 +29,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/for-you"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/for-you'
-                                    ? 'text-green-600'
+                                    ? 'text-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
@@ -39,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/matches"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/matches'
-                                    ? 'text-green-600'
+                                    ? 'text-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
@@ -50,7 +50,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/messages"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/messages'
-                                    ? 'text-green-600'
+                                    ? 'text-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
@@ -61,7 +61,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             {/* <Link
                                 to="/date-planner"
                                 className={`py-3 px-4 flex flex-col items-center ${location.pathname === '/date-planner'
-                                    ? 'text-green-600'
+                                    ? 'text-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
@@ -72,7 +72,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             <Link
                                 to="/profile"
                                 className={`py-3 px-4 flex flex-col items-center ${['/profile', '/settings', '/blocked-users', '/help'].includes(location.pathname)
-                                    ? 'text-green-600'
+                                    ? 'text-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >

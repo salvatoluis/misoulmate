@@ -15,9 +15,9 @@ const HowItWorks = () => {
             title: 'Complete Your Profile',
             description: 'Create a comprehensive profile that showcases your personality, values, and relationship goals.',
             icon: <BookOpen size={28} />,
-            color: 'from-green-600 to-green-500',
+            color: 'from-primary to-primary',
             detailedDescription: 'Our in-depth personality assessment goes beyond surface-level traits to understand your core values, communication style, and relationship preferences. This comprehensive approach allows for much more meaningful matches.',
-            iconBg: 'bg-gradient-to-br from-green-600 to-green-500',
+            iconBg: 'bg-gradient-to-br from-primary to-primary',
             features: [
                 'Advanced personality assessment',
                 'Values and life goals exploration',
@@ -43,9 +43,9 @@ const HowItWorks = () => {
             title: 'Meaningful Communication',
             description: 'Build connection through guided conversation tools designed to foster genuine understanding.',
             icon: <MessageCircle size={28} />,
-            color: 'from-green-600 to-green-500',
+            color: 'from-primary to-primary',
             detailedDescription: 'Our platform offers guided conversation starters based on shared interests and values. Progress through communication stages naturally, from messaging to voice calls to video conversations at your comfort level.',
-            iconBg: 'bg-gradient-to-br from-green-600 to-green-500',
+            iconBg: 'bg-gradient-to-br from-primary to-primary',
             features: [
                 'Guided conversation topics',
                 'Progressive communication stages',
@@ -260,9 +260,9 @@ const HowItWorks = () => {
                                                         transition: { delay: 0.3 + (i * 0.1) }
                                                     }}
                                                 >
-                                                    <Check size={16} className={`mr-2 ${index === 0 ? 'text-green-500' :
+                                                    <Check size={16} className={`mr-2 ${index === 0 ? 'text-primary' :
                                                         index === 1 ? 'text-teal-500' :
-                                                            index === 2 ? 'text-green-500' :
+                                                            index === 2 ? 'text-primary' :
                                                                 'text-amber-500'
                                                         }`} />
                                                     {feature}
@@ -272,9 +272,9 @@ const HowItWorks = () => {
 
                                         {/* Learn more link */}
                                         <motion.div
-                                            className={`mt-4 inline-flex items-center font-medium cursor-pointer ${index === 0 ? 'text-green-600' :
+                                            className={`mt-4 inline-flex items-center font-medium cursor-pointer ${index === 0 ? 'text-primary' :
                                                 index === 1 ? 'text-teal-600' :
-                                                    index === 2 ? 'text-green-600' :
+                                                    index === 2 ? 'text-primary' :
                                                         'text-amber-600'
                                                 }`}
                                             whileHover={{ x: 5 }}
@@ -288,9 +288,9 @@ const HowItWorks = () => {
 
                         {/* Show more/less button */}
                         <motion.button
-                            className={`mt-3 text-sm font-medium flex items-center ${isActive ? 'text-slate-500' : index === 0 ? 'text-green-600' :
+                            className={`mt-3 text-sm font-medium flex items-center ${isActive ? 'text-slate-500' : index === 0 ? 'text-primary' :
                                 index === 1 ? 'text-teal-600' :
-                                    index === 2 ? 'text-green-600' :
+                                    index === 2 ? 'text-primary' :
                                         'text-amber-600'}`}
                             initial={{ opacity: 0 }}
                             animate={{
@@ -316,9 +316,9 @@ const HowItWorks = () => {
                 <motion.div
                     className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center z-20 border-2 border-white"
                     style={{
-                        background: `linear-gradient(to bottom right, ${index === 0 ? 'var(--tw-gradient-from-green-600), var(--tw-gradient-to-green-500)' :
+                        background: `linear-gradient(to bottom right, ${index === 0 ? 'var(--tw-gradient-from-primary), var(--tw-gradient-to-primary)' :
                             index === 1 ? 'var(--tw-gradient-from-teal-600), var(--tw-gradient-to-teal-500)' :
-                                index === 2 ? 'var(--tw-gradient-from-green-600), var(--tw-gradient-to-green-500)' :
+                                index === 2 ? 'var(--tw-gradient-from-primary), var(--tw-gradient-to-primary)' :
                                     'var(--tw-gradient-from-amber-500), var(--tw-gradient-to-amber-400)'
                             })`
                     }}
@@ -341,9 +341,9 @@ const HowItWorks = () => {
 
     // Journey stages for the bottom section
     const journeyStages = [
-        { name: "Profile Creation", icon: <UserPlus size={18} className="text-green-500" />, time: "Day 1", color: "bg-green-100 text-green-600" },
+        { name: "Profile Creation", icon: <UserPlus size={18} className="text-primary" />, time: "Day 1", color: "bg-green-100 text-primary" },
         { name: "Discover Matches", icon: <Search size={18} className="text-teal-500" />, time: "Days 2-7", color: "bg-teal-100 text-teal-600" },
-        { name: "Meaningful Conversations", icon: <MessageCircle size={18} className="text-green-500" />, time: "Weeks 1-3", color: "bg-green-100 text-green-600" },
+        { name: "Meaningful Conversations", icon: <MessageCircle size={18} className="text-primary" />, time: "Weeks 1-3", color: "bg-green-100 text-primary" },
         { name: "First Meeting", icon: <Coffee size={18} className="text-amber-500" />, time: "Weeks 2-4", color: "bg-amber-100 text-amber-600" },
         { name: "Relationship Building", icon: <Heart size={18} className="text-emerald-500" />, time: "Ongoing", color: "bg-emerald-100 text-emerald-600" }
     ];
@@ -414,7 +414,7 @@ const HowItWorks = () => {
 
                     {/* Underline accent */}
                     <motion.div
-                        className="h-1 w-24 bg-gradient-to-r from-green-600 to-teal-500 rounded-full mx-auto mb-8"
+                        className="h-1 w-24 bg-gradient-to-r from-primary to-teal-500 rounded-full mx-auto mb-8"
                         initial={{ width: 0, opacity: 0 }}
                         animate={isInView ? { width: 96, opacity: 1 } : { width: 0, opacity: 0 }}
                         transition={{ delay: 0.6, duration: 0.6 }}
@@ -435,7 +435,7 @@ const HowItWorks = () => {
                     {/* Animated connection line */}
                     <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 hidden md:flex items-center justify-between px-24 z-0">
                         <motion.div
-                            className="h-1 w-full bg-gradient-to-r from-green-500 via-teal-500 to-amber-500 rounded-full"
+                            className="h-1 w-full bg-gradient-to-r from-primary via-teal-500 to-amber-500 rounded-full"
                             variants={lineVariants}
                             initial="hidden"
                             animate={isInView ? "visible" : "hidden"}
@@ -506,7 +506,7 @@ const HowItWorks = () => {
                     transition={{ delay: 1.2, duration: 0.7 }}
                 >
                     <motion.button
-                        className="bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-3.5 rounded-full font-medium shadow-md inline-flex items-center group"
+                        className="bg-gradient-to-r from-primary to-primary text-white px-8 py-3.5 rounded-full font-medium shadow-md inline-flex items-center group"
                         whileHover={{
                             scale: 1.05,
                             boxShadow: '0 15px 30px rgba(79, 70, 229, 0.2)',

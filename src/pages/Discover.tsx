@@ -645,14 +645,14 @@ const Discover: React.FC = () => {
 
                                     {/* Online Status */}
                                     {profile.isOnline && (
-                                        <div className="absolute top-3 left-3 bg-green-500 rounded-full p-1">
+                                        <div className="absolute top-3 left-3 bg-primary rounded-full p-1">
                                             <div className="h-2 w-2 rounded-full bg-white"></div>
                                         </div>
                                     )}
 
                                     {/* Verified Badge */}
                                     {profile.isVerified && (
-                                        <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-1">
+                                        <div className="absolute top-3 right-3 bg-primary text-white rounded-full p-1">
                                             <Check size={14} />
                                         </div>
                                     )}
@@ -738,14 +738,14 @@ const Discover: React.FC = () => {
 
                                         {/* Online Status */}
                                         {profile.isOnline && (
-                                            <div className="absolute top-3 left-3 bg-green-500 rounded-full p-1">
+                                            <div className="absolute top-3 left-3 bg-primary rounded-full p-1">
                                                 <div className="h-2 w-2 rounded-full bg-white"></div>
                                             </div>
                                         )}
 
                                         {/* Verified Badge */}
                                         {profile.isVerified && (
-                                            <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-1">
+                                            <div className="absolute top-3 right-3 bg-primary text-white rounded-full p-1">
                                                 <Check size={14} />
                                             </div>
                                         )}
@@ -805,7 +805,7 @@ const Discover: React.FC = () => {
                                             )}
                                             {(profile.isOnline || profile.lastActive) && (
                                                 <div className="flex items-center">
-                                                    <div className={`h-2 w-2 rounded-full ${profile.isOnline ? 'bg-green-500' : 'bg-gray-300'} mr-1.5`}></div>
+                                                    <div className={`h-2 w-2 rounded-full ${profile.isOnline ? 'bg-primary' : 'bg-gray-300'} mr-1.5`}></div>
                                                     <span className="text-gray-700">{profile.isOnline ? 'Online now' : profile.lastActive}</span>
                                                 </div>
                                             )}
@@ -875,7 +875,7 @@ const Discover: React.FC = () => {
                                 </p>
                                 <Link
                                     to="/subscription"
-                                    className="inline-block px-6 py-2.5 bg-white text-green-600 rounded-lg font-medium hover:bg-white/90 transition-colors"
+                                    className="inline-block px-6 py-2.5 bg-white text-primary rounded-lg font-medium hover:bg-white/90 transition-colors"
                                 >
                                     Get Premium
                                 </Link>

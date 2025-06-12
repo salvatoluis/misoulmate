@@ -84,7 +84,7 @@ const FinalCTA: React.FC = () => {
             onMouseLeave={handleMouseLeave}
         >
             <div
-                className="absolute inset-0 bg-gradient-to-br from-green-600 via-green-600 to-teal-500 z-0 transition-transform duration-300"
+                className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-teal-500 z-0 transition-transform duration-300"
                 style={{
                     backgroundPosition: `${mousePosition.x * 100}% ${mousePosition.y * 100}%`,
                     transform: `translate(${parallaxOffset.x}px, ${parallaxOffset.y}px)`,

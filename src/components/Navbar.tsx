@@ -138,7 +138,7 @@ const Navbar: React.FC = () => {
 
                     {isAuthenticated ? (
                         <button
-                            className="bg-gradient-to-r from-emerald-600 to-green-500 text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                            className="bg-gradient-to-r from-emerald-600 to-primary text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
                             style={{ animation: 'fadeInUp 0.6s ease forwards' }}
                             onClick={toggleAuth}
                         >
@@ -157,7 +157,7 @@ const Navbar: React.FC = () => {
                                 Sign In
                             </button>
                             <button
-                                className="bg-gradient-to-r from-emerald-600 to-green-500 text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                                className="bg-gradient-to-r from-emerald-600 to-primary text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
                                 style={{ animation: 'fadeInUp 0.6s ease forwards' }}
                                 onClick={() => navigate('/register')}
                             >
@@ -214,7 +214,7 @@ const Navbar: React.FC = () => {
                         <div className="border-t border-gray-200 my-2 pt-4">
                             {isAuthenticated ? (
                                 <button
-                                    className="bg-gradient-to-r from-emerald-600 to-green-500 text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
+                                    className="bg-gradient-to-r from-emerald-600 to-primary text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
                                     style={{
                                         animation: 'slideInBottom 0.3s ease forwards',
                                         animationDelay: '0.3s',
@@ -230,7 +230,7 @@ const Navbar: React.FC = () => {
                             ) : (
                                 <div className="flex flex-col space-y-3">
                                     <button
-                                        className="bg-gradient-to-r from-emerald-600 to-green-500 text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
+                                        className="bg-gradient-to-r from-emerald-600 to-primary text-white px-6 py-3.5 rounded-xl font-medium w-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-102 active:scale-98"
                                         style={{
                                             animation: 'slideInBottom 0.3s ease forwards',
                                             animationDelay: '0.3s',

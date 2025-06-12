@@ -320,7 +320,7 @@ const NotificationPage: React.FC = () => {
 
                                                 {notification.data?.eventDate && (
                                                     <div className="mt-2 text-sm">
-                                                        <div className="flex items-center text-green-600">
+                                                        <div className="flex items-center text-primary">
                                                             <Calendar size={14} className="mr-1" />
                                                             {notification.data.eventDate}
                                                         </div>

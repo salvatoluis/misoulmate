@@ -181,13 +181,13 @@ const Footer: React.FC = () => {
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="Your email"
-                                                className="w-full pl-9 pr-3 py-2.5 rounded-l-lg bg-slate-800/50 border border-slate-700 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-green-600/50 focus:border-green-600/50"
+                                                className="w-full pl-9 pr-3 py-2.5 rounded-l-lg bg-slate-800/50 border border-slate-700 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50"
                                                 required
                                             />
                                         </div>
                                         <button
                                             onClick={handleSubscribe}
-                                            className="px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-500 rounded-r-lg text-white hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-200"
+                                            className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary rounded-r-lg text-white hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-200"
                                             disabled={isSubmitting}
                                         >
                                             {isSubmitting ? (
@@ -268,10 +268,10 @@ const Footer: React.FC = () => {
                                                 href={link.href}
                                                 className="text-slate-400 hover:text-white transition-colors duration-200 flex items-center group hover:translate-x-1"
                                             >
-                                                <span className="inline-block mr-1.5 w-1 h-1 rounded-full bg-slate-700 group-hover:bg-green-600 transition-colors" />
+                                                <span className="inline-block mr-1.5 w-1 h-1 rounded-full bg-slate-700 group-hover:bg-primary transition-colors" />
                                                 <span>{link.label}</span>
                                                 {link.isNew && (
-                                                    <span className="ml-2 text-xs bg-green-600/20 text-green-400 px-1.5 py-0.5 rounded-md">
+                                                    <span className="ml-2 text-xs bg-primary/20 text-green-400 px-1.5 py-0.5 rounded-md">
                                                         New
                                                     </span>
                                                 )}

@@ -68,8 +68,8 @@ const SafetyCenter: React.FC = () => {
                         <li>Trust your instincts – if something feels off, leave the situation</li>
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
-                        <Info size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-green-700 text-sm">miSoulMate offers a "Share My Date" feature that lets you share your location and date details with trusted contacts.</p>
+                        <Info size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-primary text-sm">miSoulMate offers a "Share My Date" feature that lets you share your location and date details with trusted contacts.</p>
                     </div>
                 </div>
             )
@@ -89,8 +89,8 @@ const SafetyCenter: React.FC = () => {
                         <li>Never share financial information or send money to someone you've met online</li>
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
-                        <Lock size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-green-700 text-sm">miSoulMate messages are encrypted and our systems scan for suspicious behavior patterns.</p>
+                        <Lock size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-primary text-sm">miSoulMate messages are encrypted and our systems scan for suspicious behavior patterns.</p>
                     </div>
                 </div>
             )
@@ -129,8 +129,8 @@ const SafetyCenter: React.FC = () => {
                         <li>Remember that video calls can be recorded, so never share sensitive information or engage in behavior you wouldn't want recorded</li>
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
-                        <Check size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-green-700 text-sm">miSoulMate's video chat feature is designed with privacy in mind and doesn't allow recording within the app.</p>
+                        <Check size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-primary text-sm">miSoulMate's video chat feature is designed with privacy in mind and doesn't allow recording within the app.</p>
                     </div>
                 </div>
             )
@@ -149,8 +149,8 @@ const SafetyCenter: React.FC = () => {
                         <li>Don't share your home address until you have established significant trust</li>
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
-                        <Info size={18} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-green-700 text-sm">miSoulMate allows you to hide your distance or set a custom location for privacy.</p>
+                        <Info size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
+                        <p className="text-primary text-sm">miSoulMate allows you to hide your distance or set a custom location for privacy.</p>
                     </div>
                 </div>
             )
@@ -356,7 +356,7 @@ const SafetyCenter: React.FC = () => {
                                 <div className="p-4 space-y-4">
                                     <div className="flex items-start">
                                         <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5">
-                                            <Bell size={16} className="text-green-600" />
+                                            <Bell size={16} className="text-primary" />
                                         </div>
                                         <div>
                                             <h3 className="font-medium text-gray-800">Emergency Contact</h3>
@@ -371,7 +371,7 @@ const SafetyCenter: React.FC = () => {
 
                                     <div className="flex items-start">
                                         <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5">
-                                            <Check size={16} className="text-green-600" />
+                                            <Check size={16} className="text-primary" />
                                         </div>
                                         <div>
                                             <h3 className="font-medium text-gray-800">Photo Verification</h3>
@@ -422,14 +422,14 @@ const SafetyCenter: React.FC = () => {
                                 {reportSuccess ? (
                                     <div className="bg-green-50 border border-green-100 rounded-lg p-4 text-center">
                                         <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                            <Check size={24} className="text-green-600" />
+                                            <Check size={24} className="text-primary" />
                                         </div>
-                                        <h3 className="text-green-800 font-medium mb-1">Report Submitted</h3>
-                                        <p className="text-green-700 text-sm mb-3">
+                                        <h3 className="text-primary font-medium mb-1">Report Submitted</h3>
+                                        <p className="text-primary text-sm mb-3">
                                             Thank you for your report. Our safety team will review it shortly.
                                         </p>
                                         <button
-                                            className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors"
+                                            className="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:bg-primary transition-colors"
                                             onClick={() => setReportSuccess(false)}
                                         >
                                             Submit Another Report
@@ -486,8 +486,8 @@ const SafetyCenter: React.FC = () => {
 
                                         <div className="bg-green-50 p-3 rounded-lg border border-green-100">
                                             <div className="flex items-start">
-                                                <Info size={18} className="text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                                                <p className="text-sm text-green-700">
+                                                <Info size={18} className="text-primary mt-0.5 mr-2 flex-shrink-0" />
+                                                <p className="text-sm text-primary">
                                                     Your report is confidential and will be reviewed by our safety team.
                                                     We may reach out for additional information if needed.
                                                 </p>
@@ -545,7 +545,7 @@ const SafetyCenter: React.FC = () => {
                                                         href={resource.link}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-sm hover:bg-green-100 transition-colors"
+                                                        className="inline-flex items-center px-3 py-1.5 bg-green-50 text-primary rounded-lg text-sm hover:bg-green-100 transition-colors"
                                                     >
                                                         Website
                                                         <ChevronRight size={14} className="ml-1" />

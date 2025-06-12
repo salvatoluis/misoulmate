@@ -8,6 +8,8 @@ export default {
         serif: ["Playfair Display", "serif"],
       },
       colors: {
+        primary: "#FF8881",
+        secondary: "#FFB6B9",
         coral: "#1A365D",
         rose: "#2B6CB0",
         mint: "#4A5568",

@@ -137,7 +137,7 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
                     {menuItems.map((item, index) => (
                         <div key={index} className="relative">
                             <motion.div
-                                className={`w-12 h-12 rounded-full flex items-center justify-center ${item.active ? 'bg-gradient-to-tr from-emerald-600 to-green-500' : 'bg-white/15 backdrop-blur-md'}`}
+                                className={`w-12 h-12 rounded-full flex items-center justify-center ${item.active ? 'bg-gradient-to-tr from-emerald-600 to-primary' : 'bg-white/15 backdrop-blur-md'}`}
                                 whileHover={{ scale: 1.1, y: -5 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -147,7 +147,7 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
                                 </div>
                             </motion.div>
                             {item.notification && (
-                                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                                     <span className="text-white text-xs font-bold">{item.notification}</span>
                                 </div>
                             )}
@@ -175,10 +175,10 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
         <div className="relative w-full h-full flex justify-center items-center py-10" ref={containerRef}>
             {/* Desk surface reflection with green theme */}
             <div className="absolute w-[600px] h-[600px] bg-gradient-radial from-emerald-600/15 via-teal-500/5 to-transparent -bottom-72 blur-2xl"></div>
-            <div className="absolute w-[400px] h-[400px] bg-gradient-radial from-green-500/10 via-emerald-400/5 to-transparent -bottom-60 left-1/2 transform -translate-x-1/2 blur-2xl"></div>
+            <div className="absolute w-[400px] h-[400px] bg-gradient-radial from-primary/10 via-emerald-400/5 to-transparent -bottom-60 left-1/2 transform -translate-x-1/2 blur-2xl"></div>
 
             {/* Ambient light glow */}
-            <div className="absolute w-96 h-96 rounded-full bg-gradient-radial from-emerald-500/20 via-green-500/10 to-transparent blur-3xl"></div>
+            <div className="absolute w-96 h-96 rounded-full bg-gradient-radial from-emerald-500/20 via-primary/10 to-transparent blur-3xl"></div>
 
             {/* Phone container with enhanced 3D effects */}
             <motion.div
@@ -369,7 +369,7 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
 
                                             {/* Compatibility badge - green theme */}
                                             <motion.div
-                                                className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-green-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg"
+                                                className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-primary text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg"
                                                 animate={{
                                                     boxShadow: [
                                                         '0 0 0 0 rgba(16,185,129,0.4)',
@@ -462,7 +462,7 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
                             </motion.button>
 
                             <motion.button
-                                className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-600 to-green-500 flex items-center justify-center shadow-lg border border-emerald-400/30"
+                                className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-600 to-primary flex items-center justify-center shadow-lg border border-emerald-400/30"
                                 whileHover={{
                                     scale: 1.15,
                                     boxShadow: '0 0 20px 0 rgba(16,185,129,0.5)',
@@ -505,7 +505,7 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 1.5, duration: 0.5, type: "spring", stiffness: 300, damping: 20 }}
                         >
-                            <div className="bg-gradient-to-r from-emerald-600 to-green-500 text-white px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 border border-white/20">
+                            <div className="bg-gradient-to-r from-emerald-600 to-primary text-white px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 border border-white/20">
                                 <Bell size={16} className="text-emerald-200" />
                                 <span className="text-sm font-medium">New Match!</span>
                             </div>
@@ -521,7 +521,7 @@ const PhoneApp: React.FC<PhoneAppProps> = ({ rotateX = 25, rotateY = 0 }) => {
 
                 {/* Light reflections */}
                 <motion.div
-                    className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-48 h-48 rounded-full bg-gradient-radial from-emerald-500/20 via-green-500/10 to-transparent blur-2xl -z-20"
+                    className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-48 h-48 rounded-full bg-gradient-radial from-emerald-500/20 via-primary/10 to-transparent blur-2xl -z-20"
                     animate={{
                         opacity: [0.4, 0.7, 0.4],
                         scale: [1, 1.1, 1]

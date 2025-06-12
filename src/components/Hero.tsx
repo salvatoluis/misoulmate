@@ -218,7 +218,7 @@ const Hero: React.FC = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-500 text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
+                            className="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-primary text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
                             custom={2}
                             initial={{ opacity: 0, y: 30 }}
                             animate={controls}
@@ -232,7 +232,7 @@ const Hero: React.FC = () => {
                                 Get Started <ArrowRight size={18} />
                             </span>
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-green-700 to-green-600"
+                                className="absolute inset-0 bg-gradient-to-r from-primary to-primary"
                                 initial={{ x: '-100%' }}
                                 whileHover={{ x: 0 }}
                                 transition={{ duration: 0.4 }}

@@ -247,7 +247,7 @@ const Subscription: React.FC = () => {
                                                         : `${formatCurrency(option.pricePerMonth)}/mo`}
                                                 </div>
                                                 {index > 0 && (
-                                                    <div className="text-xs mt-1 text-green-600 font-medium">
+                                                    <div className="text-xs mt-1 text-primary font-medium">
                                                         Save {Math.round((1 - option.pricePerMonth / plan.billingOptions[0].pricePerMonth) * 100)}%
                                                     </div>
                                                 )}
@@ -317,7 +317,7 @@ const Subscription: React.FC = () => {
                 {/* Current Plan Highlight */}
                 <div className="bg-white rounded-xl shadow-sm p-4 mb-6 flex items-center">
                     <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                        <Gift size={20} className="text-green-600" />
+                        <Gift size={20} className="text-primary" />
                     </div>
                     <div className="flex-grow">
                         <h3 className="font-medium text-gray-700">Your current plan: Basic (Free)</h3>
