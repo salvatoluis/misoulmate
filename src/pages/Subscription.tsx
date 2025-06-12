@@ -23,12 +23,13 @@ interface Plan {
 }
 
 const Subscription: React.FC = () => {
-    const [selectedPlan, setSelectedPlan] = useState<string>('boost');
+    const [selectedPlan, setSelectedPlan] = useState<string>('gold');
     const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
     const [selectedBillingOption, setSelectedBillingOption] = useState<Record<string, number>>({
         'basic': 0,
-        'boost': 1,
-        'platinum': 2,
+        'gold': 1,
+        'platinum': 1,
+        'diamond': 1,
     });
 
     const plans: Plan[] = [
@@ -56,14 +57,14 @@ const Subscription: React.FC = () => {
             ]
         },
         {
-            id: 'boost',
-            name: 'Boost',
-            price: 14.99,
+            id: 'gold',
+            name: 'Gold',
+            price: 25,
             pricePeriod: 'per month',
-            savings: 'Save 33%',
+            savings: 'Save 60%',
             popular: true,
             description: 'Enhanced features to maximize your chances of finding love',
-            color: 'coral',
+            color: 'gold',
             icon: <Zap size={20} />,
             features: [
                 { text: 'Everything in Basic', included: true },
@@ -77,22 +78,21 @@ const Subscription: React.FC = () => {
                 { text: 'Read receipts', included: false },
             ],
             billingOptions: [
-                { months: 1, pricePerMonth: 22.99, totalPrice: 22.99 },
-                { months: 6, pricePerMonth: 14.99, totalPrice: 89.94 },
-                { months: 12, pricePerMonth: 10.99, totalPrice: 131.88 },
+                { months: 1, pricePerMonth: 25, totalPrice: 25 },
+                { months: 12, pricePerMonth: 10, totalPrice: 120 },
             ]
         },
         {
             id: 'platinum',
             name: 'Platinum',
-            price: 19.99,
+            price: 40,
             pricePeriod: 'per month',
-            savings: 'Save 40%',
+            savings: 'Save 67%',
             description: 'Premium experience with exclusive features for serious daters',
             color: 'primary',
             icon: <Crown size={20} />,
             features: [
-                { text: 'Everything in Boost', included: true },
+                { text: 'Everything in Gold', included: true },
                 { text: 'Priority in search results', included: true },
                 { text: 'Incognito mode', included: true },
                 { text: 'Read receipts', included: true },
@@ -103,9 +103,33 @@ const Subscription: React.FC = () => {
                 { text: 'Priority customer support', included: true },
             ],
             billingOptions: [
-                { months: 1, pricePerMonth: 29.99, totalPrice: 29.99 },
-                { months: 6, pricePerMonth: 22.99, totalPrice: 137.94 },
-                { months: 12, pricePerMonth: 19.99, totalPrice: 239.88 },
+                { months: 1, pricePerMonth: 40, totalPrice: 40 },
+                { months: 12, pricePerMonth: 13.33, totalPrice: 160 },
+            ]
+        },
+        {
+            id: 'diamond',
+            name: 'Diamond',
+            price: 60,
+            pricePeriod: 'per month',
+            savings: 'Save 70%',
+            description: 'Elite experience with all premium features and exclusive perks',
+            color: 'blue',
+            icon: <DiamondIcon size={20} />,
+            features: [
+                { text: 'Everything in Platinum', included: true },
+                { text: 'VIP profile badge', included: true },
+                { text: 'Weekly profile boost', included: true },
+                { text: 'See when messages are read', included: true },
+                { text: 'Premium matching algorithm', included: true },
+                { text: 'Advanced statistics and insights', included: true },
+                { text: 'Exclusive virtual events', included: true },
+                { text: 'Personalized matchmaking tips', included: true },
+                { text: 'Dedicated relationship coach', included: true },
+            ],
+            billingOptions: [
+                { months: 1, pricePerMonth: 60, totalPrice: 60 },
+                { months: 12, pricePerMonth: 18.33, totalPrice: 220 },
             ]
         },
     ];
@@ -146,7 +170,6 @@ const Subscription: React.FC = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
-            {/* Header */}
             <header className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-4 flex items-center">
                     <button className="mr-4">
@@ -157,7 +180,6 @@ const Subscription: React.FC = () => {
             </header>
 
             <div className="container mx-auto px-4 py-6">
-                {/* Intro Section */}
                 <div className="text-center mb-8">
                     <div className="inline-flex justify-center items-center w-16 h-16 rounded-full bg-[#FF6B81]/10 mb-4">
                         <Crown size={28} className="text-[#FF6B81]" />
@@ -170,7 +192,7 @@ const Subscription: React.FC = () => {
 
                 {/* Plan Selection Tabs */}
                 <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
-                    <div className="grid grid-cols-3 border-b border-gray-200">
+                    <div className="grid grid-cols-4 border-b border-gray-200">
                         {plans.map(plan => (
                             <button
                                 key={plan.id}
@@ -230,7 +252,7 @@ const Subscription: React.FC = () => {
                             {plan.id !== 'basic' && (
                                 <div className="mb-6">
                                     <label className="block text-sm text-gray-700 mb-2">Billing Options</label>
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         {plan.billingOptions.map((option, index) => (
                                             <button
                                                 key={index}
@@ -365,7 +387,7 @@ const Subscription: React.FC = () => {
                                     ))}
                                 </div>
                                 <p className="text-sm text-gray-600 italic">
-                                    "Upgrading to Boost was the best decision I made! I met my partner within a month, and we've been together for over a year now. The advanced filters helped me find exactly what I was looking for."
+                                    "Upgrading to Gold was the best decision I made! I met my partner within a month, and we've been together for over a year now. The advanced filters helped me find exactly what I was looking for."
                                 </p>
                                 <div className="mt-2 text-sm font-medium text-gray-800">
                                     Sarah, 28 • Premium Member
@@ -428,6 +450,17 @@ const User: React.FC<{ size: number }> = ({ size }) => {
         <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    );
+};
+
+// Diamond icon for the Diamond plan
+const DiamondIcon: React.FC<{ size: number }> = ({ size }) => {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 2H8L3 8l9 14 9-14-5-6z" />
+            <path d="M12 22V8" />
+            <path d="M3 8h18" />
         </svg>
     );
 };

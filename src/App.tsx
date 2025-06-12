@@ -27,6 +27,8 @@ import CommunityGuidelines from './pages/CommunityGuidelines';
 import ForYou from './pages/ForYou';
 import ConversationPage from './pages/ConversationPage';
 import socketService from './services/socket.service';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -212,6 +214,22 @@ const App: React.FC = () => {
             <ProtectedRoute>
               <MainLayout>
                 <FAQHelp />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/terms-of-service" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <TermsOfService />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/privacy-policy" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <PrivacyPolicy />
               </MainLayout>
             </ProtectedRoute>
           } />

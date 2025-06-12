@@ -1,4 +1,3 @@
-// src/pages/SafetyCenter.tsx
 import React, { useState } from 'react';
 import { ChevronRight, Shield, AlertCircle, Check, Info, Phone, Flag, ChevronDown, ChevronUp, Lock, User, MessageSquare, Video, MapPin, Bell, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
