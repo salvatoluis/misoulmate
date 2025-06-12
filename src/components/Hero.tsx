@@ -44,9 +44,7 @@ export default function Hero() {
 
     return (
         <div className="relative h-auto w-full overflow-hidden bg-black">
-            {/* Advanced background elements */}
             <div className="absolute inset-0 overflow-hidden">
-                {/* Animated gradient mesh */}
                 <div
                     className="absolute left-0 top-0 h-[150vh] w-[150vw] -translate-x-1/4 -translate-y-1/4 opacity-30"
                     style={{
@@ -55,7 +53,6 @@ export default function Hero() {
                     }}
                 ></div>
 
-                {/* Floating particles */}
                 {floatingElements.map((el) => (
                     <div
                         key={el.id}

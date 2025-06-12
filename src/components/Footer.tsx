@@ -68,19 +68,19 @@ const Footer: React.FC = () => {
             id: 'support',
             title: 'Support',
             links: [
-                { id: 'help', label: 'Help Center', href: '#' },
-                { id: 'safety', label: 'Safety Tips', href: '#' },
-                { id: 'contact', label: 'Contact Us', href: '#' },
-                { id: 'guidelines', label: 'Community Guidelines', href: '#' },
+                { id: 'help', label: 'Help Center', href: '/help' },
+                { id: 'safety', label: 'Safety Tips', href: '/safety' },
+                { id: 'contact', label: 'Contact Us', href: '/contact' },
+                { id: 'guidelines', label: 'Community Guidelines', href: '/community' },
             ]
         },
         {
             id: 'legal',
             title: 'Legal',
             links: [
-                { id: 'privacy', label: 'Privacy Policy', href: '#' },
-                { id: 'terms', label: 'Terms of Service', href: '#' },
-                { id: 'cookies', label: 'Cookie Policy', href: '#' },
+                { id: 'privacy', label: 'Privacy Policy', href: '/privacy-policy' },
+                { id: 'terms', label: 'Terms of Service', href: '/terms-of-service' },
+                { id: 'cookies', label: 'Cookie Policy', href: '/cookie-policy' },
                 { id: 'accessibility', label: 'Accessibility', href: '#', isNew: true },
             ]
         },

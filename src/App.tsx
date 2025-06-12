@@ -211,34 +211,26 @@ const App: React.FC = () => {
           } />
 
           <Route path="/help" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <FAQHelp />
-              </MainLayout>
-            </ProtectedRoute>
+            <PublicRoute>
+              <FAQHelp />
+            </PublicRoute>
           } />
           <Route path="/cookie-policy" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <CookiePolicy />
-              </MainLayout>
-            </ProtectedRoute>
+            <PublicRoute>
+              <CookiePolicy />
+            </PublicRoute>
           } />
 
           <Route path="/terms-of-service" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <TermsOfService />
-              </MainLayout>
-            </ProtectedRoute>
+            <PublicRoute>
+              <TermsOfService />
+            </PublicRoute>
           } />
 
           <Route path="/privacy-policy" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <PrivacyPolicy />
-              </MainLayout>
-            </ProtectedRoute>
+            <PublicRoute>
+              <PrivacyPolicy />
+            </PublicRoute>
           } />
 
           <Route path="/date-planner" element={
