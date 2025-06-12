@@ -35,7 +35,6 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize socket if user is authenticated
     const authData = localStorage.getItem('auth');
     if (authData) {
       try {

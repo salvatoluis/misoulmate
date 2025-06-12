@@ -11,7 +11,6 @@ interface CookieSection {
 const CookiePolicy: React.FC = () => {
     const [expandedSections, setExpandedSections] = useState<string[]>(['what']);
 
-    // Toggle section expansion
     const toggleSection = (sectionId: string) => {
         setExpandedSections(prev =>
             prev.includes(sectionId)

@@ -1,327 +1,306 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useAnimation, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { ArrowRight, ChevronDown, Sparkles, Bookmark, BellRing } from 'lucide-react';
-import PhoneApp from './PhoneApp';
+import { useState, useEffect } from 'react';
+import { ChevronRight, Heart, Check, Shield, Sparkles, Briefcase } from 'lucide-react';
 
-const Hero: React.FC = () => {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const heroRef = useRef<HTMLElement | null>(null);
-
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    const floatingX = useTransform(x, [-100, 100], [-15, 15]);
-    const floatingY = useTransform(y, [-100, 100], [-15, 15]);
-    const rotateX = useTransform(y, [-100, 100], [10, -10]);
-    const rotateY = useTransform(x, [-100, 100], [-10, 10]);
-
-    const springX = useSpring(floatingX, { mass: 0.3, stiffness: 70, damping: 20 });
-    const springY = useSpring(floatingY, { mass: 0.3, stiffness: 70, damping: 20 });
-
-    const controls = useAnimation();
-    const wordControls = useAnimation();
+export default function Hero() {
+    const [scrollY, setScrollY] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+    type FloatingElement = {
+        id: number;
+        size: number;
+        left: number;
+        top: number;
+        duration: number;
+        delay: number;
+    };
+    const [floatingElements, setFloatingElements] = useState<FloatingElement[]>([]);
 
     useEffect(() => {
-        controls.start((i) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                delay: 0.2 + (i * 0.1),
-                duration: 0.8,
-                ease: [0.25, 0.1, 0.25, 1],
-            },
+        const handleScroll = () => {
+            setScrollY(window.scrollY);
+        };
+
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 300);
+
+        // Create floating elements
+        const elements = Array(12).fill(0).map((_, i) => ({
+            id: i,
+            size: Math.random() * 30 + 10,
+            left: Math.random() * 100,
+            top: Math.random() * 100,
+            duration: Math.random() * 30 + 20,
+            delay: Math.random() * 10,
         }));
 
-        wordControls.start({
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.08,
-                delayChildren: 0.5,
-            },
-        });
+        setFloatingElements(elements);
 
+        window.addEventListener('scroll', handleScroll);
         return () => {
-            controls.stop();
-            wordControls.stop();
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timer);
         };
-    }, [controls, wordControls]);
-
-    useEffect(() => {
-        const handleMouseMove = (e: any) => {
-            if (heroRef.current) {
-                const rect = heroRef.current.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-
-                const moveX = ((e.clientX - centerX) / (rect.width / 2)) * 100;
-                const moveY = ((e.clientY - centerY) / (rect.height / 2)) * 100;
-
-                x.set(moveX);
-                y.set(moveY);
-
-                setMousePosition({
-                    x: moveX / 30,
-                    y: moveY / 30
-                });
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, [x, y]);
-
-    const headingText = "Find Your Lifelong Partner";
-    const headingWords = headingText.split(' ');
-
-    // Subtle floating elements
-    const FloatingElements = () => {
-        const elements = Array.from({ length: 10 }, (_, i) => {
-            const size = Math.random() * 15 + 8;
-            const duration = Math.random() * 12 + 18;
-            const delay = Math.random() * 5;
-            const left = Math.random() * 100;
-            const opacity = Math.random() * 0.3 + 0.1;
-
-            return (
-                <motion.div
-                    key={i}
-                    className="absolute"
-                    style={{
-                        left: `${left}%`,
-                        opacity: opacity,
-                    }}
-                    initial={{ y: '100vh', scale: 0 }}
-                    animate={{
-                        y: '-100vh',
-                        scale: [0, 1, 0.8, 1, 0],
-                        rotate: [0, 5, -5, 8, -8, 0],
-                    }}
-                    transition={{
-                        duration: duration,
-                        delay: delay,
-                        repeat: Infinity,
-                        ease: "linear"
-                    }}
-                >
-                    {i % 3 === 0 ? (
-                        <BellRing size={size} className="text-emerald-600/60" />
-                    ) : i % 3 === 1 ? (
-                        <Bookmark size={size} className="text-teal-600/60" />
-                    ) : (
-                        <div className="w-2 h-2 rounded-full bg-green-200/40"></div>
-                    )}
-                </motion.div>
-            );
-        });
-
-        return <>{elements}</>;
-    };
+    }, []);
 
     return (
-        <section
-            ref={heroRef}
-            className="relative bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-900 min-h-[100vh] flex items-center justify-center overflow-hidden py-20"
-            style={{ perspective: '1000px' }}
-        >
+        <div className="relative h-auto w-full overflow-hidden bg-black">
+            {/* Advanced background elements */}
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-900 z-0" />
-
-                <motion.div
-                    className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
+                {/* Animated gradient mesh */}
+                <div
+                    className="absolute left-0 top-0 h-[150vh] w-[150vw] -translate-x-1/4 -translate-y-1/4 opacity-30"
                     style={{
-                        background: 'radial-gradient(circle, rgba(16,185,129,0.4) 0%, rgba(16,185,129,0) 70%)',
-                        x: springX,
-                        y: springY
+                        background: 'radial-gradient(circle at 30% 40%, rgba(var(--color-primary-500), 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(var(--color-primary-400), 0.2) 0%, transparent 30%), radial-gradient(circle at 20% 80%, rgba(var(--color-primary-600), 0.15) 0%, transparent 70%)',
+                        transform: `translate(${-scrollY * 0.02}px, ${-scrollY * 0.03}px)`,
                     }}
-                />
+                ></div>
 
-                <motion.div
-                    className="absolute -bottom-[30%] -right-[10%] w-[70%] h-[70%] rounded-full opacity-30 blur-[80px]"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(20,184,166,0.4) 0%, rgba(20,184,166,0) 70%)',
-                        x: springX,
-                        y: springY,
-                        scale: 1.2
-                    }}
-                    animate={{
-                        scale: [1.2, 1.3, 1.2],
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                    }}
-                />
+                {/* Floating particles */}
+                {floatingElements.map((el) => (
+                    <div
+                        key={el.id}
+                        className="absolute rounded-full bg-primary-300/10"
+                        style={{
+                            width: `${el.size}px`,
+                            height: `${el.size}px`,
+                            left: `${el.left}%`,
+                            top: `${el.top}%`,
+                            animation: `float ${el.duration}s ease-in-out ${el.delay}s infinite alternate`,
+                            filter: 'blur(8px)',
+                        }}
+                    ></div>
+                ))}
 
-                <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5 z-1"></div>
-
-                <div className="absolute inset-0 overflow-hidden z-1">
-                    <FloatingElements />
-                </div>
+                <div
+                    className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gMTAwIDAgTCAwIDAgMCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==')]"
+                    style={{ opacity: 0.3 - scrollY * 0.0005 }}
+                ></div>
             </div>
 
-            <div className="container relative z-10 mx-auto px-6 flex flex-col md:flex-row items-center gap-8">
-                <div className="w-full md:w-1/2 flex flex-col items-start">
-                    <motion.div
-                        className="overflow-hidden mb-4"
-                        variants={{
-                            hidden: { opacity: 0 },
-                            show: { opacity: 1 },
-                        }}
-                        initial="hidden"
-                        animate={wordControls}
-                    >
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-green-50 to-white">
-                            {headingWords.map((word, i) => (
-                                <motion.span
-                                    key={i}
-                                    className="inline-block mr-2 mb-2"
-                                    variants={{
-                                        hidden: { y: 100, opacity: 0 },
-                                        show: {
-                                            y: 0,
-                                            opacity: 1,
-                                            transition: {
-                                                duration: 0.6,
-                                                ease: [0.33, 1, 0.68, 1],
-                                            }
-                                        },
+            <div
+                className={`relative z-10 mx-auto flex min-h-screen max-w-[1400px] flex-col items-center justify-center px-6 transition-all duration-1000 ease-out sm:px-8 lg:px-12 ${isVisible ? 'opacity-100 transform-none' : 'opacity-0 translate-y-8'}`}
+            >
+                <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between">
+                    <div className="relative max-w-2xl space-y-10">
+
+                        <div
+                            className="relative space-y-6"
+                            style={{ transform: `translateY(${-scrollY * 0.04}px)` }}
+                        >
+                            {/* Badge */}
+                            <div className="inline-flex items-center rounded-full bg-white/[0.03] px-5 py-2 backdrop-blur-2xl">
+                                <div className="mr-2 h-2 w-2 rounded-full bg-primary-400"></div>
+                                <p className="text-xs font-medium text-white/90">
+                                    <span className="text-primary-300">12,000+</span> successful matches in the professional world
+                                </p>
+                            </div>
+
+                            <h1 className="text-5xl font-bold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
+                                <span
+                                    className="relative inline-block"
+                                    style={{
+                                        textShadow: '0 0 80px rgba(var(--color-primary-500), 0.2)'
                                     }}
                                 >
-                                    {word}
-                                </motion.span>
-                            ))}
-                        </h1>
-                    </motion.div>
+                                    Elevate
+                                    <div className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"></div>
+                                </span>
+                                <br />
+                                Your Love Life
+                            </h1>
 
-                    <motion.div
-                        className="mb-6"
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.2, duration: 0.5 }}
-                    >
-                        <Sparkles size={28} className="text-green-400" />
-                    </motion.div>
+                            <p className="text-xl leading-relaxed text-white/70">
+                                Where accomplished professionals find meaningful connections leading to marriage. Our AI-driven matches bring together like-minded individuals with shared values and ambitions.
+                            </p>
+                        </div>
 
-                    <motion.p
-                        className="text-lg md:text-xl text-white/80 mb-10 max-w-lg backdrop-blur-sm bg-emerald-900/30 p-4 rounded-xl border border-emerald-500/10"
-                        custom={1}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={controls}
-                    >
-                        Begin your journey to a meaningful marriage with our thoughtful matchmaking service.
-                        We connect compatible individuals seeking lifelong commitment based on shared values,
-                        interests, and life goals.
-                    </motion.p>
+                        {/* CTA section */}
+                        <div className="flex flex-col space-y-5 sm:flex-row sm:space-x-6 sm:space-y-0">
+                            <button className="group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600 p-px text-lg font-semibold text-white">
+                                <span className="absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600 transition-all duration-300 ease-out group-hover:opacity-0"></span>
+                                <span className="absolute inset-0 opacity-0 transition-all duration-300 ease-out group-hover:opacity-100 bg-[radial-gradient(400px_circle_at_var(--mouse-x,_0)_var(--mouse-y,_0),_rgba(var(--color-primary-400),_0.6),_transparent_40%)]"></span>
+                                <span className="relative z-10 flex w-full items-center justify-center gap-2 rounded-[0.7rem] bg-black px-8 py-4 transition-all duration-300 ease-out group-hover:gap-4">
+                                    Start Your Journey
+                                    <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                </span>
+                            </button>
 
-                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                        <motion.button
-                            className="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-primary text-white px-8 py-3.5 rounded-full font-medium shadow-lg group"
-                            custom={2}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={controls}
-                            whileHover={{
-                                scale: 1.03,
-                                boxShadow: '0 10px 25px -5px rgba(16,185,129,0.4)'
-                            }}
-                            whileTap={{ scale: 0.97 }}
-                        >
-                            <span className="relative z-10 flex items-center justify-center gap-2">
-                                Get Started <ArrowRight size={18} />
-                            </span>
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-primary to-primary"
-                                initial={{ x: '-100%' }}
-                                whileHover={{ x: 0 }}
-                                transition={{ duration: 0.4 }}
-                            />
-                        </motion.button>
-
-                        <motion.button
-                            className="backdrop-blur-md bg-white/10 hover:bg-white/20 text-white border border-emerald-500/20 px-8 py-3.5 rounded-full font-medium transition-all duration-300"
-                            custom={3}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={controls}
-                            whileHover={{
-                                borderColor: 'rgba(16,185,129, 0.4)',
-                                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                            }}
-                            whileTap={{ scale: 0.97 }}
-                        >
-                            Our Approach
-                        </motion.button>
+                            <button className="group flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] px-8 py-4 text-lg font-semibold text-white backdrop-blur-md transition-all hover:bg-white/[0.05]">
+                                How It Works
+                            </button>
+                        </div>
                     </div>
 
-                    <motion.div
-                        className="flex gap-8 mt-12"
-                        custom={4}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={controls}
+                    {/* Right side - 3D card interface */}
+                    <div
+                        className="relative mt-20 flex w-full max-w-xl origin-top lg:mt-0"
+                        style={{
+                            transform: `perspective(1000px) rotateX(${scrollY * 0.01}deg) rotateY(${scrollY * 0.01}deg)`,
+                            transformStyle: 'preserve-3d',
+                        }}
                     >
-                        <div className="text-center">
-                            <motion.span
-                                className="block text-3xl font-bold text-white"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 1.6, duration: 0.5 }}
-                            >
-                                500K+
-                            </motion.span>
-                            <span className="text-white/60 text-sm">Committed Members</span>
+                        {/* Main profile card */}
+                        <div className="relative flex h-full w-full translate-z-0 flex-col overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.07] to-white/[0.03] p-[1px] shadow-2xl backdrop-blur-xl transition-all duration-300">
+                            <div className="relative h-full w-full rounded-[calc(1.5rem-1px)] bg-black/30 p-8">
+                                {/* Highlight accent */}
+                                <div className="absolute -right-40 -top-40 h-80 w-80 rounded-full bg-primary-500/10 blur-3xl"></div>
+                                <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-primary-600/10 blur-3xl"></div>
+
+                                {/* Profile header */}
+                                <div className="mb-8 flex items-center justify-between">
+                                    <div className="flex items-center gap-5">
+                                        <div className="relative h-16 w-16 overflow-hidden rounded-2xl p-[2px]" style={{ background: `linear-gradient(45deg, rgb(var(--color-primary-500)), rgb(var(--color-primary-400)))` }}>
+                                            <div className="h-full w-full rounded-[calc(1rem-1px)] bg-black/30"></div>
+                                            <Sparkles className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 text-white" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-2xl font-bold text-white">Elite Matching</h3>
+                                            <p className="text-white/60">Personalized for you</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500/10 backdrop-blur-sm">
+                                        <Check className="h-5 w-5 text-primary-400" />
+                                    </div>
+                                </div>
+
+                                {/* Compatibility stats */}
+                                <div className="mb-10 space-y-6">
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-sm font-medium text-white/80">Compatibility Score</p>
+                                            <div className="flex items-center gap-1.5">
+                                                <div className="h-1.5 w-1.5 rounded-full bg-primary-400"></div>
+                                                <p className="text-sm font-bold text-white">97%</p>
+                                            </div>
+                                        </div>
+                                        <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/5">
+                                            <div className="absolute inset-0 h-full w-[97%] rounded-full bg-gradient-to-r from-primary-600 to-primary-400">
+                                                <div className="absolute inset-0 opacity-30 bg-primary animate-shimmer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/10">
+                                                <Shield className="h-5 w-5 text-primary-400" />
+                                            </div>
+                                            <p className="mt-3 text-sm font-medium text-white">Elite Verification</p>
+                                            <p className="mt-1 text-xs text-white/60">Verified professionals</p>
+                                        </div>
+
+                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/10">
+                                                <Briefcase className="h-5 w-5 text-primary-400" />
+                                            </div>
+                                            <p className="mt-3 text-sm font-medium text-white">Career Match</p>
+                                            <p className="mt-1 text-xs text-white/60">93% alignment</p>
+                                        </div>
+
+                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/10">
+                                                <Heart className="h-5 w-5 text-primary-400" />
+                                            </div>
+                                            <p className="mt-3 text-sm font-medium text-white">Values</p>
+                                            <p className="mt-1 text-xs text-white/60">95% compatibility</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Match preview */}
+                                <div className="relative rounded-2xl bg-white/[0.02] p-5 backdrop-blur-md">
+                                    <div className="mb-4 flex justify-between">
+                                        <p className="text-sm font-medium text-white">Your Top Matches</p>
+                                        <p className="text-xs text-primary-400">View all</p>
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                        <div className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-primary-500 to-primary-400 p-[2px]">
+                                            <div className="h-full w-full rounded-lg bg-black/30"></div>
+                                            <p className="absolute text-xs font-bold text-white">+5</p>
+                                        </div>
+
+                                        {[1, 2, 3].map((i) => (
+                                            <div key={i} className="h-10 w-10 rounded-xl bg-white/5"></div>
+                                        ))}
+
+                                        <div className="ml-auto rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-white">
+                                            <span className="text-primary-400">24</span> new today
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* CTA button */}
+                                <button className="mt-7 w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 py-4 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all hover:shadow-xl hover:shadow-primary-500/30">
+                                    Find Your Perfect Match
+                                </button>
+                            </div>
                         </div>
 
-                        <div className="text-center">
-                            <motion.span
-                                className="block text-3xl font-bold text-white"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 1.7, duration: 0.5 }}
-                            >
-                                92%
-                            </motion.span>
-                            <span className="text-white/60 text-sm">Compatibility Rate</span>
+                        {/* Floating notification */}
+                        <div
+                            className="absolute -left-8 bottom-16 z-20 max-w-[250px] rounded-2xl border border-white/5 bg-white/5 px-4 py-3 shadow-xl backdrop-blur-xl"
+                            style={{
+                                transform: 'translateZ(30px)',
+                                animationName: 'float',
+                                animationDuration: '6s',
+                                animationTimingFunction: 'ease-in-out',
+                                animationIterationCount: 'infinite',
+                                animationDirection: 'alternate',
+                            }}
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-400 p-0.5 shadow-lg shadow-primary-500/20">
+                                    <div className="h-full w-full rounded-[calc(0.75rem-1px)] bg-black/20 backdrop-blur-sm"></div>
+                                    <div className="absolute flex h-6 w-6 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
+                                        <div className="h-2 w-2 rounded-full bg-green-400"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-white">2,384 Online Now</p>
+                                    <p className="text-xs text-white/60">In your professional network</p>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="text-center">
-                            <motion.span
-                                className="block text-3xl font-bold text-white"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 1.8, duration: 0.5 }}
-                            >
-                                5K+
-                            </motion.span>
-                            <span className="text-white/60 text-sm">Marriages</span>
+                        {/* Floating achievement */}
+                        <div
+                            className="absolute -right-6 top-10 z-20 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 shadow-xl backdrop-blur-xl"
+                            style={{
+                                transform: 'translateZ(20px) rotate(2deg)',
+                                animationName: 'float',
+                                animationDuration: '7s',
+                                animationTimingFunction: 'ease-in-out',
+                                animationIterationCount: 'infinite',
+                                animationDirection: 'alternate',
+                                animationDelay: '1s'
+                            }}
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-400"></div>
+                                <p className="text-xs font-medium text-white">745+ successful marriages</p>
+                            </div>
                         </div>
-                    </motion.div>
-                </div>
-
-                <div className="w-full md:w-1/2">
-                    <PhoneApp />
+                    </div>
                 </div>
             </div>
 
-            <motion.div
-                className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{
-                    opacity: [0.4, 1, 0.4],
-                    y: [0, 8, 0]
-                }}
-                transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    repeatType: "loop"
-                }}
-            >
-                <div className="bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 shadow-lg">
-                    <ChevronDown size={24} className="text-white" />
-                </div>
-            </motion.div>
-        </section>
+            <style>{`
+        @keyframes float {
+          0% { transform: translateZ(20px); }
+          100% { transform: translateZ(40px); }
+        }
+        
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
+        </div>
     );
-};
-
-export default Hero;
+}
