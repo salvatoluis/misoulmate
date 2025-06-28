@@ -96,17 +96,6 @@ const Matches: React.FC = () => {
         }
     };
 
-    const handleMessage = async (matchId: string) => {
-        try {
-            const response = await conversationService.startConversation(matchId);
-            navigate(`/conversation/${response.conversationId}`, {
-                state: { matchId }
-            });
-        } catch (error) {
-            console.error(`Error starting conversation with match ${matchId}:`, error);
-        }
-    };
-
     const toggleFilters = () => {
         setFilters({
             ...filters,
@@ -436,7 +425,7 @@ const Matches: React.FC = () => {
 
                                                     <button
                                                         className="flex-grow py-2 flex items-center justify-center rounded-lg bg-primary hover:bg-primary text-white text-sm font-medium transition-colors"
-                                                        onClick={() => handleMessage(match.id)}
+                                                        onClick={() => navigate(`/match/${match.id}`)}
                                                     >
                                                         <MessageCircle size={16} className="mr-1" />
                                                         Message
