@@ -19,7 +19,7 @@ const Login: React.FC<any> = ({ }) => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/auth/login', {
+            const response = await axios.post('https://api.soulmatify.com/api/v1/auth/login', {
                 email,
                 password,
             });

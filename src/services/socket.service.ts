@@ -11,7 +11,6 @@ class SocketService {
   private onlineStatusListeners: Function[] = [];
   private globalReadListeners: Function[] = [];
 
-  // Initialize the socket connection
   initialize(token: string, userId: string) {
     if (this.socket) {
       this.disconnect();
@@ -19,8 +18,7 @@ class SocketService {
 
     this.userId = userId;
 
-    // Connect with authentication token
-    this.socket = io('http://localhost:3000', {
+    this.socket = io('https://api.soulmatify.com', {
       auth: { token },
       transports: ['websocket'],
       reconnection: true,
@@ -28,7 +26,6 @@ class SocketService {
       reconnectionAttempts: 5
     });
 
-    // Connection events
     this.socket.on('connect', () => {
       console.log('Socket connected');
       this.joinUserRoom();
@@ -45,7 +42,6 @@ class SocketService {
       this.connectionListeners.forEach(listener => listener(false, error));
     });
 
-    // Message events
     this.socket.on('message:new', (message) => {
       const matchId = message.matchId;
       if (this.messageListeners.has(matchId)) {
@@ -54,22 +50,18 @@ class SocketService {
     });
 
     this.socket.on('message:read', (data) => {
-      // For match-specific listeners
       const matchId = data.matchId;
       if (this.statusListeners.has(matchId)) {
         this.statusListeners.get(matchId)?.forEach(listener => listener(data));
       }
       
-      // For global read status listeners
       this.globalReadListeners.forEach(listener => listener(data));
     });
 
-    // Notification events
     this.socket.on('notification:message', (data) => {
       this.notificationListeners.forEach(listener => listener(data));
     });
 
-    // Typing events
     this.socket.on('user:typing', (data) => {
       const matchId = data.matchId;
       if (this.typingListeners.has(matchId)) {
@@ -78,7 +70,6 @@ class SocketService {
       }
     });
     
-    // Online status events
     this.socket.on('user:online', (data) => {
       this.onlineStatusListeners.forEach(listener => listener(data));
     });
@@ -86,27 +77,23 @@ class SocketService {
     return this.socket;
   }
 
-  // Join user's personal room
   joinUserRoom() {
     if (!this.socket || !this.userId) return;
     this.socket.emit('join:user', { userId: this.userId });
   }
 
-  // Join a match room for real-time messages
   joinMatchRoom(matchId: string) {
     if (!this.socket) return;
     this.socket.emit('join:match', { matchId });
     console.log(`Joined match room: ${matchId}`);
   }
 
-  // Leave a match room
   leaveMatchRoom(matchId: string) {
     if (!this.socket) return;
     this.socket.emit('leave:match', { matchId });
     console.log(`Left match room: ${matchId}`);
   }
 
-  // Send a message via socket
   sendMessage(matchId: string, content: string, media: any = null) {
     if (!this.socket) return;
     
@@ -119,7 +106,6 @@ class SocketService {
     this.socket.emit('message:send', messageData);
   }
 
-  // Send typing status
   sendTypingStatus(matchId: string, isTyping: boolean) {
     if (!this.socket) return;
     
@@ -129,13 +115,11 @@ class SocketService {
     });
   }
 
-  // Mark messages as read
   markMessagesAsRead(matchId: string) {
     if (!this.socket) return;
     this.socket.emit('message:read', { matchId });
   }
 
-  // Add message listener
   onNewMessage(matchId: string, callback: Function) {
     if (!this.messageListeners.has(matchId)) {
       this.messageListeners.set(matchId, []);
@@ -143,7 +127,6 @@ class SocketService {
     this.messageListeners.get(matchId)?.push(callback);
   }
 
-  // Remove message listener
   offNewMessage(matchId: string, callback: Function) {
     if (this.messageListeners.has(matchId)) {
       const listeners = this.messageListeners.get(matchId) || [];
@@ -154,7 +137,6 @@ class SocketService {
     }
   }
 
-  // Add read status listener
   onMessageRead(matchId: string, callback: Function) {
     if (!this.statusListeners.has(matchId)) {
       this.statusListeners.set(matchId, []);
@@ -162,7 +144,6 @@ class SocketService {
     this.statusListeners.get(matchId)?.push(callback);
   }
 
-  // Remove read status listener
   offMessageRead(matchId: string, callback: Function) {
     if (this.statusListeners.has(matchId)) {
       const listeners = this.statusListeners.get(matchId) || [];
@@ -173,31 +154,26 @@ class SocketService {
     }
   }
   
-  // Add global read status listener (for conversation list)
   onGlobalReadStatus(callback: Function) {
     this.globalReadListeners.push(callback);
   }
   
-  // Remove global read status listener
   offGlobalReadStatus(callback: Function) {
     this.globalReadListeners = this.globalReadListeners.filter(
       listener => listener !== callback
     );
   }
 
-  // Add notification listener
   onNotification(callback: Function) {
     this.notificationListeners.push(callback);
   }
 
-  // Remove notification listener
   offNotification(callback: Function) {
     this.notificationListeners = this.notificationListeners.filter(
       listener => listener !== callback
     );
   }
 
-  // Add typing listener
   onTypingStatus(matchId: string, callback: Function) {
     if (!this.typingListeners.has(matchId)) {
       this.typingListeners.set(matchId, []);
