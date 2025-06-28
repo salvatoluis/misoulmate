@@ -339,7 +339,7 @@ const Register: React.FC = () => {
 
             await authService.register(registerData);
 
-            navigate('/matches');
+            navigate('/login');
         } catch (err: any) {
             console.error('Registration error:', err);
 
