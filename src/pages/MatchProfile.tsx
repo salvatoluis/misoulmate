@@ -114,8 +114,8 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         if (!messageText.trim() || !id) return;
 
         try {
-            const response = await conversationService.startConversation(id, messageText);
-            navigate(`/conversation/${response.conversationId}`);
+            await conversationService.startConversation(id, messageText);
+            navigate(`/messages`);
         } catch (err) {
             console.error('Error sending message:', err);
             alert('Failed to send message. Please try again.');
