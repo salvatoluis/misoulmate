@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh root@YOUR_SERVER_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} << 'EOF'
             cd /var/www/misoulmate
             git pull origin main
             npm install
