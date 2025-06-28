@@ -5,7 +5,7 @@ import {
     Sliders, Check, Eye, Calendar, FilterX
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { conversationService, matchService } from '@/services';
+import { matchService } from '@/services';
 
 const interestIcons: Record<string, React.ReactNode> = {
     Photography: <Camera size={16} />,

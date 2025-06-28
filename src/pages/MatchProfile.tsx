@@ -4,7 +4,7 @@ import {
     Heart, ArrowLeft, Share, MoreHorizontal, MessageCircle, X,
     MapPin, Briefcase, GraduationCap, Coffee, Music,
     BookOpen, Camera, Film, User, Globe, Instagram, Star,
-    Sparkles, Send, AlertTriangle, ArrowRight, ArrowRightCircle, ArrowLeftCircle
+    Sparkles, Send, AlertTriangle, ArrowRightCircle, ArrowLeftCircle
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { matchService, conversationService } from '@/services';
