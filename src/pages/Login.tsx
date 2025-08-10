@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Loader } from 'lucide-react';
 import axios from 'axios';
 
 const Login: React.FC<any> = ({ }) => {
@@ -8,13 +8,16 @@ const Login: React.FC<any> = ({ }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
         if (!email || !password) {
             setError('Please enter both email and password');
+            setLoading(false);
             return;
         }
 
@@ -32,8 +35,10 @@ const Login: React.FC<any> = ({ }) => {
         } catch (err: any) {
             if (err.response?.data?.message) {
                 setError(err.response.data.message);
+                setLoading(false);
             } else {
                 setError('An error occurred. Please try again.');
+                setLoading(false);
             }
         }
     };
@@ -102,6 +107,7 @@ const Login: React.FC<any> = ({ }) => {
                     className="w-full py-3 bg-[#FF6B81] hover:bg-[#D86D72] text-white font-medium rounded-lg transition-colors flex items-center justify-center"
                 >
                     Sign In
+                    {loading && <Loader className="animate-spin ml-2" />}
                     <ArrowRight size={18} className="ml-2" />
                 </button>
             </form>

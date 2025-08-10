@@ -27,15 +27,20 @@ export interface ProfileQuestion {
     instagram?: string;
     spotifyArtists?: string[];
     questions?: ProfileQuestion[];
-  }
-  
-  // Extended profile interface with UI-specific fields
-  export interface ExtendedProfile extends Profile {
-    notifications?: boolean;
+    gender?: string;
     subscription?: string;
   }
   
-  // Form data interface for editing profile
+  export interface ExtendedProfile extends Profile {
+    notifications?: boolean;
+    subscription?: string;
+    twitter?: string;
+    tiktok?: string;
+    youtube?: string;
+    gender?: string;
+
+  }
+  
   export interface ProfileFormData {
     name?: string;
     age?: number;
