@@ -959,33 +959,6 @@ const Register: React.FC = () => {
                             </Link>
                         </p>
                     </div>
-
-                    <div className="mt-8">
-                        <div className="relative flex items-center">
-                            <div className="flex-grow border-t border-gray-300"></div>
-                            <span className="flex-shrink mx-4 text-gray-600 text-sm">Or sign up with</span>
-                            <div className="flex-grow border-t border-gray-300"></div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4 mt-4">
-                            <button
-                                type="button"
-                                className="p-3 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-                                onClick={() => authService.oauthRegister('google', '')}
-                            >
-                                <img src="/images/google-icon.svg" alt="Google" className="h-5 w-5 mr-2" />
-                                Google
-                            </button>
-                            <button
-                                type="button"
-                                className="p-3 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-                                onClick={() => authService.oauthRegister('apple', '')}
-                            >
-                                <img src="/images/apple-icon.svg" alt="Apple" className="h-5 w-5 mr-2" />
-                                Apple
-                            </button>
-                        </div>
-                    </div>
                 </>
             )}
         </div>

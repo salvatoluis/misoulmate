@@ -120,25 +120,6 @@ const Login: React.FC<any> = ({ }) => {
                     </Link>
                 </p>
             </div>
-
-            <div className="mt-8">
-                <div className="relative flex items-center">
-                    <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="flex-shrink mx-4 text-gray-600 text-sm">Or sign in with</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                    <button className="p-3 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
-                        <img src="/images/google-icon.svg" alt="Google" className="h-5 w-5 mr-2" />
-                        Google
-                    </button>
-                    <button className="p-3 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
-                        <img src="/images/apple-icon.svg" alt="Apple" className="h-5 w-5 mr-2" />
-                        Apple
-                    </button>
-                </div>
-            </div>
         </div>
     );
 };

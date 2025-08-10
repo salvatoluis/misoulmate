@@ -1,10 +1,8 @@
-// Question interface for profile questions
 export interface ProfileQuestion {
     question: string;
     answer: string;
   }
   
-  // Main profile interface that matches the backend schema
   export interface Profile {
     id?: string;
     name: string;
@@ -55,10 +53,9 @@ export interface ProfileQuestion {
     smoking?: string;
     zodiac?: string;
     questions?: ProfileQuestion[];
-    [key: string]: any; // Allow dynamic property access
+    [key: string]: any;
   }
   
-  // Settings interface
   export interface ProfileSettings {
     notifications?: boolean;
     lookingFor?: string;
@@ -68,14 +65,12 @@ export interface ProfileQuestion {
     [key: string]: any;
   }
   
-  // API response types
   export interface ApiResponse<T> {
     data: T;
     message?: string;
     status: number;
   }
   
-  // Validation result interface
   export interface ValidationResult {
     isValid: boolean;
     errors: string[];
