@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Send,
-  Image,
+  Image as ImageIcon,
   Paperclip,
   MoreVertical,
   Wifi,
   WifiOff,
+  X,
+  Mic,
+  StopCircle,
 } from "lucide-react";
 import { matchService } from "@/services";
 import messageService from "@/services/message.service";
@@ -37,7 +40,7 @@ const ConversationPage = () => {
     mediaUrl?: string;
     mediaType?: string | null;
     tempId?: string;
-    processed?: boolean; // Add this flag to mark messages as processed
+    processed?: boolean;
     sender?: {
       id: string;
       profile?: {
@@ -73,10 +76,27 @@ const ConversationPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
-  // Track processed message IDs to avoid duplicates
   const [processedMessageIds] = useState<Set<string>>(new Set());
 
-  // Initial data fetch
+  // Media-related states
+  const [isUploading, setIsUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [fileType, setFileType] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Audio recording states
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<BlobPart[]>([]);
+  const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Media viewer state
+  const [viewerUrl, setViewerUrl] = useState<string | null>(null);
+  const [viewerType, setViewerType] = useState<string>("image");
+
   useEffect(() => {
     if (!id) return;
 
@@ -124,23 +144,17 @@ const ConversationPage = () => {
     socket.on("new_message", (newMessage: Message) => {
       if (newMessage.matchId !== id) return;
 
-      // Check if we've already processed this message ID
       if (processedMessageIds.has(newMessage.id)) {
-        return; // Skip this message entirely
+        return;
       }
 
-      // Mark as processed so we don't handle it again
       processedMessageIds.add(newMessage.id);
 
       setMessages((prevMessages) => {
-        // Check if this message already exists
         const existingIndex = prevMessages.findIndex(
           (msg) =>
-            // Check by ID
             msg.id === newMessage.id ||
-            // Check by tempId
             (msg.tempId && msg.tempId === newMessage.tempId) ||
-            // Check if it's a message with the same content, sender, and similar timestamp
             (msg.senderId === newMessage.senderId &&
               msg.content === newMessage.content &&
               Math.abs(
@@ -149,18 +163,16 @@ const ConversationPage = () => {
               ) < 5000)
         );
 
-        // If it exists, update it
         if (existingIndex !== -1) {
           const newMessages = [...prevMessages];
           newMessages[existingIndex] = {
             ...newMessage,
             isSending: false,
-            processed: true, // Mark as processed
+            processed: true,
           };
           return newMessages;
         }
 
-        // If it's new, add it
         if (newMessage.senderId !== currentUserId) {
           socket.emit("message_read", {
             matchId: id,
@@ -172,13 +184,11 @@ const ConversationPage = () => {
         return [...prevMessages, { ...newMessage, processed: true }];
       });
 
-      // Scroll to bottom for new messages
       setTimeout(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     });
 
-    // Listen for message sending status
     socket.on("message_sending", ({ tempId }: { tempId: string }) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
@@ -187,7 +197,6 @@ const ConversationPage = () => {
       );
     });
 
-    // Listen for message errors
     socket.on(
       "message_error",
       ({ tempId, error }: { tempId: string; error: string }) => {
@@ -222,7 +231,6 @@ const ConversationPage = () => {
       }
     );
 
-    // Listen for typing indicators
     socket.on(
       "user_typing",
       ({
@@ -239,7 +247,6 @@ const ConversationPage = () => {
       }
     );
 
-    // Listen for user status changes
     socket.on(
       "user_status_change",
       ({ userId, isOnline }: { userId: string; isOnline: boolean }) => {
@@ -259,14 +266,12 @@ const ConversationPage = () => {
     };
   }, [socket, isConnected, id, currentUserId, otherUser, processedMessageIds]);
 
-  // Auto-scroll on new messages
   useEffect(() => {
     if (!loading && messages.length > 0) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [loading, messages.length]);
 
-  // Preserve scroll position when loading older messages
   useEffect(() => {
     if (previousScrollHeight > 0 && messageListRef.current) {
       const newScrollHeight = messageListRef.current.scrollHeight;
@@ -283,12 +288,10 @@ const ConversationPage = () => {
       socket.emit("typing", { matchId: id, isTyping: true });
     }
 
-    // Clear existing timeout
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
 
-    // Set new timeout
     typingTimeoutRef.current = setTimeout(() => {
       if (isTyping) {
         setIsTyping(false);
@@ -302,6 +305,131 @@ const ConversationPage = () => {
       }
     };
   }, [messageText, socket, isConnected, id, isTyping]);
+
+  // Handle file selection
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      return;
+    }
+
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
+    // Determine file type
+    if (file.type.startsWith("image/")) {
+      setFileType("image");
+    } else if (file.type.startsWith("video/")) {
+      setFileType("video");
+    } else if (file.type.startsWith("audio/")) {
+      setFileType("audio");
+    } else {
+      setFileType("document");
+    }
+
+    // Create preview URL
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+  };
+
+  // Cancel file upload
+  const cancelFileUpload = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setFileType(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // Use mp3 or ogg format if browser supports it, otherwise fallback to webm
+      const mimeType = MediaRecorder.isTypeSupported("audio/mp3")
+        ? "audio/mp3"
+        : MediaRecorder.isTypeSupported("audio/ogg")
+        ? "audio/ogg"
+        : "audio/webm";
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        // Determine the correct type based on mimeType
+        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+        setAudioBlob(audioBlob);
+        const url = URL.createObjectURL(audioBlob);
+        setPreviewUrl(url);
+        setFileType("audio");
+
+        // Stop all tracks in the stream
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+
+      // Start timer (rest of your existing code)
+      let seconds = 0;
+      recordingTimerRef.current = setInterval(() => {
+        seconds++;
+        setRecordingTime(seconds);
+
+        if (seconds >= 60) {
+          stopRecording();
+        }
+      }, 1000);
+    } catch (error) {
+      console.error("Error starting audio recording:", error);
+    }
+  };
+
+  // Stop audio recording
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+
+      if (recordingTimerRef.current) {
+        clearInterval(recordingTimerRef.current);
+      }
+    }
+  };
+
+  // Cancel audio recording
+  const cancelRecording = () => {
+    if (isRecording) {
+      stopRecording();
+    }
+
+    setAudioBlob(null);
+    setPreviewUrl(null);
+    setFileType(null);
+    setRecordingTime(0);
+  };
+
+  // Format recording time
+  const formatRecordingTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // Open media viewer
+  const openMediaViewer = (url: string, type: string) => {
+    setViewerUrl(url);
+    setViewerType(type);
+  };
 
   const loadMoreMessages = async () => {
     if (!hasMore || loadingMore || !messages.length) return;
@@ -336,13 +464,57 @@ const ConversationPage = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!messageText.trim() || sending) return;
+    if (
+      (!messageText.trim() && !selectedFile && !audioBlob) ||
+      sending ||
+      isUploading
+    )
+      return;
 
     const messageContent = messageText.trim();
     const tempId = `temp-${Date.now()}`;
+    let mediaInfo = null;
 
     try {
       setSending(true);
+
+      // Inside handleSendMessage function, update the upload section:
+
+      if (selectedFile || audioBlob) {
+        setIsUploading(true);
+
+        try {
+          let fileToUpload;
+
+          if (audioBlob) {
+            const fileExtension = audioBlob.type.includes("mp3")
+              ? ".mp3"
+              : audioBlob.type.includes("ogg")
+              ? ".ogg"
+              : ".webm";
+
+            fileToUpload = new File(
+              [audioBlob],
+              `voice-note-${Date.now()}${fileExtension}`,
+              { type: audioBlob.type }
+            );
+          } else {
+            fileToUpload = selectedFile!;
+          }
+
+          const uploadResult = await messageService.uploadMedia(fileToUpload);
+          mediaInfo = {
+            url: uploadResult.url,
+            type: uploadResult.type,
+          };
+          setIsUploading(false);
+        } catch (error) {
+          console.error("Error uploading media:", error);
+          setIsUploading(false);
+          setSending(false);
+          return;
+        }
+      }
 
       // Create temporary message
       const tempMessage: Message = {
@@ -354,11 +526,19 @@ const ConversationPage = () => {
         createdAt: new Date().toISOString(),
         isRead: false,
         isSending: true,
+        ...(mediaInfo && {
+          mediaUrl: mediaInfo.url,
+          mediaType: mediaInfo.type,
+        }),
       };
 
       // Add to local state immediately
       setMessages((prevMessages) => [...prevMessages, tempMessage]);
       setMessageText("");
+
+      // Clear media states
+      cancelFileUpload();
+      cancelRecording();
 
       // Scroll to bottom
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -372,13 +552,15 @@ const ConversationPage = () => {
           tempId,
           matchId: id,
           content: messageContent,
+          media: mediaInfo,
         });
       }
 
       // Also send via API for persistence
       const response = await messageService.sendMessage(
         id as string,
-        messageContent
+        messageContent,
+        mediaInfo
       );
 
       // Mark this message ID as processed so the socket won't add it again
@@ -410,16 +592,19 @@ const ConversationPage = () => {
       // Try to resend via socket when connection is restored
       if (socket) {
         const retryMessage = messageContent;
+        const retryMedia = mediaInfo;
+
         const onReconnect = () => {
-          if (retryMessage.trim()) {
-            socket.emit("send_message", {
-              tempId,
-              matchId: id,
-              content: retryMessage,
-            });
-          }
+          socket.emit("send_message", {
+            tempId,
+            matchId: id,
+            content: retryMessage,
+            media: retryMedia,
+          });
+
           socket.off("connect", onReconnect);
         };
+
         socket.on("connect", onReconnect);
       }
     }
@@ -599,27 +784,45 @@ const ConversationPage = () => {
                       >
                         {message.mediaUrl && (
                           <div className="mb-2 rounded-lg overflow-hidden">
-                            {message.mediaType === "image" ||
-                            !message.mediaType ? (
+                            {message.mediaType === "image" ? (
                               <img
                                 src={message.mediaUrl}
-                                alt="Media"
-                                className="w-full h-auto"
+                                alt="Image"
+                                className="w-full h-auto rounded-lg cursor-pointer"
+                                onClick={() =>
+                                  openMediaViewer(message.mediaUrl!, "image")
+                                }
                               />
                             ) : message.mediaType === "video" ? (
                               <video
                                 src={message.mediaUrl}
                                 controls
-                                className="w-full h-auto"
+                                className="w-full h-auto rounded-lg"
+                                preload="metadata"
+                              />
+                            ) : message.mediaType === "audio" ? (
+                              <audio
+                                src={message.mediaUrl}
+                                controls
+                                className="w-full"
+                                preload="metadata"
                               />
                             ) : (
-                              <div className="px-3 py-2 bg-gray-100 text-gray-700 rounded">
-                                Attachment: {message.mediaUrl.split("/").pop()}
+                              <div className="px-3 py-2 bg-gray-100 text-gray-700 rounded flex items-center">
+                                <Paperclip size={16} className="mr-2" />
+                                <span className="text-sm">
+                                  {message.mediaUrl.split("/").pop() ||
+                                    "Attachment"}
+                                </span>
                               </div>
                             )}
                           </div>
                         )}
-                        <p>{message.content}</p>
+                        {message.content && (
+                          <p className={message.mediaUrl ? "mt-2" : ""}>
+                            {message.content}
+                          </p>
+                        )}
                       </div>
 
                       {/* Time and status */}
@@ -678,14 +881,100 @@ const ConversationPage = () => {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Media preview area */}
+      {(previewUrl || isRecording) && (
+        <div className="bg-white border-t border-gray-200 p-3">
+          <div className="mb-2 p-3 bg-gray-100 rounded-lg relative">
+            <button
+              onClick={
+                fileType === "audio" && audioBlob
+                  ? cancelRecording
+                  : cancelFileUpload
+              }
+              className="absolute top-2 right-2 bg-gray-800 text-white rounded-full p-1 z-10"
+            >
+              <X size={16} />
+            </button>
+
+            {isRecording ? (
+              <div className="flex items-center">
+                <div className="animate-pulse mr-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                </div>
+                <span className="text-sm text-gray-600">
+                  Recording: {formatRecordingTime(recordingTime)}
+                </span>
+                <button
+                  onClick={stopRecording}
+                  className="ml-auto bg-gray-200 text-gray-800 p-2 rounded-full"
+                >
+                  <StopCircle size={20} />
+                </button>
+              </div>
+            ) : fileType === "image" && previewUrl ? (
+              <img
+                src={previewUrl}
+                alt="Selected image"
+                className="max-h-40 rounded-lg mx-auto"
+              />
+            ) : fileType === "video" && previewUrl ? (
+              <video
+                src={previewUrl}
+                controls
+                className="max-h-40 w-full rounded-lg"
+              />
+            ) : fileType === "audio" && previewUrl ? (
+              <audio src={previewUrl} controls className="w-full" />
+            ) : previewUrl ? (
+              <div className="flex items-center p-2">
+                <Paperclip size={20} className="text-gray-500 mr-2" />
+                <span className="text-sm text-gray-600 truncate">
+                  {selectedFile?.name || "Selected file"}
+                </span>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+
       {/* Message input */}
       <div className="bg-white border-t border-gray-200 p-3">
         <div className="flex items-center gap-2">
-          <button className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/*,video/*,audio/*"
+            className="hidden"
+            id="file-upload"
+          />
+
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+            disabled={isRecording || isUploading}
+          >
             <Paperclip size={20} />
           </button>
-          <button className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100">
-            <Image size={20} />
+
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+            disabled={isRecording || isUploading}
+          >
+            <ImageIcon size={20} />
+          </button>
+
+          <button
+            onClick={isRecording ? stopRecording : startRecording}
+            className={`p-2 rounded-full hover:bg-gray-100 ${
+              isRecording
+                ? "text-red-500 hover:text-red-600"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+            disabled={isUploading || !!selectedFile}
+          >
+            <Mic size={20} />
           </button>
 
           <div className="flex-grow relative">
@@ -698,24 +987,37 @@ const ConversationPage = () => {
                 e.key === "Enter" && !e.shiftKey && handleSendMessage()
               }
               placeholder={
-                isConnected
+                isUploading
+                  ? "Uploading media..."
+                  : isConnected
                   ? "Type a message..."
                   : "Type a message (offline mode)"
               }
               className="w-full bg-gray-100 rounded-full py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              disabled={isUploading}
             />
           </div>
 
           <button
             onClick={handleSendMessage}
-            disabled={!messageText.trim() || sending}
+            disabled={
+              (!messageText.trim() && !selectedFile && !audioBlob) ||
+              sending ||
+              isUploading
+            }
             className={`p-2.5 rounded-full flex items-center justify-center ${
-              messageText.trim() && !sending
+              (messageText.trim() || selectedFile || audioBlob) &&
+              !sending &&
+              !isUploading
                 ? "bg-primary text-white"
                 : "bg-gray-200 text-gray-400"
             }`}
           >
-            <Send size={18} />
+            {isUploading ? (
+              <div className="w-4 h-4 border-2 border-gray-200 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              <Send size={18} />
+            )}
           </button>
         </div>
       </div>
@@ -725,6 +1027,37 @@ const ConversationPage = () => {
           <div className="flex items-center justify-center">
             <WifiOff size={16} className="mr-2" />
             You're offline. Messages will send when you reconnect.
+          </div>
+        </div>
+      )}
+
+      {/* Media Viewer */}
+      {viewerUrl && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
+          onClick={() => setViewerUrl(null)}
+        >
+          <button
+            onClick={() => setViewerUrl(null)}
+            className="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-gray-800"
+          >
+            <X size={24} />
+          </button>
+          <div className="max-w-4xl max-h-[90vh] p-2">
+            {viewerType === "image" ? (
+              <img
+                src={viewerUrl}
+                alt="Full size"
+                className="max-w-full max-h-[90vh] object-contain"
+              />
+            ) : viewerType === "video" ? (
+              <video
+                src={viewerUrl}
+                controls
+                autoPlay
+                className="max-w-full max-h-[90vh]"
+              />
+            ) : null}
           </div>
         </div>
       )}
