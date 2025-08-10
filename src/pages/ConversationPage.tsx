@@ -15,6 +15,7 @@ import {
 import { matchService } from "@/services";
 import messageService from "@/services/message.service";
 import { useSocket } from "@/contexts/SocketContext";
+import lamejs from "lamejs";
 
 const ConversationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -279,7 +280,6 @@ const ConversationPage = () => {
     }
   }, [previousScrollHeight]);
 
-  // Handle typing indicator
   useEffect(() => {
     if (!socket || !isConnected || !id) return;
 
@@ -331,11 +331,68 @@ const ConversationPage = () => {
     setPreviewUrl(url);
   };
 
-  // Cancel file upload
-  const cancelFileUpload = () => {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
+  const convertToMP3 = async (audioBlob: Blob): Promise<Blob> => {
+    // Skip conversion if it's already MP3
+    if (audioBlob.type.includes("mp3")) {
+      return audioBlob;
     }
+
+    try {
+      // Convert the audio blob to array buffer
+      const arrayBuffer = await audioBlob.arrayBuffer();
+      const audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+
+      // Decode the audio data
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+      // Convert to MP3 using lamejs
+      const channels = audioBuffer.numberOfChannels;
+      const sampleRate = audioBuffer.sampleRate;
+      const mp3encoder = new lamejs.Mp3Encoder(channels, sampleRate, 128);
+
+      // Process audio data
+      const samples = new Int16Array(audioBuffer.length * channels);
+      const leftChannel = audioBuffer.getChannelData(0);
+      const rightChannel =
+        channels > 1 ? audioBuffer.getChannelData(1) : leftChannel;
+
+      for (let i = 0; i < audioBuffer.length; i++) {
+        // Convert float to int
+        const left = leftChannel[i] * 32767;
+        const right = rightChannel[i] * 32767;
+        samples[i * 2] = left;
+        samples[i * 2 + 1] = right;
+      }
+
+      // Encode to MP3
+      const mp3Data = [];
+      const blockSize = 1152;
+
+      for (let i = 0; i < samples.length; i += blockSize * 2) {
+        const sampleChunk = samples.subarray(i, i + blockSize * 2);
+        const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+        if (mp3buf.length > 0) {
+          mp3Data.push(mp3buf);
+        }
+      }
+
+      const mp3buf = mp3encoder.flush();
+      if (mp3buf.length > 0) {
+        mp3Data.push(mp3buf);
+      }
+
+      // Create MP3 blob
+      const mp3Blob = new Blob(mp3Data, { type: "audio/mp3" });
+      return mp3Blob;
+    } catch (error) {
+      console.error("Error converting to MP3:", error);
+      // If conversion fails, use the original blob
+      return audioBlob;
+    }
+  };
+
+  const cancelFileUpload = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
     setFileType(null);
@@ -347,7 +404,15 @@ const ConversationPage = () => {
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+
+      // Use mp3 or ogg format if browser supports it, otherwise fallback to webm
+      const mimeType = MediaRecorder.isTypeSupported("audio/mp3")
+        ? "audio/mp3"
+        : MediaRecorder.isTypeSupported("audio/ogg")
+        ? "audio/ogg"
+        : "audio/webm";
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -358,9 +423,8 @@ const ConversationPage = () => {
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, {
-          type: "audio/webm",
-        });
+        // Determine the correct type based on mimeType
+        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         setAudioBlob(audioBlob);
         const url = URL.createObjectURL(audioBlob);
         setPreviewUrl(url);
@@ -373,7 +437,7 @@ const ConversationPage = () => {
       mediaRecorder.start();
       setIsRecording(true);
 
-      // Start timer
+      // Start timer (rest of your existing code)
       let seconds = 0;
       recordingTimerRef.current = setInterval(() => {
         seconds++;
@@ -406,9 +470,6 @@ const ConversationPage = () => {
       stopRecording();
     }
 
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
     setAudioBlob(null);
     setPreviewUrl(null);
     setFileType(null);
@@ -477,32 +538,35 @@ const ConversationPage = () => {
     try {
       setSending(true);
 
+      // Inside handleSendMessage function, update the upload section:
+
       if (selectedFile || audioBlob) {
         setIsUploading(true);
 
         try {
           let fileToUpload;
-          let uploadResult;
 
           if (audioBlob) {
-            // Special handling for audio recordings - use raw upload
+            const fileExtension = audioBlob.type.includes("mp3")
+              ? ".mp3"
+              : audioBlob.type.includes("ogg")
+              ? ".ogg"
+              : ".webm";
+
             fileToUpload = new File(
               [audioBlob],
-              `voice-note-${Date.now()}.webm`,
-              { type: "audio/webm" }
+              `voice-note-${Date.now()}${fileExtension}`,
+              { type: audioBlob.type }
             );
-
-            uploadResult = await messageService.uploadRawAudio(fileToUpload);
           } else {
             fileToUpload = selectedFile!;
-            uploadResult = await messageService.uploadMedia(fileToUpload);
           }
 
+          const uploadResult = await messageService.uploadMedia(fileToUpload);
           mediaInfo = {
             url: uploadResult.url,
             type: uploadResult.type,
           };
-
           setIsUploading(false);
         } catch (error) {
           console.error("Error uploading media:", error);
