@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-    Heart, ArrowLeft, MoreHorizontal, MessageCircle, X,
+    Heart, ArrowLeft, MessageCircle, X,
     MapPin, Briefcase, GraduationCap, Coffee, Music,
     BookOpen, Camera, Film, User, Globe, Instagram, Star,
     Sparkles, Send, AlertTriangle, ArrowRightCircle, ArrowLeftCircle, Ban
@@ -529,7 +529,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                 </div>
               </motion.section>
 
-              {/* Interests section */}
               {profile.interests && profile.interests.length > 0 && (
                 <motion.section
                   className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
@@ -554,7 +553,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                 </motion.section>
               )}
 
-              {/* Questions section - Only show if profile has questions */}
               {profile.questions && profile.questions.length > 0 && (
                 <motion.section
                   className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
@@ -581,7 +579,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                 </motion.section>
               )}
 
-              {/* Spotify section - Only show if profile has spotify artists */}
               {profile.spotifyArtists && profile.spotifyArtists.length > 0 && (
                 <motion.section
                   className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
@@ -608,7 +605,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
             </div>
 
             <div className="space-y-6">
-              {/* Action buttons and messaging */}
               <motion.section
                 className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-4"
                 initial={{ opacity: 0, y: 10 }}
@@ -678,7 +674,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                 </div>
               </motion.section>
 
-              {/* Compatibility section */}
               <motion.section
                 className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                 initial={{ opacity: 0, y: 10 }}
