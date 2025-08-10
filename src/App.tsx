@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Matches from './pages/Matches';
 import MatchProfile from './pages/MatchProfile';
 import UserProfile from './pages/UserProfile';
-import Messages from './pages/Messages';
 import Conversation from './pages/Conversation';
 import Subscription from './pages/Subscription';
 import Settings from './pages/Settings';
@@ -30,6 +29,7 @@ import socketService from './services/socket.service';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiePolicy from './pages/CoookiePolicy';
+import Messages from './pages/Messages';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);

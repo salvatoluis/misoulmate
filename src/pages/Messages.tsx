@@ -73,7 +73,8 @@ const Messages: React.FC = () => {
 
         const unreadCount =
           res.conversations?.reduce(
-            (total: number, conv: Conversation) => total + (conv.unreadCount || 0),
+            (total: number, conv: Conversation) =>
+              total + (conv.unreadCount || 0),
             0
           ) || 0;
         setTotalUnreadCount(unreadCount);
@@ -89,12 +90,14 @@ const Messages: React.FC = () => {
     fetchData();
   }, []);
 
-  // Set up socket listeners for real-time updates
   useEffect(() => {
     if (!socket || !isConnected || !currentUserId) return;
 
-    // Listen for new messages to update conversation list
     socket.on("new_message", (message) => {
+      // Check if this is a new message before updating
+      const messageContent = message.content;
+      const messageSenderId = message.senderId;
+
       setConversations((prevConversations) => {
         // Find if conversation exists
         const conversationIndex = prevConversations.findIndex(
@@ -107,17 +110,32 @@ const Messages: React.FC = () => {
           return prevConversations;
         }
 
+        const conversation = prevConversations[conversationIndex];
+
+        // Don't update if this is the same message we already have
+        if (
+          conversation.latestMessage.content === messageContent &&
+          conversation.latestMessage.senderId === messageSenderId &&
+          Math.abs(
+            new Date(conversation.latestMessage.createdAt).getTime() -
+              new Date(message.createdAt).getTime()
+          ) < 5000
+        ) {
+          return prevConversations;
+        }
+
         // Create a new array to avoid mutation
         const newConversations = [...prevConversations];
 
         // Update the conversation with the new message
-        const conversation = { ...newConversations[conversationIndex] };
-        conversation.latestMessage = message;
-        conversation.lastMessageAt = message.createdAt;
+        const updatedConversation = { ...newConversations[conversationIndex] };
+        updatedConversation.latestMessage = message;
+        updatedConversation.lastMessageAt = message.createdAt;
 
         // If message is from the other user, increment unread count
         if (message.senderId !== currentUserId) {
-          conversation.unreadCount = (conversation.unreadCount || 0) + 1;
+          updatedConversation.unreadCount =
+            (updatedConversation.unreadCount || 0) + 1;
           setTotalUnreadCount((prev) => prev + 1);
         }
 
@@ -125,13 +143,12 @@ const Messages: React.FC = () => {
         newConversations.splice(conversationIndex, 1);
 
         // Add it to the top of the list
-        return [conversation, ...newConversations];
+        return [updatedConversation, ...newConversations];
       });
     });
 
-    // Listen for read receipts
     socket.on("message_read_update", ({ matchId, readBy }) => {
-      if (readBy === currentUserId) return; // Skip if we're the one who read
+      if (readBy === currentUserId) return;
 
       setConversations((prevConversations) =>
         prevConversations.map((conv) => {

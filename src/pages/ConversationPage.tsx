@@ -72,6 +72,9 @@ const ConversationPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
+  const [pendingMessageContents, setPendingMessageContents] = useState<
+    Set<string>
+  >(new Set());
 
   // Initial data fetch
   useEffect(() => {
@@ -122,21 +125,58 @@ const ConversationPage = () => {
       if (newMessage.matchId !== id) return;
 
       setMessages((prevMessages) => {
+        // Enhanced duplicate detection logic
         const messageExists = prevMessages.some(
           (msg) =>
+            // Check by ID
             msg.id === newMessage.id ||
-            (msg.tempId && msg.tempId === newMessage.tempId)
+            // Check by tempId
+            (msg.tempId && msg.tempId === newMessage.tempId) ||
+            // Check by content and sender (for messages we've just sent)
+            (msg.senderId === newMessage.senderId &&
+              msg.content === newMessage.content &&
+              pendingMessageContents.has(newMessage.content) &&
+              Math.abs(
+                new Date(msg.createdAt).getTime() -
+                  new Date(newMessage.createdAt).getTime()
+              ) < 5000)
         );
 
         if (messageExists) {
-          return prevMessages.map((msg) =>
-            msg.tempId && msg.tempId === newMessage.tempId
-              ? { ...newMessage, isSending: false }
-              : msg
-          );
+          // Replace any temp message with the real one or leave real messages as is
+          return prevMessages.map((msg) => {
+            // Match by tempId
+            if (msg.tempId && msg.tempId === newMessage.tempId) {
+              return { ...newMessage, isSending: false };
+            }
+
+            // Match by content and timestamp for messages we just sent
+            if (
+              msg.senderId === newMessage.senderId &&
+              msg.content === newMessage.content &&
+              pendingMessageContents.has(msg.content) &&
+              Math.abs(
+                new Date(msg.createdAt).getTime() -
+                  new Date(newMessage.createdAt).getTime()
+              ) < 5000
+            ) {
+              // Remove this content from pending list
+              setPendingMessageContents((prev) => {
+                const newSet = new Set(prev);
+                newSet.delete(msg.content);
+                return newSet;
+              });
+              // Return the new message with the server ID but keep the same position
+              return { ...newMessage, isSending: false };
+            }
+
+            return msg;
+          });
         } else {
+          // Only add the message if it's new
           const updatedMessages = [...prevMessages, newMessage];
 
+          // If from other user, mark as read
           if (newMessage.senderId !== currentUserId) {
             socket.emit("message_read", {
               matchId: id,
@@ -234,7 +274,14 @@ const ConversationPage = () => {
       socket.off("user_typing");
       socket.off("user_status_change");
     };
-  }, [socket, isConnected, id, currentUserId, otherUser]);
+  }, [
+    socket,
+    isConnected,
+    id,
+    currentUserId,
+    otherUser,
+    pendingMessageContents,
+  ]);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -290,7 +337,11 @@ const ConversationPage = () => {
         setPreviousScrollHeight(messageListRef.current.scrollHeight);
       }
 
-      const response = await messageService.getMessagesByMatchId(id as string);
+      const response = await messageService.getMessagesByMatchId(id as string, {
+        page: pagination.page + 1,
+        limit: pagination.limit,
+        beforeId: messages[0]?.id,
+      });
 
       setMessages((prevMessages) => [
         ...response.messages.reverse(),
@@ -311,9 +362,18 @@ const ConversationPage = () => {
   const handleSendMessage = async () => {
     if (!messageText.trim() || sending) return;
 
+    const messageContent = messageText.trim();
     const tempId = `temp-${Date.now()}`;
+
     try {
       setSending(true);
+
+      // Track this message content to avoid duplicates
+      setPendingMessageContents((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(messageContent);
+        return newSet;
+      });
 
       // Create temporary message
       const tempMessage: Message = {
@@ -321,7 +381,7 @@ const ConversationPage = () => {
         tempId,
         matchId: id as string,
         senderId: currentUserId as string,
-        content: messageText,
+        content: messageContent,
         createdAt: new Date().toISOString(),
         isRead: false,
         isSending: true,
@@ -342,14 +402,14 @@ const ConversationPage = () => {
         socket.emit("send_message", {
           tempId,
           matchId: id,
-          content: tempMessage.content,
+          content: messageContent,
         });
       }
 
       // Also send via API for persistence
       const response = await messageService.sendMessage(
         id as string,
-        tempMessage.content
+        messageContent
       );
 
       // Update with server response
@@ -358,6 +418,15 @@ const ConversationPage = () => {
           msg.tempId === tempId ? { ...response, isSending: false } : msg
         )
       );
+
+      // Remove from pending list after successful send
+      setTimeout(() => {
+        setPendingMessageContents((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(messageContent);
+          return newSet;
+        });
+      }, 5000);
 
       setSending(false);
     } catch (error) {
@@ -375,7 +444,7 @@ const ConversationPage = () => {
 
       // Try to resend via socket when connection is restored
       if (socket) {
-        const retryMessage = messageText;
+        const retryMessage = messageContent;
         const onReconnect = () => {
           if (retryMessage.trim()) {
             socket.emit("send_message", {
