@@ -18,12 +18,12 @@ class SocketService {
 
     this.userId = userId;
 
-    this.socket = io('https://api.soulmatify.com', {
+    this.socket = io("http://localhost:3000/api/v1", {
       auth: { token },
-      transports: ['websocket'],
+      transports: ["websocket"],
       reconnection: true,
       reconnectionDelay: 1000,
-      reconnectionAttempts: 5
+      reconnectionAttempts: 5,
     });
 
     this.socket.on('connect', () => {

@@ -9,6 +9,8 @@ const Login: React.FC<any> = ({ }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    // const BASE_URL = 'https://api.soulmatify.com/api/v1';
+    const BASE_URL = "http://localhost:3000/api/v1";
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,7 +24,7 @@ const Login: React.FC<any> = ({ }) => {
         }
 
         try {
-            const response = await axios.post('https://api.soulmatify.com/api/v1/auth/login', {
+            const response = await axios.post(`${BASE_URL}/auth/login`, {
                 email,
                 password,
             });

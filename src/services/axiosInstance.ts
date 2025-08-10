@@ -2,9 +2,9 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 // Create a base axios instance with common configuration
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: 'https://api.soulmatify.com/api/v1',
+  baseURL: "http://localhost:3000/api/v1",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
