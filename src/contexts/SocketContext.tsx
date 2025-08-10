@@ -31,7 +31,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     if (!token) return;
 
-    const socketInstance = io("http://localhost:3000", {
+    const socketInstance = io("https://api.soulmatify.com", {
       auth: { token },
     });
 
