@@ -138,7 +138,6 @@ const Messages: React.FC = () => {
                     </button>
                 </div>
 
-                {/* Search bar */}
                 <div className="container mx-auto px-4 pb-4">
                     <div className="relative">
                         <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
