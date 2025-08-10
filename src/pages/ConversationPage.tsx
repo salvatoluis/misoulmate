@@ -333,6 +333,9 @@ const ConversationPage = () => {
 
   // Cancel file upload
   const cancelFileUpload = () => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setSelectedFile(null);
     setPreviewUrl(null);
     setFileType(null);
@@ -344,15 +347,7 @@ const ConversationPage = () => {
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      // Use mp3 or ogg format if browser supports it, otherwise fallback to webm
-      const mimeType = MediaRecorder.isTypeSupported("audio/mp3")
-        ? "audio/mp3"
-        : MediaRecorder.isTypeSupported("audio/ogg")
-        ? "audio/ogg"
-        : "audio/webm";
-
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+      const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -363,8 +358,9 @@ const ConversationPage = () => {
       };
 
       mediaRecorder.onstop = () => {
-        // Determine the correct type based on mimeType
-        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: "audio/webm",
+        });
         setAudioBlob(audioBlob);
         const url = URL.createObjectURL(audioBlob);
         setPreviewUrl(url);
@@ -377,7 +373,7 @@ const ConversationPage = () => {
       mediaRecorder.start();
       setIsRecording(true);
 
-      // Start timer (rest of your existing code)
+      // Start timer
       let seconds = 0;
       recordingTimerRef.current = setInterval(() => {
         seconds++;
@@ -410,6 +406,9 @@ const ConversationPage = () => {
       stopRecording();
     }
 
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setAudioBlob(null);
     setPreviewUrl(null);
     setFileType(null);
@@ -478,35 +477,32 @@ const ConversationPage = () => {
     try {
       setSending(true);
 
-      // Inside handleSendMessage function, update the upload section:
-
       if (selectedFile || audioBlob) {
         setIsUploading(true);
 
         try {
           let fileToUpload;
+          let uploadResult;
 
           if (audioBlob) {
-            const fileExtension = audioBlob.type.includes("mp3")
-              ? ".mp3"
-              : audioBlob.type.includes("ogg")
-              ? ".ogg"
-              : ".webm";
-
+            // Special handling for audio recordings - use raw upload
             fileToUpload = new File(
               [audioBlob],
-              `voice-note-${Date.now()}${fileExtension}`,
-              { type: audioBlob.type }
+              `voice-note-${Date.now()}.webm`,
+              { type: "audio/webm" }
             );
+
+            uploadResult = await messageService.uploadRawAudio(fileToUpload);
           } else {
             fileToUpload = selectedFile!;
+            uploadResult = await messageService.uploadMedia(fileToUpload);
           }
 
-          const uploadResult = await messageService.uploadMedia(fileToUpload);
           mediaInfo = {
             url: uploadResult.url,
             type: uploadResult.type,
           };
+
           setIsUploading(false);
         } catch (error) {
           console.error("Error uploading media:", error);

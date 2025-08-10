@@ -42,11 +42,27 @@ const sendMessage = async (
   return response.data;
 };
 
+// Add standard media upload
 const uploadMedia = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
 
   const response = await axiosInstance.post("/messages/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
+// Add raw media upload specifically for audio
+const uploadRawAudio = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("resourceType", "raw"); // Tell backend this is a raw file
+
+  const response = await axiosInstance.post("/messages/upload-raw", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -86,4 +102,5 @@ export default {
   getUnreadCount,
   getConversations,
   uploadMedia,
+  uploadRawAudio,
 };
