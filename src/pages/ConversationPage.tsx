@@ -37,6 +37,7 @@ const ConversationPage = () => {
     mediaUrl?: string;
     mediaType?: string | null;
     tempId?: string;
+    processed?: boolean; // Add this flag to mark messages as processed
     sender?: {
       id: string;
       profile?: {
@@ -72,9 +73,8 @@ const ConversationPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const messageInputRef = useRef<HTMLInputElement | null>(null);
-  const [pendingMessageContents, setPendingMessageContents] = useState<
-    Set<string>
-  >(new Set());
+  // Track processed message IDs to avoid duplicates
+  const [processedMessageIds] = useState<Set<string>>(new Set());
 
   // Initial data fetch
   useEffect(() => {
@@ -124,69 +124,52 @@ const ConversationPage = () => {
     socket.on("new_message", (newMessage: Message) => {
       if (newMessage.matchId !== id) return;
 
+      // Check if we've already processed this message ID
+      if (processedMessageIds.has(newMessage.id)) {
+        return; // Skip this message entirely
+      }
+
+      // Mark as processed so we don't handle it again
+      processedMessageIds.add(newMessage.id);
+
       setMessages((prevMessages) => {
-        // Enhanced duplicate detection logic
-        const messageExists = prevMessages.some(
+        // Check if this message already exists
+        const existingIndex = prevMessages.findIndex(
           (msg) =>
             // Check by ID
             msg.id === newMessage.id ||
             // Check by tempId
             (msg.tempId && msg.tempId === newMessage.tempId) ||
-            // Check by content and sender (for messages we've just sent)
+            // Check if it's a message with the same content, sender, and similar timestamp
             (msg.senderId === newMessage.senderId &&
               msg.content === newMessage.content &&
-              pendingMessageContents.has(newMessage.content) &&
               Math.abs(
                 new Date(msg.createdAt).getTime() -
                   new Date(newMessage.createdAt).getTime()
               ) < 5000)
         );
 
-        if (messageExists) {
-          // Replace any temp message with the real one or leave real messages as is
-          return prevMessages.map((msg) => {
-            // Match by tempId
-            if (msg.tempId && msg.tempId === newMessage.tempId) {
-              return { ...newMessage, isSending: false };
-            }
-
-            // Match by content and timestamp for messages we just sent
-            if (
-              msg.senderId === newMessage.senderId &&
-              msg.content === newMessage.content &&
-              pendingMessageContents.has(msg.content) &&
-              Math.abs(
-                new Date(msg.createdAt).getTime() -
-                  new Date(newMessage.createdAt).getTime()
-              ) < 5000
-            ) {
-              // Remove this content from pending list
-              setPendingMessageContents((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete(msg.content);
-                return newSet;
-              });
-              // Return the new message with the server ID but keep the same position
-              return { ...newMessage, isSending: false };
-            }
-
-            return msg;
-          });
-        } else {
-          // Only add the message if it's new
-          const updatedMessages = [...prevMessages, newMessage];
-
-          // If from other user, mark as read
-          if (newMessage.senderId !== currentUserId) {
-            socket.emit("message_read", {
-              matchId: id,
-              messageId: newMessage.id,
-            });
-            messageService.markAsRead(newMessage.id).catch(console.error);
-          }
-
-          return updatedMessages;
+        // If it exists, update it
+        if (existingIndex !== -1) {
+          const newMessages = [...prevMessages];
+          newMessages[existingIndex] = {
+            ...newMessage,
+            isSending: false,
+            processed: true, // Mark as processed
+          };
+          return newMessages;
         }
+
+        // If it's new, add it
+        if (newMessage.senderId !== currentUserId) {
+          socket.emit("message_read", {
+            matchId: id,
+            messageId: newMessage.id,
+          });
+          messageService.markAsRead(newMessage.id).catch(console.error);
+        }
+
+        return [...prevMessages, { ...newMessage, processed: true }];
       });
 
       // Scroll to bottom for new messages
@@ -274,14 +257,7 @@ const ConversationPage = () => {
       socket.off("user_typing");
       socket.off("user_status_change");
     };
-  }, [
-    socket,
-    isConnected,
-    id,
-    currentUserId,
-    otherUser,
-    pendingMessageContents,
-  ]);
+  }, [socket, isConnected, id, currentUserId, otherUser, processedMessageIds]);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -368,13 +344,6 @@ const ConversationPage = () => {
     try {
       setSending(true);
 
-      // Track this message content to avoid duplicates
-      setPendingMessageContents((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(messageContent);
-        return newSet;
-      });
-
       // Create temporary message
       const tempMessage: Message = {
         id: tempId,
@@ -412,21 +381,17 @@ const ConversationPage = () => {
         messageContent
       );
 
+      // Mark this message ID as processed so the socket won't add it again
+      processedMessageIds.add(response.id);
+
       // Update with server response
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
-          msg.tempId === tempId ? { ...response, isSending: false } : msg
+          msg.tempId === tempId
+            ? { ...response, isSending: false, processed: true }
+            : msg
         )
       );
-
-      // Remove from pending list after successful send
-      setTimeout(() => {
-        setPendingMessageContents((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(messageContent);
-          return newSet;
-        });
-      }, 5000);
 
       setSending(false);
     } catch (error) {
