@@ -98,7 +98,6 @@ const ConversationPage = () => {
         if (hasUnreadFromOthers) {
           await messageService.markAllAsRead(id as string);
 
-          // Emit socket event for read receipts
           if (socket && isConnected) {
             socket.emit("message_read", { matchId: id });
           }
@@ -114,19 +113,15 @@ const ConversationPage = () => {
     fetchData();
   }, [id, currentUserId]);
 
-  // Socket.IO setup
   useEffect(() => {
     if (!socket || !isConnected || !id || !currentUserId) return;
 
-    // Join the match room to receive messages
     socket.emit("join_match", id);
 
-    // Listen for new messages
     socket.on("new_message", (newMessage: Message) => {
       if (newMessage.matchId !== id) return;
 
       setMessages((prevMessages) => {
-        // Check if message already exists or is a temporary message
         const messageExists = prevMessages.some(
           (msg) =>
             msg.id === newMessage.id ||
@@ -134,17 +129,14 @@ const ConversationPage = () => {
         );
 
         if (messageExists) {
-          // Replace temp message with real one
           return prevMessages.map((msg) =>
             msg.tempId && msg.tempId === newMessage.tempId
               ? { ...newMessage, isSending: false }
               : msg
           );
         } else {
-          // Add new message
           const updatedMessages = [...prevMessages, newMessage];
 
-          // If message is from other user, mark as read
           if (newMessage.senderId !== currentUserId) {
             socket.emit("message_read", {
               matchId: id,
