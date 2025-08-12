@@ -107,7 +107,6 @@ const About: React.FC = () => {
       </header>
 
       <div className="container mx-auto px-4 py-6">
-        {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="inline-flex justify-center items-center w-20 h-20 rounded-full bg-[#FF6B81]/10 mb-6">
             <Heart size={36} className="text-[#FF6B81]" />
@@ -122,7 +121,6 @@ const About: React.FC = () => {
           </p>
         </div>
 
-        {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {stats.map((stat, index) => (
             <div
@@ -140,7 +138,6 @@ const About: React.FC = () => {
           ))}
         </div>
 
-        {/* Our Story */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
           <h3 className="text-2xl font-bold text-gray-800 mb-6">Our Story</h3>
           <div className="prose prose-gray max-w-none">
@@ -167,7 +164,6 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Our Values */}
         <div className="mb-8">
           <h3 className="text-2xl font-bold text-gray-800 text-center mb-8">
             What We Stand For
@@ -193,7 +189,6 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Timeline */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
           <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">
             Our Journey
@@ -216,7 +211,6 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Team Section */}
         <div className="mb-8">
           <h3 className="text-2xl font-bold text-gray-800 text-center mb-8">
             Meet Our Team
@@ -246,7 +240,6 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Recognition */}
         <div className="bg-gradient-to-r from-[#FF6B81]/10 to-[#D86D72]/10 rounded-xl p-8 mb-8 border border-[#FF6B81]/20">
           <h3 className="text-2xl font-bold text-gray-800 text-center mb-6">
             Recognition & Awards
@@ -286,7 +279,6 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Success Stories */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
           <h3 className="text-2xl font-bold text-gray-800 text-center mb-6">
             Love Stories
@@ -333,7 +325,6 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact Information */}
         <div className="bg-white rounded-xl shadow-sm p-8">
           <h3 className="text-2xl font-bold text-gray-800 text-center mb-6">
             Get In Touch
