@@ -174,7 +174,7 @@ const Navbar: React.FC = () => {
                     {mobileMenuOpen ? (
                         <X size={24} className="text-emerald-500" />
                     ) : (
-                        <Menu size={24} className={scrolled ? "text-[#2B2B2A]" : "text-white"} />
+                        <Menu size={24} className={scrolled ? "text-[#2B2B2A]" : " text-white"} />
                     )}
                 </button>
             </div>
