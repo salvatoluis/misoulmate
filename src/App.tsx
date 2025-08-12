@@ -30,6 +30,7 @@ import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiePolicy from './pages/CoookiePolicy';
 import Messages from './pages/Messages';
+import Referral from './pages/Referral';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -55,7 +56,6 @@ const App: React.FC = () => {
 
     return () => {
       window.removeEventListener('beforeunload', reloadListener);
-      // Disconnect socket when component unmounts
       socketService.disconnect();
     };
   }, []);
@@ -102,6 +102,14 @@ const App: React.FC = () => {
             element={
               <PublicRoute>
                 <Subscription />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/referrals"
+            element={
+              <PublicRoute>
+                <Referral />
               </PublicRoute>
             }
           />
