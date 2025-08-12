@@ -89,181 +89,253 @@ const App: React.FC = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <PublicRoute>
-              <HomePage />
-            </PublicRoute>
-          } />
-          <Route path="/safety" element={
-            <PublicRoute>
-              <SafetyCenter />
-            </PublicRoute>
-          } />
-          <Route path="/contact" element={
-            <PublicRoute>
-              <ContactUs />
-            </PublicRoute>
-          } />
-          <Route path="/community" element={
-            <PublicRoute>
-              <CommunityGuidelines />
-            </PublicRoute>
-          } />
-
-          <Route path="/login" element={
-            <PublicRoute>
-              <AuthLayout>
-                <Login />
-              </AuthLayout>
-            </PublicRoute>
-          } />
-
-          <Route path="/register" element={
-            <PublicRoute>
-              <AuthLayout>
-                <Register />
-              </AuthLayout>
-            </PublicRoute>
-          } />
-
-          <Route path="/onboarding" element={
-            <OnboardingRoute>
-              <Onboarding />
-            </OnboardingRoute>
-          } />
-
-          <Route path="/matches" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Matches />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/for-you" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <ForYou />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/match/:id" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <MatchProfile />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <UserProfile />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/messages" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Messages />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/conversation/:id" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Conversation />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/messages/:id" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <ConversationPage />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/subscription" element={
-            <ProtectedRoute>
-              <MainLayout>
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <HomePage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/subscription"
+            element={
+              <PublicRoute>
                 <Subscription />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/safety"
+            element={
+              <PublicRoute>
+                <SafetyCenter />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <PublicRoute>
+                <ContactUs />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/community"
+            element={
+              <PublicRoute>
+                <CommunityGuidelines />
+              </PublicRoute>
+            }
+          />
 
-          <Route path="/settings" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Settings />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <AuthLayout>
+                  <Login />
+                </AuthLayout>
+              </PublicRoute>
+            }
+          />
 
-          <Route path="/blocked-users" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <BlockedUsers />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <AuthLayout>
+                  <Register />
+                </AuthLayout>
+              </PublicRoute>
+            }
+          />
 
-          <Route path="/help" element={
-            <PublicRoute>
-              <FAQHelp />
-            </PublicRoute>
-          } />
-          <Route path="/cookie-policy" element={
-            <PublicRoute>
-              <CookiePolicy />
-            </PublicRoute>
-          } />
+          <Route
+            path="/onboarding"
+            element={
+              <OnboardingRoute>
+                <Onboarding />
+              </OnboardingRoute>
+            }
+          />
 
-          <Route path="/terms-of-service" element={
-            <PublicRoute>
-              <TermsOfService />
-            </PublicRoute>
-          } />
+          <Route
+            path="/matches"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Matches />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/for-you"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <ForYou />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/privacy-policy" element={
-            <PublicRoute>
-              <PrivacyPolicy />
-            </PublicRoute>
-          } />
+          <Route
+            path="/match/:id"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <MatchProfile />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/date-planner" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <DatePlanner />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <UserProfile />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/icebreakers" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Icebreakers />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Messages />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/discover" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Discover />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/conversation/:id"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Conversation />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages/:id"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <ConversationPage />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/notifications" element={
-            <ProtectedRoute>
-              <MainLayout>
-                <NotificationPage />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Settings />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/blocked-users"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <BlockedUsers />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/help"
+            element={
+              <PublicRoute>
+                <FAQHelp />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/cookie-policy"
+            element={
+              <PublicRoute>
+                <CookiePolicy />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/terms-of-service"
+            element={
+              <PublicRoute>
+                <TermsOfService />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/privacy-policy"
+            element={
+              <PublicRoute>
+                <PrivacyPolicy />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/date-planner"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <DatePlanner />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/icebreakers"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Icebreakers />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/discover"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Discover />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <NotificationPage />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<PageNotFound />} />
         </Routes>

@@ -14,7 +14,7 @@ const publicNavLinks: NavLink[] = [
     { id: 'features', label: 'Features', href: '#features' },
     { id: 'how-it-works', label: 'How It Works', href: '#how-it-works' },
     { id: 'testimonials', label: 'Success Stories', href: '#testimonials' },
-    { id: 'pricing', label: 'Pricing', href: '#pricing' },
+    { id: 'pricing', label: 'Pricing', href: '/subscription' },
     { id: 'support', label: 'Support', href: '/help' },
 ];
 

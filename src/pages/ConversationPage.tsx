@@ -885,7 +885,6 @@ const ConversationPage = () => {
                         )}
                       </div>
 
-                      {/* Time and status */}
                       <div
                         className={`mt-1 flex items-center text-xs ${
                           isCurrentUser
@@ -941,7 +940,6 @@ const ConversationPage = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Media preview area */}
       {(previewUrl || isRecording) && (
         <div className="bg-white border-t border-gray-200 p-3">
           <div className="mb-2 p-3 bg-gray-100 rounded-lg relative">
@@ -1091,7 +1089,6 @@ const ConversationPage = () => {
         </div>
       )}
 
-      {/* Media Viewer */}
       {viewerUrl && (
         <div
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"

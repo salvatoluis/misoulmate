@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Check, X, Crown, Zap, Star, ChevronDown, ArrowLeft, CreditCard, Gift } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Plan {
     id: string;
@@ -25,6 +26,7 @@ interface Plan {
 const Subscription: React.FC = () => {
     const [selectedPlan, setSelectedPlan] = useState<string>('gold');
     const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
+    const navigate = useNavigate();
     const [selectedBillingOption, setSelectedBillingOption] = useState<Record<string, number>>({
         'basic': 0,
         'gold': 1,
@@ -172,7 +174,7 @@ const Subscription: React.FC = () => {
         <div className="bg-gray-50 min-h-screen pb-20">
             <header className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-4 flex items-center">
-                    <button className="mr-4">
+                    <button onClick={() => navigate(-1)} className="mr-4">
                         <ArrowLeft size={24} className="text-gray-700" />
                     </button>
                     <h1 className="text-xl font-bold text-gray-800">Premium Plans</h1>
@@ -190,7 +192,6 @@ const Subscription: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Plan Selection Tabs */}
                 <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
                     <div className="grid grid-cols-4 border-b border-gray-200">
                         {plans.map(plan => (
