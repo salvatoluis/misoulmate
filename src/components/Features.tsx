@@ -106,7 +106,6 @@ const Features = () => {
             y.set(0);
         };
 
-        // Generating subtle shine effect for each card
         const backgroundImage = useMotionTemplate`
       radial-gradient(
         circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
@@ -123,34 +122,28 @@ const Features = () => {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
             >
-                {/* Card background with glass effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-white/50 backdrop-blur-md rounded-3xl border border-white shadow-lg z-0"></div>
 
-                {/* Highlight effect */}
                 <motion.div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"
                     style={{ backgroundImage }}
                 ></motion.div>
 
-                {/* Card content */}
                 <div
                     className="relative p-8 z-10 h-full flex flex-col"
                 >
-                    {/* Icon with 3D transform */}
                     <div
                         className={`bg-gradient-to-br ${feature.iconBgColor} p-5 rounded-2xl inline-flex mb-6 shadow-md`}
                     >
                         <div className={feature.iconColor}>{feature.icon}</div>
                     </div>
 
-                    {/* Content with 3D transform */}
                     <div style={{ transform: 'translateZ(10px)' }} className="text-left flex-grow">
                         <h3 className="text-xl font-bold mb-3 text-slate-800">{feature.title}</h3>
                         <p className="text-slate-600 mb-6">
                             {feature.description}
                         </p>
 
-                        {/* Detailed points */}
                         <ul className="space-y-2 mt-auto">
                             {feature.detailedPoints.map((point, i) => (
                                 <li key={i} className="flex items-start">
@@ -172,15 +165,12 @@ const Features = () => {
 
     return (
         <section id="features" className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-slate-50" ref={sectionRef}>
-            {/* Subtle background accents */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                {/* Gradient orb top-right */}
                 <div
                     className="absolute top-0 right-0 w-[40%] h-[40%] rounded-full opacity-10 blur-[120px]"
                     style={{ background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, rgba(79,70,229,0) 70%)' }}
                 />
 
-                {/* Gradient orb bottom-left */}
                 <div
                     className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full opacity-10 blur-[120px]"
                     style={{ background: 'radial-gradient(circle, rgba(20,184,166,0.4) 0%, rgba(20,184,166,0) 70%)' }}
@@ -192,7 +182,6 @@ const Features = () => {
                     ref={headingRef}
                     className="text-center mb-20"
                 >
-                    {/* Animated heading with word-by-word reveal */}
                     <div
                         className="overflow-hidden mb-2 inline-flex flex-wrap justify-center gap-2"
                     >

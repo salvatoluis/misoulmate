@@ -31,6 +31,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiePolicy from './pages/CoookiePolicy';
 import Messages from './pages/Messages';
 import Referral from './pages/Referral';
+import About from './pages/About';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -94,6 +95,14 @@ const App: React.FC = () => {
             element={
               <PublicRoute>
                 <HomePage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <PublicRoute>
+                <About />
               </PublicRoute>
             }
           />

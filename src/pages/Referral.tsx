@@ -37,7 +37,6 @@ const Referrals: React.FC = () => {
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Mock user data - replace with actual data from your backend
   const userReferralCode = "LOVE2024SARAH";
   const referralLink = `https://yourapp.com/join?ref=${userReferralCode}`;
 
