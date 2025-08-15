@@ -18,7 +18,7 @@ class SocketService {
 
     this.userId = userId;
 
-    this.socket = io("https://api.soulmatify.com/api/v1", {
+    this.socket = io("http://localhost:3000/api/v1", {
       auth: { token },
       transports: ["websocket"],
       reconnection: true,
@@ -181,7 +181,6 @@ class SocketService {
     this.typingListeners.get(matchId)?.push(callback);
   }
 
-  // Remove typing listener
   offTypingStatus(matchId: string, callback: Function) {
     if (this.typingListeners.has(matchId)) {
       const listeners = this.typingListeners.get(matchId) || [];
@@ -192,31 +191,26 @@ class SocketService {
     }
   }
   
-  // Add online status listener
   onOnlineStatus(callback: Function) {
     this.onlineStatusListeners.push(callback);
   }
   
-  // Remove online status listener
   offOnlineStatus(callback: Function) {
     this.onlineStatusListeners = this.onlineStatusListeners.filter(
       listener => listener !== callback
     );
   }
 
-  // Add connection listener
   onConnectionChange(callback: Function) {
     this.connectionListeners.push(callback);
   }
 
-  // Remove connection listener
   offConnectionChange(callback: Function) {
     this.connectionListeners = this.connectionListeners.filter(
       listener => listener !== callback
     );
   }
 
-  // Disconnect socket
   disconnect() {
     if (this.socket) {
       this.socket.disconnect();
