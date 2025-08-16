@@ -39,7 +39,7 @@ const Subscription: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>("pro");
   const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [selectedBillingOption, setSelectedBillingOption] = useState<
+  const [selectedBillingOption] = useState<
     Record<string, number>
   >({
     basic: 0,
