@@ -28,10 +28,10 @@ interface ConversationResponse {
 const matchService = {
   getMatches: async (filters?: any): Promise<any> => {
     try {
-      const response = await axiosInstance.get('/matches', { params: filters });
+      const response = await axiosInstance.get("/matches", { params: filters });
       return response.data;
     } catch (error) {
-      console.error('Error fetching matches:', error);
+      console.error("Error fetching matches:", error);
       throw error;
     }
   },
@@ -42,6 +42,50 @@ const matchService = {
       return response.data;
     } catch (error) {
       console.error(`Error blocking user with ID ${userId}:`, error);
+      throw error;
+    }
+  },
+
+  getProfileViews: async () => {
+    try {
+      const response = await axiosInstance.get(
+        "/profile-views/me/profile-views"
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching profile views", error);
+      throw error;
+    }
+  },
+
+  getProfileViewsCount: async (profileId: string) => {
+    try {
+      const response = await axiosInstance.get(
+        `/profile-views/profiles/${profileId}/views/count`
+      );
+      return response.data.count;
+    } catch (error) {
+      console.error("Error fetching profile views count", error);
+      throw error;
+    }
+  },
+
+  unblockUser: async (userId: string) => {
+    try {
+      await axiosInstance.delete(`/block/users/${userId}/block`);
+      return true;
+    } catch (error) {
+      console.error("Error unblocking user", error);
+      throw error;
+    }
+  },
+
+  getBlockedUsers: async () => {
+    try {
+      const response = await axiosInstance.get("/block/blocked-users");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching blocked users", error);
       throw error;
     }
   },
@@ -58,7 +102,9 @@ const matchService = {
 
   unmatchUser: async (matchId: string): Promise<any> => {
     try {
-      const response = await axiosInstance.delete(`/matches/${matchId}/unmatch`);
+      const response = await axiosInstance.delete(
+        `/matches/${matchId}/unmatch`
+      );
       return response.data;
     } catch (error) {
       console.error(`Error unmatching user with match ID ${matchId}:`, error);
@@ -85,12 +131,7 @@ const matchService = {
       throw error;
     }
   },
-
-  /**
-   * Unmatch with an existing match
-   * @param {number} matchId - ID of the match to unmatch
-   * @returns {Promise<MatchActionResponse>} Promise with action response
-   */
+  
   unmatch: async (matchId: number): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.delete(`/matches/${matchId}`);
@@ -101,21 +142,36 @@ const matchService = {
     }
   },
 
-  getConversation: async (matchId: number, page: number = 1, limit: number = 20): Promise<ConversationResponse> => {
+  getConversation: async (
+    matchId: number,
+    page: number = 1,
+    limit: number = 20
+  ): Promise<ConversationResponse> => {
     try {
-      const response = await axiosInstance.get(`/matches/${matchId}/conversation`, {
-        params: { page, limit }
-      });
+      const response = await axiosInstance.get(
+        `/matches/${matchId}/conversation`,
+        {
+          params: { page, limit },
+        }
+      );
       return response.data;
     } catch (error) {
-      console.error(`Error fetching conversation with match ${matchId}:`, error);
+      console.error(
+        `Error fetching conversation with match ${matchId}:`,
+        error
+      );
       throw error;
     }
   },
 
-  sendMessage: async (matchId: number, content: string): Promise<ConversationMessage> => {
+  sendMessage: async (
+    matchId: number,
+    content: string
+  ): Promise<ConversationMessage> => {
     try {
-      const response = await axiosInstance.post(`/matches/${matchId}/message`, { content });
+      const response = await axiosInstance.post(`/matches/${matchId}/message`, {
+        content,
+      });
       return response.data.data;
     } catch (error) {
       console.error(`Error sending message to match ${matchId}:`, error);
@@ -123,31 +179,40 @@ const matchService = {
     }
   },
 
-  markConversationAsRead: async (matchId: number): Promise<MatchActionResponse> => {
+  markConversationAsRead: async (
+    matchId: number
+  ): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.put(`/matches/${matchId}/read`);
       return response.data;
     } catch (error) {
-      console.error(`Error marking conversation as read for match ${matchId}:`, error);
+      console.error(
+        `Error marking conversation as read for match ${matchId}:`,
+        error
+      );
       throw error;
     }
   },
 
   getAllInterests: async (): Promise<string[]> => {
     try {
-      const response = await axiosInstance.get('/interests');
+      const response = await axiosInstance.get("/interests");
       return response.data.data;
     } catch (error) {
-      console.error('Error fetching interests:', error);
+      console.error("Error fetching interests:", error);
       throw error;
     }
   },
 
-  reportMatch: async (matchId: number, reason: string, details?: string): Promise<MatchActionResponse> => {
+  reportMatch: async (
+    matchId: number,
+    reason: string,
+    details?: string
+  ): Promise<MatchActionResponse> => {
     try {
       const response = await axiosInstance.post(`/matches/${matchId}/report`, {
         reason,
-        details
+        details,
       });
       return response.data;
     } catch (error) {
@@ -168,10 +233,12 @@ const matchService = {
 
   getRecommendations: async (filters?: any): Promise<any> => {
     try {
-      const response = await axiosInstance.get('/recommendations', { params: filters });
+      const response = await axiosInstance.get("/recommendations", {
+        params: filters,
+      });
       return response.data;
     } catch (error) {
-      console.error('Error fetching recommendations:', error);
+      console.error("Error fetching recommendations:", error);
       throw error;
     }
   },
