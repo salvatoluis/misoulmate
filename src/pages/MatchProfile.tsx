@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { matchService, conversationService } from '@/services';
+import toast from 'react-hot-toast';
 
 interface MatchProfileProps {
     id?: string;
@@ -66,7 +67,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         fetchMatchData();
     }, [id]);
 
-    // Preload the current image when photo index changes
     useEffect(() => {
         if (otherUser?.profile?.photos && otherUser.profile.photos.length > 0) {
             setImageLoaded(false);
@@ -79,7 +79,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
     const handlePhotoChange = (newIndex: number) => {
         if (isAnimating || !otherUser?.profile?.photos) return;
 
-        // Wrap around for continuous scrolling
         if (newIndex < 0) {
             newIndex = otherUser.profile.photos.length - 1;
         } else if (newIndex >= otherUser.profile.photos.length) {
@@ -138,6 +137,18 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         }
     };
 
+    const handleBlockUser = async (id: string) => {
+        if (!id) return;
+
+        try {
+            await matchService.blockUser(id);
+            toast.success('User blocked successfully.');
+        } catch (err) {
+            console.error('Error blocking user:', err);
+            toast.error('Failed to block user. Please try again.');
+        }
+    };
+
     const getInterestIcon = (interest: string) => {
         switch (interest) {
             case 'Photography': return <Camera size={16} />;
@@ -156,7 +167,6 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         }
     };
 
-    // Generate conversation starters based on profile data
     const generateConversationStarters = () => {
         const starters = [];
 
@@ -358,8 +368,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                     "Image failed to load:",
                     profile.photos[safePhotoIndex]
                   );
-                  setImageLoaded(true); // Still mark as loaded to remove spinner
-                  // Set a fallback image or placeholder
+                  setImageLoaded(true);
                   (e.target as HTMLImageElement).src =
                     "https://via.placeholder.com/400x600?text=Image+Not+Available";
                 }}
@@ -788,10 +797,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                     Cancel
                   </button>
                   <button
-                    onClick={() => {
-                      //   onConfirm();
-                      //   onClose();
-                    }}
+                    onClick={() => {handleBlockUser(otherUser?.id)}}
                     className="px-4 py-2 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-colors"
                   >
                     Block User

@@ -1,19 +1,5 @@
 import axiosInstance from "./axiosInstance";
 
-interface Match {
-  id: number;
-  name: string;
-  age: number;
-  location: string;
-  distance: number;
-  matchPercentage: number;
-  bio: string;
-  photos: string[];
-  interests: string[];
-  lastActive: string;
-  occupation: string;
-}
-
 interface MatchActionResponse {
   success: boolean;
   message: string;
@@ -46,6 +32,16 @@ const matchService = {
       return response.data;
     } catch (error) {
       console.error('Error fetching matches:', error);
+      throw error;
+    }
+  },
+
+  blockUser: async (userId: string): Promise<any> => {
+    try {
+      const response = await axiosInstance.post(`/block/users/${userId}/block`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error blocking user with ID ${userId}:`, error);
       throw error;
     }
   },
