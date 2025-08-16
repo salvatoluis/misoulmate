@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     User, Mail, Lock, ArrowRight, Calendar, AlertCircle,
     MapPin, Check, ChevronLeft, ChevronRight, Upload, X,
     Globe, BookOpen, Camera, Music, Coffee, Film,
-    Plus
+    Plus,
+    Gift
 } from 'lucide-react';
 import authService from '@/services/auth.service';
 
@@ -38,11 +39,13 @@ const Register: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+    const location = useLocation();
 
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         confirmPassword: '',
+        referralCode: '',
         profile: {
             name: '',
             birthdate: '',
@@ -59,6 +62,18 @@ const Register: React.FC = () => {
             questions: [] as Array<{ question: string, answer: string }>
         }
     });
+
+    useEffect(() => {
+      const params = new URLSearchParams(location.search);
+      const refCode = params.get("ref");
+
+      if (refCode) {
+        setFormData((prev) => ({
+          ...prev,
+          referralCode: refCode,
+        }));
+      }
+    }, [location]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -327,6 +342,7 @@ const Register: React.FC = () => {
             const registerData = {
                 email: formData.email,
                 password: formData.password,
+                referralCode: formData.referralCode,
                 profile: {
                     ...profileWithoutBirthdate,
                     photos: base64Photos,
@@ -423,77 +439,140 @@ const Register: React.FC = () => {
         switch (step) {
             case 1:
                 return (
-                    <>
-                        <div>
-                            <label className="block text-sm text-gray-700 mb-1" htmlFor="email">
-                                Email
-                                <span className="text-red-500 ml-1">*</span>
-                            </label>
-                            <div className="relative">
-                                <Mail size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className={`w-full p-3 pl-10 border ${validationErrors.email ? 'border-red-500' : 'border-gray-300'
-                                        } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]`}
-                                    placeholder="you@example.com"
-                                />
-                            </div>
-                            {validationErrors.email && (
-                                <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
-                            )}
-                        </div>
+                  <>
+                    <div>
+                      <label
+                        className="block text-sm text-gray-700 mb-1"
+                        htmlFor="email"
+                      >
+                        Email
+                        <span className="text-red-500 ml-1">*</span>
+                      </label>
+                      <div className="relative">
+                        <Mail
+                          size={18}
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        />
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          className={`w-full p-3 pl-10 border ${
+                            validationErrors.email
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]`}
+                          placeholder="you@example.com"
+                        />
+                      </div>
+                      {validationErrors.email && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {validationErrors.email}
+                        </p>
+                      )}
+                    </div>
 
-                        <div>
-                            <label className="block text-sm text-gray-700 mb-1" htmlFor="password">
-                                Password
-                                <span className="text-red-500 ml-1">*</span>
-                            </label>
-                            <div className="relative">
-                                <Lock size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className={`w-full p-3 pl-10 border ${validationErrors.password ? 'border-red-500' : 'border-gray-300'
-                                        } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]`}
-                                    placeholder="••••••••"
-                                />
-                            </div>
-                            {validationErrors.password && (
-                                <p className="text-red-500 text-sm mt-1">{validationErrors.password}</p>
-                            )}
-                            <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
-                        </div>
+                    <div>
+                      <label
+                        className="block text-sm text-gray-700 mb-1"
+                        htmlFor="password"
+                      >
+                        Password
+                        <span className="text-red-500 ml-1">*</span>
+                      </label>
+                      <div className="relative">
+                        <Lock
+                          size={18}
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        />
+                        <input
+                          type="password"
+                          id="password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          className={`w-full p-3 pl-10 border ${
+                            validationErrors.password
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]`}
+                          placeholder="••••••••"
+                        />
+                      </div>
+                      {validationErrors.password && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {validationErrors.password}
+                        </p>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">
+                        Password must be at least 8 characters
+                      </p>
+                    </div>
 
-                        <div>
-                            <label className="block text-sm text-gray-700 mb-1" htmlFor="confirmPassword">
-                                Confirm Password
-                                <span className="text-red-500 ml-1">*</span>
-                            </label>
-                            <div className="relative">
-                                <Lock size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    className={`w-full p-3 pl-10 border ${validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                                        } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]`}
-                                    placeholder="••••••••"
-                                />
-                            </div>
-                            {validationErrors.confirmPassword && (
-                                <p className="text-red-500 text-sm mt-1">{validationErrors.confirmPassword}</p>
-                            )}
-                        </div>
-                    </>
+                    <div>
+                      <label
+                        className="block text-sm text-gray-700 mb-1"
+                        htmlFor="confirmPassword"
+                      >
+                        Confirm Password
+                        <span className="text-red-500 ml-1">*</span>
+                      </label>
+                      <div className="relative">
+                        <Lock
+                          size={18}
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        />
+                        <input
+                          type="password"
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          className={`w-full p-3 pl-10 border ${
+                            validationErrors.confirmPassword
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]`}
+                          placeholder="••••••••"
+                        />
+                      </div>
+                      {validationErrors.confirmPassword && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {validationErrors.confirmPassword}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label
+                        className="block text-sm text-gray-700 mb-1"
+                        htmlFor="referralCode"
+                      >
+                        Referral Code{" "}
+                        <span className="text-gray-500">(Optional)</span>
+                      </label>
+                      <div className="relative">
+                        <Gift
+                          size={18}
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        />
+                        <input
+                          type="text"
+                          id="referralCode"
+                          name="referralCode"
+                          value={formData.referralCode}
+                          onChange={handleChange}
+                          className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+                          placeholder="Enter referral code"
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        If someone referred you, enter their code here
+                      </p>
+                    </div>
+                  </>
                 );
 
             case 2:
