@@ -7,7 +7,7 @@ import {
     Sparkles, Send, AlertTriangle, ArrowRightCircle, ArrowLeftCircle, Ban
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { matchService, conversationService } from '@/services';
+import { matchService, conversationService, profileService } from '@/services';
 import toast from 'react-hot-toast';
 
 interface MatchProfileProps {
@@ -141,7 +141,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         if (!id) return;
 
         try {
-            await matchService.blockUser(id);
+            await profileService.blockUser(id);
             toast.success('User blocked successfully.');
         } catch (err) {
             console.error('Error blocking user:', err);

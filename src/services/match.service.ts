@@ -36,60 +36,6 @@ const matchService = {
     }
   },
 
-  blockUser: async (userId: string): Promise<any> => {
-    try {
-      const response = await axiosInstance.post(`/block/users/${userId}/block`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error blocking user with ID ${userId}:`, error);
-      throw error;
-    }
-  },
-
-  getProfileViews: async () => {
-    try {
-      const response = await axiosInstance.get(
-        "/profile-views/me/profile-views"
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching profile views", error);
-      throw error;
-    }
-  },
-
-  getProfileViewsCount: async (profileId: string) => {
-    try {
-      const response = await axiosInstance.get(
-        `/profile-views/profiles/${profileId}/views/count`
-      );
-      return response.data.count;
-    } catch (error) {
-      console.error("Error fetching profile views count", error);
-      throw error;
-    }
-  },
-
-  unblockUser: async (userId: string) => {
-    try {
-      await axiosInstance.delete(`/block/users/${userId}/block`);
-      return true;
-    } catch (error) {
-      console.error("Error unblocking user", error);
-      throw error;
-    }
-  },
-
-  getBlockedUsers: async () => {
-    try {
-      const response = await axiosInstance.get("/block/blocked-users");
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching blocked users", error);
-      throw error;
-    }
-  },
-
   getMatchById: async (matchId: string): Promise<any> => {
     try {
       const response = await axiosInstance.get(`/matches/${matchId}`);
