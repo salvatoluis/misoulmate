@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Profile, ValidationResult } from '@/types/profile.type';
 import profileService from '@/services/profile.service';
 import { validateProfile, prepareProfileData } from '@/utils/schemaValidator';
+import toast from 'react-hot-toast';
 
 interface UseProfileApiReturn {
   loading: boolean;
@@ -97,9 +98,6 @@ const useProfileApi = (): UseProfileApiReturn => {
   );
   
 
-  /**
-   * Upload a photo
-   */
   const uploadPhoto = useCallback(async (file: File): Promise<string | null> => {
     try {
       setLoading(true);
@@ -107,7 +105,6 @@ const useProfileApi = (): UseProfileApiReturn => {
       
       const photoUrl = await profileService.uploadPhoto(file);
       
-      // Update local profile state with new photo
       if (profile) {
         const updatedPhotos = [...(profile.photos || []), photoUrl];
         setProfile({
@@ -120,15 +117,12 @@ const useProfileApi = (): UseProfileApiReturn => {
       return photoUrl;
     } catch (err) {
       console.error('Error uploading photo:', err);
-      setError('Failed to upload photo. Please try again.');
+      toast.error('Failed to upload photo. Please try again.');
       setLoading(false);
       return null;
     }
   }, [profile]);
 
-  /**
-   * Delete a photo
-   */
   const deletePhoto = useCallback(async (photoUrl: string): Promise<boolean> => {
     try {
       setLoading(true);
@@ -136,7 +130,6 @@ const useProfileApi = (): UseProfileApiReturn => {
       
       await profileService.deletePhoto(photoUrl);
       
-      // Update local profile state by removing the photo
       if (profile) {
         const updatedPhotos = profile.photos?.filter(url => url !== photoUrl) || [];
         setProfile({

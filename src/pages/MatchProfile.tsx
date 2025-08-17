@@ -4,7 +4,8 @@ import {
     Heart, ArrowLeft, MessageCircle, X,
     MapPin, Briefcase, GraduationCap, Coffee, Music,
     BookOpen, Camera, Film, User, Globe, Instagram, Star,
-    Sparkles, Send, AlertTriangle, ArrowRightCircle, ArrowLeftCircle, Ban
+    Sparkles, Send, AlertTriangle, ArrowRightCircle, ArrowLeftCircle,
+    Ban
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { matchService, conversationService, profileService } from '@/services';
@@ -30,37 +31,72 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
     const photosRef = useRef<HTMLDivElement>(null);
     const [dragStartX, setDragStartX] = useState(0);
     const [openBanModal, setOpenBanModal] = useState(false);
+    const [openUnblockModal, setOpenUnblockModal] = useState(false);
 
     const fetchMatchData = async () => {
-        try {
-            setIsLoading(true);
-            setError(null);
-            const data = await matchService.getMatchById(id as string);
-            setMatch(data);
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await matchService.getMatchById(id as string);
+        setMatch(data);
 
-            setOtherUser(data?.otherUser);
-            setIsLoading(false);
+        setOtherUser(data?.otherUser);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error fetching match:", err);
 
-        } catch (err) {
-            console.error('Error fetching match:', err);
+        let errorMessage = "Unable to load profile. Please try again later.";
 
-            let errorMessage = 'Unable to load profile. Please try again later.';
-
-            if (err instanceof Error) {
-                if (err.message.includes('No match ID')) {
-                    errorMessage = 'Invalid match ID provided.';
-                } else if (err.message.includes('No data received') || err.message.includes('No otherUser data')) {
-                    errorMessage = 'No match data found. This match may no longer exist.';
-                } else if (err.message.includes('profile data is missing') || err.message.includes('name is missing') || err.message.includes('photos are missing')) {
-                    errorMessage = 'This profile is incomplete or unavailable.';
-                } else if (err.message.includes('Network Error') || err.message.includes('fetch')) {
-                    errorMessage = 'Network error. Please check your connection and try again.';
-                }
-            }
-
-            setError(errorMessage);
-            setIsLoading(false);
+        if (
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          typeof (err as any).response === "object" &&
+          (err as any).response !== null &&
+          "data" in (err as any).response &&
+          typeof (err as any).response.data === "object" &&
+          (err as any).response.data !== null &&
+          "message" in (err as any).response.data
+        ) {
+          const message = (err as any).response.data.message;
+          if (message === "This match is no longer available") {
+            errorMessage =
+              "This match is no longer available.";
+          } else {
+            errorMessage = message;
+          }
+        } else if (err instanceof Error) {
+          if (err.message.includes("No match ID")) {
+            errorMessage = "Invalid match ID provided.";
+          } else if (
+            err.message.includes("No data received") ||
+            err.message.includes("No otherUser data")
+          ) {
+            errorMessage =
+              "No match data found. This match may no longer exist.";
+          } else if (
+            err.message.includes("profile data is missing") ||
+            err.message.includes("name is missing") ||
+            err.message.includes("photos are missing")
+          ) {
+            errorMessage = "This profile is incomplete or unavailable.";
+          } else if (
+            err.message.includes("Network Error") ||
+            err.message.includes("fetch")
+          ) {
+            errorMessage =
+              "Network error. Please check your connection and try again.";
+          } else if (
+            err.message.includes("This match is no longer available")
+          ) {
+            errorMessage =
+              "This match is no longer available.";
+          }
         }
+
+        setError(errorMessage);
+        setIsLoading(false);
+      }
     };
 
     useEffect(() => {
@@ -143,9 +179,23 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
         try {
             await profileService.blockUser(id);
             toast.success('User blocked successfully.');
+            window.location.reload();
         } catch (err) {
             console.error('Error blocking user:', err);
             toast.error('Failed to block user. Please try again.');
+        }
+    };
+
+    const handleUnblockUser = async (id: string) => {
+        if (!id) return;
+
+        try {
+            await profileService.unblockUser(id);
+            toast.success('User unblocked successfully.');
+            window.location.reload();
+        } catch (err) {
+            console.error('Error unblocking user:', err);
+            toast.error('Failed to unblock user. Please try again.');
         }
     };
 
@@ -291,6 +341,7 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
 
     const safePhotoIndex = Math.min(currentPhotoIndex, profile.photos.length - 1);
 
+  
     return (
       <div className="bg-white min-h-screen relative">
         <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/60 to-transparent pt-safe">
@@ -303,12 +354,21 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
             </button>
 
             <div className="flex gap-2">
-              <button
-                className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white"
-                onClick={() => setOpenBanModal(true)}
-              >
-                <Ban size={18} />
-              </button>
+              {match.isBlocked ? (
+                <button
+                  className="px-4 py-1.5 flex items-center gap-2 bg-gray-200 text-gray-700 rounded-md text-[14px]"
+                  onClick={() => setOpenUnblockModal(true)}
+                >
+                  Unblock <Ban size={16} />
+                </button>
+              ) : (
+                <button
+                  className="px-4 py-1.5 flex items-center gap-2 bg-red-500 text-white rounded-md text-[14px]"
+                  onClick={() => setOpenBanModal(true)}
+                >
+                  Block <Ban size={16} />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -797,10 +857,58 @@ const MatchProfilePage: React.FC<MatchProfileProps> = () => {
                     Cancel
                   </button>
                   <button
-                    onClick={() => {handleBlockUser(otherUser?.id)}}
+                    onClick={() => {
+                      handleBlockUser(otherUser?.id);
+                    }}
                     className="px-4 py-2 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-colors"
                   >
                     Block User
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openUnblockModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-4 overflow-hidden">
+              <div className="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 className="text-lg font-bold text-gray-800">
+                  Unblock User
+                </h2>
+                <button
+                  onClick={() => setOpenUnblockModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-6">
+                <p className="text-gray-700 mb-2">
+                  Are you sure you want to unblock{" "}
+                  <span className="font-semibold">{profile.name}</span>?
+                </p>
+                <p className="text-gray-500 text-sm mb-6">
+                  They will be able to see your profile, message you, and
+                  interact with your content again.
+                </p>
+
+                <div className="flex gap-3 justify-end">
+                  <button
+                    onClick={() => setOpenUnblockModal(false)}
+                    className="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleUnblockUser(otherUser?.id);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-colors"
+                  >
+                    Unblock User
                   </button>
                 </div>
               </div>
