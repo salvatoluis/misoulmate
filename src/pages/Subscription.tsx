@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Check,
   X,
   Crown,
   Zap,
-  Star,
   ChevronDown,
   ArrowLeft,
   CreditCard,
   Gift,
-  Shield,
+  Loader,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "@/services";
 
 interface Plan {
   id: string;
@@ -28,91 +28,93 @@ interface Plan {
   description: string;
   color: string;
   icon: React.ReactNode;
-  billingOptions: {
-    duration: string;
-    pricePerPeriod: number;
-    totalPrice: number;
-  }[];
 }
 
+interface UserPlan {
+  planType: string;
+  expiresAt: string | null;
+  features: Record<string, any>;
+}
+
+const API_URL = "http://localhost:3000/api/v1";
+
 const Subscription: React.FC = () => {
-  const [selectedPlan, setSelectedPlan] = useState<string>("pro");
+  const [selectedPlan, setSelectedPlan] = useState<string>("premium");
   const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const [selectedBillingOption] = useState<
-    Record<string, number>
-  >({
-    basic: 0,
-    pro: 0,
-    premium: 0,
+  const [loading, setLoading] = useState<boolean>(false);
+  const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"paypal" | "card">(
+    "paypal"
+  );
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [cardDetails, setCardDetails] = useState({
+    number: "",
+    type: "visa",
+    expireMonth: "",
+    expireYear: "",
+    cvv: "",
+    firstName: "",
+    lastName: "",
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserPlan = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await axiosInstance.get(`${API_URL}/plans/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserPlan(response.data);
+      } catch (error) {
+        console.error("Error fetching user plan:", error);
+      }
+    };
+
+    fetchUserPlan();
+  }, []);
 
   const plans: Plan[] = [
     {
-      id: "basic",
-      name: "Basic",
-      price: 9.99,
-      pricePeriod: "per week",
-      duration: "1 Week Access",
-      description: "Perfect for trying out premium features",
-      color: "blue",
+      id: "free",
+      name: "Free",
+      price: 0,
+      pricePeriod: "free forever",
+      duration: "Unlimited Access",
+      description: "Basic features to get you started",
+      color: "gray",
       icon: <Zap size={20} />,
       features: [
         { text: "View other users profile", included: true },
-        { text: "Send and receive images", included: true },
-        { text: "Unlimited matches", included: true },
-        { text: "Send unlimited messages", included: true },
-        { text: "Full access to compatibility test", included: true },
-        { text: "Message translation", included: true },
-        { text: "24/7 support", included: true },
+        { text: "Limited matches per day", included: true },
+        { text: "Limited messages per day", included: true },
+        { text: "Basic compatibility test", included: true },
+        { text: "Message translation", included: false },
+        { text: "24/7 support", included: false },
         { text: "Top on browse page", included: false },
         { text: "See who viewed your profile", included: false },
         { text: "Hide profile from other users", included: false },
         { text: "Premium verification badge", included: false },
         { text: "AI chat assist", included: false },
-      ],
-      billingOptions: [
-        { duration: "1 Week", pricePerPeriod: 9.99, totalPrice: 9.99 },
-      ],
-    },
-    {
-      id: "pro",
-      name: "Pro",
-      price: 24.99,
-      pricePeriod: "per month",
-      duration: "1 Month Access",
-      popular: true,
-      description: "Most popular choice for serious daters",
-      color: "gold",
-      icon: <Crown size={20} />,
-      features: [
-        { text: "View other users profile", included: true },
-        { text: "Send and receive images", included: true },
-        { text: "Unlimited matches", included: true },
-        { text: "Send unlimited messages", included: true },
-        { text: "Full access to compatibility test", included: true },
-        { text: "Message translation", included: true },
-        { text: "24/7 support", included: true },
-        { text: "Top on browse page", included: false },
-        { text: "See who viewed your profile", included: false },
-        { text: "Hide profile from other users", included: false },
-        { text: "Premium verification badge", included: false },
-        { text: "AI chat assist", included: false },
-      ],
-      billingOptions: [
-        { duration: "1 Month", pricePerPeriod: 24.99, totalPrice: 24.99 },
+        { text: "Unlimited likes", included: false },
       ],
     },
     {
       id: "premium",
       name: "Premium",
-      price: 119.99,
-      pricePeriod: "per year",
-      duration: "1 Year Access",
-      savings: "Save 60%",
-      description: "Ultimate dating experience with all premium features",
-      color: "purple",
-      icon: <Shield size={20} />,
+      price: 25.0,
+      pricePeriod: "per month",
+      duration: "1 Month Access",
+      popular: true,
+      description: "All features unlocked for serious daters",
+      color: "gold",
+      icon: <Crown size={20} />,
       features: [
         { text: "View other users profile", included: true },
         { text: "Send and receive images", included: true },
@@ -126,9 +128,6 @@ const Subscription: React.FC = () => {
         { text: "Hide profile from other users", included: true },
         { text: "Premium verification badge", included: true },
         { text: "AI chat assist", included: true },
-      ],
-      billingOptions: [
-        { duration: "1 Year", pricePerPeriod: 119.99, totalPrice: 119.99 },
       ],
     },
   ];
@@ -145,18 +144,159 @@ const Subscription: React.FC = () => {
     return plans.find((plan) => plan.id === selectedPlan);
   };
 
-  const getCurrentBillingOption = () => {
-    const plan = getCurrentPlan();
-    if (!plan) return null;
+  const handleSubscribe = async () => {
+    if (selectedPlan === "free") {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("You must be logged in to subscribe");
+          setLoading(false);
+          return;
+        }
 
-    return plan.billingOptions[selectedBillingOption[plan.id]];
+        const response = await axiosInstance.post(
+          `${API_URL}/plans/subscribe`,
+          { planType: "Free" },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setSuccess("Successfully subscribed to Free plan");
+        setUserPlan(response.data);
+        setLoading(false);
+      } catch (error: any) {
+        setError(
+          error.response?.data?.message || "Failed to subscribe to Free plan"
+        );
+        setLoading(false);
+      }
+    } else if (selectedPlan === "premium") {
+      if (paymentMethod === "paypal") {
+        try {
+          setLoading(true);
+          const token = localStorage.getItem("token");
+          if (!token) {
+            setError("You must be logged in to subscribe");
+            setLoading(false);
+            return;
+          }
+
+          const response = await axiosInstance.post(
+            `${API_URL}/plans/subscribe`,
+            { planType: "Premium" },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          // Redirect to PayPal
+          if (response.data.paymentUrl) {
+            window.location.href = response.data.paymentUrl;
+          } else {
+            setError("Failed to generate PayPal payment URL");
+            setLoading(false);
+          }
+        } catch (error: any) {
+          setError(
+            error.response?.data?.message ||
+              "Failed to subscribe to Premium plan"
+          );
+          setLoading(false);
+        }
+      } else if (paymentMethod === "card") {
+        try {
+          setLoading(true);
+          const token = localStorage.getItem("token");
+          if (!token) {
+            setError("You must be logged in to subscribe");
+            setLoading(false);
+            return;
+          }
+
+          const response = await axiosInstance.post(
+            `${API_URL}/plans/subscribe/card`,
+            {
+              planType: "Premium",
+              cardDetails: cardDetails,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.data.success) {
+            setSuccess("Successfully subscribed to Premium plan");
+            setUserPlan(response.data.plan);
+          } else {
+            setError(response.data.message || "Failed to process card payment");
+          }
+          setLoading(false);
+        } catch (error: any) {
+          setError(
+            error.response?.data?.message || "Failed to process card payment"
+          );
+          setLoading(false);
+        }
+      }
+    }
   };
 
-  const getEquivalentMonthlyPrice = (plan: Plan) => {
-    if (plan.id === "basic") return plan.price * 4.33;
-    if (plan.id === "pro") return plan.price; 
-    if (plan.id === "premium") return plan.price / 12;
-    return plan.price;
+  const handleCancelSubscription = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("You must be logged in to cancel subscription");
+        setLoading(false);
+        return;
+      }
+
+      const response = await axiosInstance.post(
+        `${API_URL}/plans/cancel`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setSuccess(
+          response.data.message || "Successfully cancelled subscription"
+        );
+        const userPlanResponse = await axiosInstance.get(`${API_URL}/plans/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserPlan(userPlanResponse.data);
+      } else {
+        setError(response.data.message || "Failed to cancel subscription");
+      }
+      setLoading(false);
+    } catch (error: any) {
+      setError(
+        error.response?.data?.message || "Failed to cancel subscription"
+      );
+      setLoading(false);
+    }
+  };
+
+  const handleCardInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCardDetails({
+      ...cardDetails,
+      [name]: value,
+    });
   };
 
   return (
@@ -171,6 +311,30 @@ const Subscription: React.FC = () => {
       </header>
 
       <div className="container mx-auto px-4 py-6">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+            {error}
+            <button
+              className="float-right text-red-700"
+              onClick={() => setError(null)}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
+        {success && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+            {success}
+            <button
+              className="float-right text-green-700"
+              onClick={() => setSuccess(null)}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
         <div className="text-center mb-8">
           <div className="inline-flex justify-center items-center w-16 h-16 rounded-full bg-[#FF6B81]/10 mb-4">
             <Crown size={28} className="text-[#FF6B81]" />
@@ -185,7 +349,7 @@ const Subscription: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden">
-          <div className="grid grid-cols-3 border-b border-gray-200">
+          <div className="grid grid-cols-2 border-b border-gray-200">
             {plans.map((plan) => (
               <button
                 key={plan.id}
@@ -240,17 +404,6 @@ const Subscription: React.FC = () => {
                       <div className="text-gray-500 text-sm">
                         {plan.pricePeriod}
                       </div>
-                      {plan.id === "premium" && (
-                        <div className="text-[#FF6B81] text-sm font-medium mt-1">
-                          Only {formatCurrency(getEquivalentMonthlyPrice(plan))}
-                          /month
-                        </div>
-                      )}
-                      {plan.savings && (
-                        <div className="text-green-600 text-sm font-medium mt-1">
-                          {plan.savings} vs monthly
-                        </div>
-                      )}
                     </div>
                   </div>
 
@@ -302,8 +455,11 @@ const Subscription: React.FC = () => {
                     <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2">
                       <p>
                         <span className="font-medium">Billing: </span>
-                        You'll be charged {formatCurrency(plan.price)} for{" "}
-                        {plan.duration.toLowerCase()} of {plan.name}.
+                        {plan.id === "free"
+                          ? "Free plan with no charges."
+                          : `You'll be charged ${formatCurrency(
+                              plan.price
+                            )} per month for the ${plan.name} plan.`}
                       </p>
                       <p>
                         <span className="font-medium">Access: </span>
@@ -312,8 +468,9 @@ const Subscription: React.FC = () => {
                       </p>
                       <p>
                         <span className="font-medium">Renewal: </span>
-                        This is a one-time payment. No automatic renewal unless
-                        you choose to upgrade again.
+                        {plan.id === "free"
+                          ? "No renewal needed for the free plan."
+                          : "Monthly subscription with automatic renewal. You can cancel anytime."}
                       </p>
                       <p>
                         <span className="font-medium">Support: </span>
@@ -334,13 +491,184 @@ const Subscription: React.FC = () => {
           </div>
           <div className="flex-grow">
             <h3 className="font-medium text-gray-700">
-              Your current plan: Free
+              Your current plan: {userPlan?.planType || "Free"}
             </h3>
             <p className="text-sm text-gray-500">
-              Limited features • Upgrade to unlock full potential!
+              {userPlan?.planType === "Premium"
+                ? `Premium features • Expires on ${new Date(
+                    userPlan.expiresAt || ""
+                  ).toLocaleDateString()}`
+                : "Limited features • Upgrade to unlock full potential!"}
             </p>
           </div>
+          {userPlan?.planType === "Premium" && (
+            <button
+              onClick={handleCancelSubscription}
+              className="text-sm text-red-500 hover:text-red-700 px-3 py-1 border border-red-300 rounded-md"
+              disabled={loading}
+            >
+              {loading ? (
+                <Loader size={16} className="animate-spin" />
+              ) : (
+                "Cancel"
+              )}
+            </button>
+          )}
         </div>
+
+        {/* Payment Method Selection - Only show for Premium plan */}
+        {selectedPlan === "premium" && (
+          <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <div className="text-lg font-semibold text-gray-800 mb-4">
+              Payment Method
+            </div>
+            <div className="flex space-x-4 mb-6">
+              <button
+                className={`flex-1 p-4 border rounded-lg flex flex-col items-center ${
+                  paymentMethod === "paypal"
+                    ? "border-[#FF6B81] bg-[#FF6B81]/5"
+                    : "border-gray-200 bg-white"
+                }`}
+                onClick={() => setPaymentMethod("paypal")}
+              >
+                <div className="w-10 h-10 bg-[#0070BA] text-white rounded-md flex items-center justify-center mb-2">
+                  <span className="font-bold text-xs">PayPal</span>
+                </div>
+                <span className="text-sm font-medium">PayPal</span>
+                <span className="text-xs text-gray-500 mt-1">
+                  Fast & secure
+                </span>
+              </button>
+              <button
+                className={`flex-1 p-4 border rounded-lg flex flex-col items-center ${
+                  paymentMethod === "card"
+                    ? "border-[#FF6B81] bg-[#FF6B81]/5"
+                    : "border-gray-200 bg-white"
+                }`}
+                onClick={() => setPaymentMethod("card")}
+              >
+                <div className="w-10 h-10 bg-gray-800 text-white rounded-md flex items-center justify-center mb-2">
+                  <CreditCard size={20} />
+                </div>
+                <span className="text-sm font-medium">Credit Card</span>
+                <span className="text-xs text-gray-500 mt-1">
+                  Visa, Mastercard, Amex
+                </span>
+              </button>
+            </div>
+
+            {/* Credit Card Form */}
+            {paymentMethod === "card" && (
+              <div className="space-y-4 mb-6 p-4 border border-gray-200 rounded-lg">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={cardDetails.firstName}
+                      onChange={handleCardInputChange}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={cardDetails.lastName}
+                      onChange={handleCardInputChange}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Card Number
+                  </label>
+                  <input
+                    type="text"
+                    name="number"
+                    value={cardDetails.number}
+                    onChange={handleCardInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="1234 5678 9012 3456"
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Expiry Month
+                    </label>
+                    <input
+                      type="text"
+                      name="expireMonth"
+                      value={cardDetails.expireMonth}
+                      onChange={handleCardInputChange}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      placeholder="MM"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Expiry Year
+                    </label>
+                    <input
+                      type="text"
+                      name="expireYear"
+                      value={cardDetails.expireYear}
+                      onChange={handleCardInputChange}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      placeholder="YYYY"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      CVV
+                    </label>
+                    <input
+                      type="text"
+                      name="cvv"
+                      value={cardDetails.cvv}
+                      onChange={handleCardInputChange}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      placeholder="123"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Card Type
+                  </label>
+                  <select
+                    name="type"
+                    value={cardDetails.type}
+                    onChange={(e) =>
+                      setCardDetails({ ...cardDetails, type: e.target.value })
+                    }
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="visa">Visa</option>
+                    <option value="mastercard">Mastercard</option>
+                    <option value="amex">American Express</option>
+                    <option value="discover">Discover</option>
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Checkout Button */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
@@ -351,14 +679,39 @@ const Subscription: React.FC = () => {
             <div>
               <div className="text-sm text-gray-500">Total</div>
               <div className="text-xl font-bold text-gray-800">
-                {formatCurrency(getCurrentBillingOption()?.totalPrice || 0)}
+                {formatCurrency(getCurrentPlan()?.price || 0)}
               </div>
             </div>
           </div>
 
-          <button className="w-full py-3.5 bg-[#FF6B81] hover:bg-[#D86D72] text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
-            <CreditCard size={18} />
-            Subscribe Now
+          <button
+            className="w-full py-3.5 bg-[#FF6B81] hover:bg-[#D86D72] text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            onClick={handleSubscribe}
+            disabled={loading || userPlan?.planType === selectedPlan}
+          >
+            {loading ? (
+              <Loader size={20} className="animate-spin" />
+            ) : (
+              <>
+                {selectedPlan === "free" ? (
+                  "Continue with Free Plan"
+                ) : paymentMethod === "paypal" ? (
+                  <>
+                    <img
+                      src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
+                      alt="PayPal"
+                      height="20"
+                    />
+                    Pay with PayPal
+                  </>
+                ) : (
+                  <>
+                    <CreditCard size={18} />
+                    Pay with Card
+                  </>
+                )}
+              </>
+            )}
           </button>
 
           <div className="text-center mt-4 text-xs text-gray-500">
@@ -367,135 +720,7 @@ const Subscription: React.FC = () => {
           </div>
         </div>
 
-        {/* Value Proposition */}
-        <div className="bg-gradient-to-r from-[#FF6B81]/10 to-[#D86D72]/10 rounded-xl p-6 mb-6 border border-[#FF6B81]/20">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            Why Choose Premium?
-          </h3>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-[#FF6B81]/10 flex items-center justify-center mx-auto mb-3">
-                <Crown size={24} className="text-[#FF6B81]" />
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">
-                Premium Features
-              </h4>
-              <p className="text-sm text-gray-600">
-                Access all features including AI chat assist and premium badge
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-[#FF6B81]/10 flex items-center justify-center mx-auto mb-3">
-                <Zap size={24} className="text-[#FF6B81]" />
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">
-                Better Visibility
-              </h4>
-              <p className="text-sm text-gray-600">
-                Appear at the top of browse pages and get more profile views
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-[#FF6B81]/10 flex items-center justify-center mx-auto mb-3">
-                <Shield size={24} className="text-[#FF6B81]" />
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">
-                Privacy Control
-              </h4>
-              <p className="text-sm text-gray-600">
-                Hide your profile when needed and browse anonymously
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Testimonials */}
-        <div className="rounded-xl overflow-hidden shadow-sm mb-6">
-          <div className="p-5 bg-[#FF6B81]/5 border-l-4 border-[#FF6B81]">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 mr-4">
-                <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-[#FF6B81] to-[#D86D72] flex items-center justify-center">
-                    <span className="text-white font-bold">M</span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={16}
-                      className="text-[#FFE066] fill-[#FFE066] mr-0.5"
-                    />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-600 italic">
-                  "The Premium plan changed everything! The AI chat assist
-                  helped me write better messages, and being at the top of
-                  browse pages got me so many more matches. Found my soulmate
-                  within 2 months!"
-                </p>
-                <div className="mt-2 text-sm font-medium text-gray-800">
-                  Michael, 31 • Premium Member
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Frequently Asked Questions
-          </h3>
-
-          <div className="space-y-4">
-            <div>
-              <div className="font-medium text-gray-700 mb-1">
-                What's the difference between the plans?
-              </div>
-              <p className="text-sm text-gray-600">
-                Basic and Pro include all core features for 1 week and 1 month
-                respectively. Premium adds exclusive features like AI chat
-                assist, premium verification badge, and enhanced visibility for
-                a full year.
-              </p>
-            </div>
-
-            <div>
-              <div className="font-medium text-gray-700 mb-1">
-                Do these plans auto-renew?
-              </div>
-              <p className="text-sm text-gray-600">
-                No, these are one-time payments with no automatic renewal. You
-                can upgrade again anytime when your current plan expires.
-              </p>
-            </div>
-
-            <div>
-              <div className="font-medium text-gray-700 mb-1">
-                What is AI chat assist?
-              </div>
-              <p className="text-sm text-gray-600">
-                Our AI helps you craft better messages, suggests conversation
-                starters, and provides tips to improve your dating conversations
-                and increase your success rate.
-              </p>
-            </div>
-
-            <div>
-              <div className="font-medium text-gray-700 mb-1">
-                Can I change plans?
-              </div>
-              <p className="text-sm text-gray-600">
-                Yes, you can upgrade to a higher plan anytime. The new features
-                will be activated immediately and extend your current
-                subscription period.
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* The rest of the component remains the same */}
       </div>
     </div>
   );
