@@ -226,12 +226,10 @@ class SocketService {
     }
   }
 
-  // Check if socket is connected
   isConnected() {
     return this.socket?.connected || false;
   }
 }
 
-// Create singleton instance
 const socketService = new SocketService();
 export default socketService;
