@@ -818,20 +818,11 @@ const UserProfile: React.FC = () => {
                       >
                         <div className="flex items-center">
                           <div className="w-12 h-12 rounded-full bg-gray-200 mr-3 overflow-hidden">
-                            {view.viewer.profile?.photos &&
-                            view.viewer.profile.photos[0] ? (
-                              <img
-                                src={view.viewer.profile.photos[0]}
-                                alt={view.viewer.profile.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <User className="w-full h-full p-2 text-gray-400" />
-                            )}
+                            <User className="w-full h-full p-2 text-gray-400" />
                           </div>
                           <div>
                             <div className="font-medium">
-                              {view.viewer.profile?.name || "User"}
+                              {view?.viewerName}
                             </div>
                             <div className="text-xs text-gray-500">
                               {formatViewTime(view.viewedAt)}
