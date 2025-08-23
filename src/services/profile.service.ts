@@ -1,5 +1,6 @@
 import { ApiResponse, Profile, ProfileSettings } from '@/types/profile.type';
 import axiosInstance from './axiosInstance';
+import { handleError } from '@/utils/handleError';
 
 const profileService = {
   getProfile: async (): Promise<Profile> => {
@@ -19,8 +20,7 @@ const profileService = {
       const response = await axiosInstance.post(`/block/users/${userId}/block`);
       return response.data;
     } catch (error) {
-      console.error(`Error blocking user with ID ${userId}:`, error);
-      throw error;
+      handleError(error);
     }
   },
 
@@ -31,8 +31,7 @@ const profileService = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching profile views", error);
-      throw error;
+      handleError(error);
     }
   },
 
@@ -43,8 +42,7 @@ const profileService = {
       );
       return response.data.count;
     } catch (error) {
-      console.error("Error fetching profile views count", error);
-      throw error;
+      handleError(error);
     }
   },
 
@@ -53,8 +51,7 @@ const profileService = {
       await axiosInstance.delete(`/block/users/${userId}/block`);
       return true;
     } catch (error) {
-      console.error("Error unblocking user", error);
-      throw error;
+      handleError(error);
     }
   },
 
@@ -63,8 +60,7 @@ const profileService = {
       const response = await axiosInstance.get("/block/blocked-users");
       return response.data;
     } catch (error) {
-      console.error("Error fetching blocked users", error);
-      throw error;
+      handleError(error);
     }
   },
 

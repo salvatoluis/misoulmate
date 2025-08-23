@@ -23,6 +23,7 @@ import {
 } from "@/types/profile.type";
 import useProfileApi from "@/hooks/useProfileAPI";
 import profileService from "@/services/profile.service";
+import PremiumUpsell from "@/elements/PremiumUpsell";
 
 const defaultUserData: ExtendedProfile = {
   name: "",
@@ -41,6 +42,7 @@ const UserProfile: React.FC = () => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [premiumError, setPremiumError] = useState<string | null>(null);
 
   const [profileViews, setProfileViews] = useState<any[]>([]);
   const [viewsCount, setViewsCount] = useState<number>(0);
@@ -126,14 +128,17 @@ const UserProfile: React.FC = () => {
     getProfile();
   }, []);
 
-  // New useEffect hook to fetch profile views and blocked users
   useEffect(() => {
     const fetchProfileViews = async () => {
       try {
         const views = await profileService.getProfileViews();
         setProfileViews(views);
       } catch (err) {
-        console.error("Failed to fetch profile views", err);
+        if (err instanceof Error) {
+          setPremiumError(err.message);
+        } else {
+          setPremiumError("An error occurred while fetching profile views.");
+        }
       }
     };
 
@@ -567,7 +572,6 @@ const UserProfile: React.FC = () => {
               </div>
             </div>
           </section>
-
           <section className="bg-white rounded-xl shadow-sm">
             <div className="p-4 border-b border-gray-100">
               <h2 className="text-lg font-bold text-gray-800">
@@ -675,7 +679,6 @@ const UserProfile: React.FC = () => {
               </div>
             </div>
           </section>
-
           <section className="bg-white rounded-xl shadow-sm">
             <div className="p-4 border-b border-gray-100">
               <h2 className="text-lg font-bold text-gray-800">Photos</h2>
@@ -739,7 +742,6 @@ const UserProfile: React.FC = () => {
               )}
             </div>
           </section>
-
           <section className="bg-white rounded-xl shadow-sm">
             <div className="p-4 border-b border-gray-100">
               <h2 className="text-lg font-bold text-gray-800">About</h2>
@@ -767,8 +769,6 @@ const UserProfile: React.FC = () => {
               )}
             </div>
           </section>
-
-          {/* Profile Views Section - NEW */}
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -797,19 +797,11 @@ const UserProfile: React.FC = () => {
                   <h3 className="font-medium text-gray-800">
                     Who viewed your profile
                   </h3>
-                  <select
-                    className="text-sm border rounded-lg p-1.5 text-gray-700 bg-white"
-                    value={viewsFilter}
-                    onChange={(e) => setViewsFilter(e.target.value as any)}
-                  >
-                    <option value="all">All time</option>
-                    <option value="today">Today</option>
-                    <option value="week">This week</option>
-                    <option value="month">This month</option>
-                  </select>
                 </div>
 
-                {filteredViews().length > 0 ? (
+                {premiumError ? (
+                  <PremiumUpsell message="See who viewed your profile with Premium subscription" />
+                ) : filteredViews().length > 0 ? (
                   <div className="space-y-3">
                     {filteredViews().map((view) => (
                       <div
@@ -841,20 +833,13 @@ const UserProfile: React.FC = () => {
                 ) : (
                   <div className="text-center py-8 text-gray-500">
                     <Eye className="mx-auto mb-2 text-gray-300" size={32} />
-                    <p>
-                      No profile views{" "}
-                      {viewsFilter !== "all"
-                        ? "during this time period"
-                        : "yet"}
-                      .
-                    </p>
+                    <p>No profile views yet.</p>
                   </div>
                 )}
               </div>
             )}
           </section>
-
-          {/* Blocked Users Section - NEW */}
+          
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -879,7 +864,11 @@ const UserProfile: React.FC = () => {
 
             {expandedSection === "blockedUsers" && (
               <div className="p-4">
-                {blockedUsers.length > 0 ? (
+                {premiumError ? (
+                  <PremiumUpsell
+                    message="Manage blocked users with Premium"
+                  />
+                ) : blockedUsers.length > 0 ? (
                   <div className="space-y-4">
                     {blockedUsers.map((block) => (
                       <div
@@ -937,7 +926,6 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -1006,7 +994,6 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -1139,7 +1126,6 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -1205,7 +1191,6 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -1271,7 +1256,6 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -1329,7 +1313,6 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"

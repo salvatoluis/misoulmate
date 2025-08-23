@@ -197,7 +197,6 @@ const PaymentSuccess: React.FC = () => {
                 {error || paymentDetails?.message || "Something went wrong with your payment."}
               </p>
 
-              {/* Show payment details if available */}
               {paymentDetails && (
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
                   <div className="text-sm text-gray-600 space-y-1">
@@ -211,7 +210,6 @@ const PaymentSuccess: React.FC = () => {
                 </div>
               )}
 
-              {/* Error Actions */}
               <div className="space-y-3">
                 <button
                   onClick={handleRetryPayment}

@@ -7,7 +7,7 @@ import HowItWorks from '../components/HowItWorks';
 import AppPreview from '../components/AppPreview';
 import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
-import AIAssistantModal from '@/elements.tsx/AIAssistantModal';
+import AIAssistantModal from '@/elements/AIAssistantModal';
 
 const HomePage: React.FC = () => {
     return (
