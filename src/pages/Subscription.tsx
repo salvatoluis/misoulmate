@@ -148,22 +148,9 @@ const Subscription: React.FC = () => {
     if (selectedPlan === "free") {
       try {
         setLoading(true);
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setError("You must be logged in to subscribe");
-          setLoading(false);
-          return;
-        }
-
-        const response = await axiosInstance.post(
-          `${API_URL}/plans/subscribe`,
-          { planType: "Free" },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axiosInstance.post(`/plans/subscribe`, {
+          planType: "Free",
+        });
 
         setSuccess("Successfully subscribed to Free plan");
         setUserPlan(response.data);
@@ -273,11 +260,14 @@ const Subscription: React.FC = () => {
         setSuccess(
           response.data.message || "Successfully cancelled subscription"
         );
-        const userPlanResponse = await axiosInstance.get(`${API_URL}/plans/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const userPlanResponse = await axiosInstance.get(
+          `${API_URL}/plans/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setUserPlan(userPlanResponse.data);
       } else {
         setError(response.data.message || "Failed to cancel subscription");
