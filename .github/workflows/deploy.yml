@@ -21,9 +21,22 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} << 'EOF'
-            cd /var/www/misoulmate
-            git pull origin main
-            npm install
+            # Go to project folder
+            cd /var/www
+
+            # Remove old code completely
+            rm -rf misoulmate
+
+            # Clone fresh repo
+            git clone -b main https://github.com/salvatoluice/misoulmate.git misoulmate
+
+            # Move into the project
+            cd misoulmate
+
+            # Install dependencies and build
+            npm install --production
             npm run build
+
+            # Reload Nginx
             sudo systemctl reload nginx
           EOF
