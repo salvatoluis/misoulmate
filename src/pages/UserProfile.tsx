@@ -355,7 +355,6 @@ const UserProfile: React.FC = () => {
   const handleUnblockUser = async (userId: string) => {
     try {
       await profileService.unblockUser(userId);
-      // Refresh blocked users list
       const blocked = await profileService.getBlockedUsers();
       setBlockedUsers(blocked);
     } catch (err) {
@@ -828,9 +827,9 @@ const UserProfile: React.FC = () => {
               <h2 className="text-lg font-bold text-gray-800 flex items-center">
                 <Shield size={18} className="mr-2 text-[#FF6B81]" />
                 Blocked Users
-                {blockedUsers.data.length > 0 && (
+                {blockedUsers?.data?.length > 0 && (
                   <span className="ml-2 px-2 py-0.5 bg-gray-100 rounded-full text-sm text-gray-600">
-                    {blockedUsers.data.length}
+                    {blockedUsers?.data?.length}
                   </span>
                 )}
               </h2>
