@@ -32,7 +32,7 @@ const PaymentSuccess: React.FC = () => {
   const planId = searchParams.get("planId");
   const hasError = searchParams.get("error") === "true";
   
-  const API_URL = "http://localhost:3000/api/v1";
+  const API_URL = "https://api.soulmatify.com/api/v1";
 
   useEffect(() => {
     const fetchPaymentDetails = async () => {
