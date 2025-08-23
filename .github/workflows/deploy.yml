@@ -13,16 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build
-
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -30,5 +20,10 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          rsync -avz --delete dist/ ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }}:/var/www/html/
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} "sudo systemctl restart nginx"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} << 'EOF'
+            cd /var/www/misoulmate
+            git pull origin main
+            npm install
+            npm run build
+            sudo systemctl reload nginx
+          EOF
