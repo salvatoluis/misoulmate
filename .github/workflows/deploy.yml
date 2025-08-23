@@ -10,20 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout Code
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Node.js (so we can build locally in CI)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Build the project (Vite will output to dist/)
+      - name: Build project
+        run: npm run build
+
+      # Step 5: Set up SSH
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Step 6: Deploy dist/ to server
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} << 'EOF'
-            cd /var/www/misoulmate
-            git pull origin main
-            npm install
-            npm run build
-            sudo systemctl reload nginx
-          EOF
+          rsync -avz --delete dist/ ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }}:/var/www/html/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} "sudo systemctl reload nginx"
