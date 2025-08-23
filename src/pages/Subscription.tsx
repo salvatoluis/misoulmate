@@ -36,7 +36,7 @@ interface UserPlan {
   features: Record<string, any>;
 }
 
-const API_URL = "https://api.soulmatify.com/api/v1";
+const API_URL = "http://localhost:3000/api/v1";
 
 const Subscription: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>("premium");

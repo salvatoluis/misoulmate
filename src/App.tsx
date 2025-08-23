@@ -32,6 +32,7 @@ import CookiePolicy from './pages/CoookiePolicy';
 import Messages from './pages/Messages';
 import Referral from './pages/Referral';
 import About from './pages/About';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -194,6 +195,17 @@ const App: React.FC = () => {
               <ProtectedRoute>
                 <MainLayout>
                   <ForYou />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/payment/success"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <PaymentSuccess />
                 </MainLayout>
               </ProtectedRoute>
             }
