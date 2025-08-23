@@ -165,22 +165,10 @@ const Subscription: React.FC = () => {
       if (paymentMethod === "paypal") {
         try {
           setLoading(true);
-          const token = localStorage.getItem("token");
-          if (!token) {
-            setError("You must be logged in to subscribe");
-            setLoading(false);
-            return;
-          }
 
-          const response = await axiosInstance.post(
-            `${API_URL}/plans/subscribe`,
-            { planType: "Premium" },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await axiosInstance.post(`/plans/subscribe`, {
+            planType: "Premium",
+          });
 
           // Redirect to PayPal
           if (response.data.paymentUrl) {
@@ -199,25 +187,11 @@ const Subscription: React.FC = () => {
       } else if (paymentMethod === "card") {
         try {
           setLoading(true);
-          const token = localStorage.getItem("token");
-          if (!token) {
-            setError("You must be logged in to subscribe");
-            setLoading(false);
-            return;
-          }
 
-          const response = await axiosInstance.post(
-            `${API_URL}/plans/subscribe/card`,
-            {
-              planType: "Premium",
-              cardDetails: cardDetails,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await axiosInstance.post(`/plans/subscribe/card`, {
+            planType: "Premium",
+            cardDetails: cardDetails,
+          });
 
           if (response.data.success) {
             setSuccess("Successfully subscribed to Premium plan");
@@ -710,7 +684,6 @@ const Subscription: React.FC = () => {
           </div>
         </div>
 
-        {/* The rest of the component remains the same */}
       </div>
     </div>
   );
