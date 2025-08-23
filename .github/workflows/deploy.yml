@@ -26,12 +26,10 @@ jobs:
             npm install
             npm run build
 
-            # Clear old frontend files
+            # Clean out old files and copy new dist build
             sudo rm -rf /var/www/html/*
-
-            # Copy new dist build into nginx root
             sudo cp -r dist/* /var/www/html/
 
-            # Reload nginx
-            sudo systemctl reload nginx
+            sudo systemctl restart nginx
           EOF
+
