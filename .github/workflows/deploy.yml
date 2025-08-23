@@ -34,8 +34,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 6: Deploy dist/ to server
+            # Step 6: Deploy dist/ to server
       - name: Deploy to Server
         run: |
-          rsync -avz --delete dist/ ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }}:/var/www/html/
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" dist/ ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }}:/var/www/html/
           ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_SERVER }} "sudo systemctl reload nginx"
+
