@@ -44,7 +44,7 @@ const UserProfile: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [premiumError, setPremiumError] = useState<string | null>(null);
 
-  const [profileViews, setProfileViews] = useState<any[]>([]);
+  const [profileViews, setProfileViews] = useState<{ planInfo?: { currentPlan?: string }, views?: any[] }>({});
   const [viewsCount, setViewsCount] = useState<number>(0);
   const [blockedUsers, setBlockedUsers] = useState<any[]>([]);
   const [blockModalOpen, setBlockModalOpen] = useState<boolean>(false);
@@ -131,8 +131,8 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     const fetchProfileViews = async () => {
       try {
-        const views = await profileService.getProfileViews();
-        setProfileViews(views);
+        const viewsData = await profileService.getProfileViews();
+        setProfileViews(viewsData);
       } catch (err) {
         if (err instanceof Error) {
           setPremiumError(err.message);
@@ -155,8 +155,8 @@ const UserProfile: React.FC = () => {
 
     const fetchBlockedUsers = async () => {
       try {
-        const blocked = await profileService.getBlockedUsers();
-        setBlockedUsers(blocked);
+        const response = await profileService.getBlockedUsers();
+        setBlockedUsers(response);
       } catch (err) {
         console.error("Failed to fetch blocked users", err);
       }
@@ -368,30 +368,10 @@ const UserProfile: React.FC = () => {
     setBlockModalOpen(true);
   };
 
-  // Helper function to filter profile views based on time
-  const filteredViews = () => {
-    if (viewsFilter === "all") return profileViews;
-
-    const now = new Date();
-    const filterDate = new Date();
-
-    if (viewsFilter === "today") {
-      filterDate.setHours(0, 0, 0, 0);
-    } else if (viewsFilter === "week") {
-      filterDate.setDate(now.getDate() - 7);
-    } else if (viewsFilter === "month") {
-      filterDate.setMonth(now.getMonth() - 1);
-    }
-
-    return profileViews.filter((view) => new Date(view.viewedAt) >= filterDate);
-  };
-
-  // Helper function to format view time
   const formatViewTime = (date: string) => {
     const viewDate = new Date(date);
     const now = new Date();
 
-    // If today, show time
     if (viewDate.toDateString() === now.toDateString()) {
       return `Today at ${viewDate.toLocaleTimeString([], {
         hour: "2-digit",
@@ -399,7 +379,6 @@ const UserProfile: React.FC = () => {
       })}`;
     }
 
-    // If yesterday, show "Yesterday"
     const yesterday = new Date();
     yesterday.setDate(now.getDate() - 1);
     if (viewDate.toDateString() === yesterday.toDateString()) {
@@ -409,7 +388,6 @@ const UserProfile: React.FC = () => {
       })}`;
     }
 
-    // Otherwise show date
     return (
       viewDate.toLocaleDateString() +
       " at " +
@@ -790,22 +768,26 @@ const UserProfile: React.FC = () => {
                 }`}
               />
             </div>
-
             {expandedSection === "profileViews" && (
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-medium text-gray-800">
                     Who viewed your profile
                   </h3>
+                  {profileViews.planInfo?.currentPlan && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                      {profileViews.planInfo.currentPlan}
+                    </span>
+                  )}
                 </div>
 
                 {premiumError ? (
                   <PremiumUpsell message="See who viewed your profile with Premium subscription" />
-                ) : filteredViews().length > 0 ? (
+                ) : profileViews.views && profileViews.views.length > 0 ? (
                   <div className="space-y-3">
-                    {filteredViews().map((view) => (
+                    {profileViews.views.map((view) => (
                       <div
-                        key={view.id}
+                        key={view.viewerId}
                         className="flex items-center justify-between p-3 border border-gray-100 rounded-lg hover:bg-gray-50"
                       >
                         <div className="flex items-center">
@@ -813,9 +795,7 @@ const UserProfile: React.FC = () => {
                             <User className="w-full h-full p-2 text-gray-400" />
                           </div>
                           <div>
-                            <div className="font-medium">
-                              {view?.viewerName}
-                            </div>
+                            <div className="font-medium">{view.viewerName}</div>
                             <div className="text-xs text-gray-500">
                               {formatViewTime(view.viewedAt)}
                             </div>
@@ -823,7 +803,7 @@ const UserProfile: React.FC = () => {
                         </div>
                         <button
                           className="text-sm text-gray-500 hover:text-[#FF6B81] transition-colors"
-                          onClick={() => openBlockModal(view.viewer)}
+                          onClick={() => openBlockModal(view.viewerId)}
                         >
                           Block
                         </button>
@@ -839,7 +819,7 @@ const UserProfile: React.FC = () => {
               </div>
             )}
           </section>
-          
+
           <section className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div
               className="p-4 border-b border-gray-100 flex justify-between items-center cursor-pointer"
@@ -848,9 +828,9 @@ const UserProfile: React.FC = () => {
               <h2 className="text-lg font-bold text-gray-800 flex items-center">
                 <Shield size={18} className="mr-2 text-[#FF6B81]" />
                 Blocked Users
-                {blockedUsers.length > 0 && (
+                {blockedUsers.data.length > 0 && (
                   <span className="ml-2 px-2 py-0.5 bg-gray-100 rounded-full text-sm text-gray-600">
-                    {blockedUsers.length}
+                    {blockedUsers.data.length}
                   </span>
                 )}
               </h2>
@@ -864,16 +844,24 @@ const UserProfile: React.FC = () => {
 
             {expandedSection === "blockedUsers" && (
               <div className="p-4">
-                {premiumError ? (
-                  <PremiumUpsell
-                    message="Manage blocked users with Premium"
-                  />
-                ) : blockedUsers.length > 0 ? (
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-medium text-gray-800">Blocked Users</h3>
+                  {blockedUsers.length > 0 &&
+                    blockedUsers.planInfo?.currentPlan && (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                        {blockedUsers.planInfo.currentPlan}
+                      </span>
+                    )}
+                </div>
+
+                {!blockedUsers.planInfo?.featureUnlocked ? (
+                  <PremiumUpsell message="Manage blocked users with Premium" />
+                ) : blockedUsers.data && blockedUsers.data.length > 0 ? (
                   <div className="space-y-4">
-                    {blockedUsers.map((block) => (
+                    {blockedUsers.data.map((block) => (
                       <div
                         key={block.id}
-                        className="flex items-center justify-between p-3 border border-gray-100 rounded-lg"
+                        className="flex items-center justify-between p-3 border border-gray-100 rounded-lg hover:bg-gray-50"
                       >
                         <div className="flex items-center">
                           <div className="w-12 h-12 rounded-full bg-gray-200 mr-3 overflow-hidden">
