@@ -118,9 +118,9 @@ const App: React.FC = () => {
           <Route
             path="/referrals"
             element={
-              <PublicRoute>
+              <MainLayout>
                 <Referral />
-              </PublicRoute>
+              </MainLayout>
             }
           />
           <Route
