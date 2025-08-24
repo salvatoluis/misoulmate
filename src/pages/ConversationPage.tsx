@@ -1080,15 +1080,6 @@ const ConversationPage = () => {
         </div>
       </div>
 
-      {!isConnected && (
-        <div className="fixed bottom-16 left-0 right-0 bg-amber-100 py-2 px-4 text-center text-sm text-amber-800 shadow-md">
-          <div className="flex items-center justify-center">
-            <WifiOff size={16} className="mr-2" />
-            You're offline. Messages will send when you reconnect.
-          </div>
-        </div>
-      )}
-
       {viewerUrl && (
         <div
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"

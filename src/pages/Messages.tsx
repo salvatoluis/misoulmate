@@ -395,16 +395,6 @@ const Messages: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Connection status indicator */}
-      {!isConnected && (
-        <div className="fixed bottom-16 left-0 right-0 bg-amber-100 py-2 px-4 text-center text-sm text-amber-800 shadow-md">
-          <div className="flex items-center justify-center">
-            <WifiOff size={16} className="mr-2" />
-            You're offline. Messages will send when you reconnect.
-          </div>
-        </div>
-      )}
     </div>
   );
 };
