@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MessageSquare, LogOut, Compass, HeartHandshake, UserCircle, Settings, HelpCircle } from 'lucide-react';
+import { MessageSquare, LogOut, Compass, HeartHandshake, UserCircle, Settings, HelpCircle, Menu, Gift, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -9,6 +10,7 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const location = useLocation();
     const [showLogoutMenu, setShowLogoutMenu] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const hideNavigation = [
         '/conversation/',
@@ -23,13 +25,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
       <div className="bg-gray-50 min-h-screen pb-20">
         {!hideNavigation && (
-          <div className="fixed top-4 right-4 z-50">
+          <div className="fixed flex gap-1 top-4 right-4 z-50">
             <button
-              onClick={handleLogout}
               className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-gray-200 text-gray-600 hover:text-red-600 hover:bg-white transition-all duration-200"
-              title="Logout"
+              onClick={() => setMenuOpen(true)}
+              title="Menu"
             >
-              <LogOut size={16} />
+              <Menu size={16} />
             </button>
           </div>
         )}
@@ -74,11 +76,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 >
                   <div className="relative">
                     <MessageSquare size={24} />
-                    {/* {unreadMessages > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        {unreadMessages > 9 ? "9+" : unreadMessages}
-                      </span>
-                    )} */}
                   </div>
                   <span className="text-xs mt-1 font-medium">Messages</span>
                 </Link>
@@ -158,6 +155,61 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               </div>
             </div>
           </nav>
+        )}
+        {menuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 80 }}
+              className="fixed top-0 right-0 h-full w-72 bg-white shadow-lg z-50 p-4 flex flex-col"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-800">Menu</h2>
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <nav className="flex flex-col gap-3">
+                <Link
+                  to="/settings"
+                  className="flex items-center gap-3 text-gray-700 hover:text-primary"
+                >
+                  <Settings size={18} /> Settings
+                </Link>
+                <Link
+                  to="/referrals"
+                  className="flex items-center gap-3 text-gray-700 hover:text-primary"
+                >
+                  <Gift size={18} /> Referral Program
+                </Link>
+                <Link
+                  to="/help"
+                  className="flex items-center gap-3 text-gray-700 hover:text-primary"
+                >
+                  <HelpCircle size={18} /> Help & Support
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 text-red-600 hover:text-red-700"
+                >
+                  <LogOut size={18} /> Logout
+                </button>
+              </nav>
+            </motion.div>
+          </>
         )}
       </div>
     );

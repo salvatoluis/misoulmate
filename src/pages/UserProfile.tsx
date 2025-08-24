@@ -433,7 +433,7 @@ const UserProfile: React.FC = () => {
           </div>
           {activeTab === "profile" && (
             <button
-              className={`px-4 py-1.5 rounded-full text-sm font-medium ${
+              className={`px-4 py-1.5 mr-[36px] md:mr-2 rounded-full text-sm font-medium ${
                 editing
                   ? "bg-[#FF6B81] text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
