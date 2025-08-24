@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Send,
-  Image as ImageIcon,
+  ImageIcon,
   Paperclip,
   MoreVertical,
   Wifi,
@@ -11,6 +11,7 @@ import {
   X,
   Mic,
   StopCircle,
+  Heart,
 } from "lucide-react";
 import { matchService } from "@/services";
 import messageService from "@/services/message.service";
@@ -732,8 +733,11 @@ const ConversationPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-6 h-6 border-2 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100">
+        <div className="flex flex-col items-center space-y-4">
+          <Heart className="w-8 h-8 text-pink-500 animate-pulse" />
+          <div className="w-8 h-8 border-2 border-pink-200 border-t-pink-500 rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
@@ -741,11 +745,17 @@ const ConversationPage = () => {
   const messageGroups = groupMessagesByDate();
 
   return (
-    <div className="flex flex-col h-[90vh] bg-gray-50">
-      <header className="bg-white shadow-sm py-3 px-4 flex items-center gap-3 z-10">
+    <div className="flex flex-col max-h-[90vh] bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 relative overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pink-200 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-purple-200 rounded-full opacity-20 animate-pulse delay-700"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-16 h-16 bg-rose-200 rounded-full opacity-20 animate-pulse delay-1000"></div>
+      </div>
+
+      <header className="bg-white/80 backdrop-blur-md shadow-lg py-4 px-4 flex items-center gap-3 z-10 border-b border-pink-100/50">
         <button
           onClick={() => navigate("/messages")}
-          className="p-2 rounded-full hover:bg-gray-100"
+          className="p-2 rounded-full hover:bg-pink-100/50 transition-all duration-200 transform hover:scale-105"
         >
           <ArrowLeft size={20} className="text-gray-700" />
         </button>
@@ -753,7 +763,7 @@ const ConversationPage = () => {
         {otherUser && (
           <div className="flex items-center gap-3 flex-grow">
             <div className="relative">
-              <div className="w-10 h-10 rounded-full overflow-hidden">
+              <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-pink-200 shadow-lg">
                 <img
                   src={otherUser.profile?.photos?.[0] || "/default-avatar.png"}
                   alt={otherUser.profile?.name || "Match"}
@@ -761,20 +771,32 @@ const ConversationPage = () => {
                 />
               </div>
               {otherUser.isOnline && (
-                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary border-2 border-white rounded-full"></div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
               )}
             </div>
 
-            <div>
-              <h3 className="font-medium text-gray-800">
+            <div className="flex-grow">
+              <h3 className="font-semibold text-gray-800 text-lg">
                 {otherUser.profile?.name || "Match"}
               </h3>
-              <p className="text-xs text-gray-500">
-                {otherUserTyping
-                  ? "Typing..."
-                  : otherUser.isOnline
-                  ? "Online"
-                  : "Last active recently"}
+              <p className="text-sm text-gray-500 flex items-center gap-1">
+                {otherUserTyping ? (
+                  <>
+                    <span className="flex space-x-1">
+                      <div className="w-1 h-1 bg-pink-400 rounded-full animate-bounce"></div>
+                      <div className="w-1 h-1 bg-pink-400 rounded-full animate-bounce delay-75"></div>
+                      <div className="w-1 h-1 bg-pink-400 rounded-full animate-bounce delay-150"></div>
+                    </span>
+                    <span className="ml-1">typing something sweet...</span>
+                  </>
+                ) : otherUser.isOnline ? (
+                  <>
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span>Online now</span>
+                  </>
+                ) : (
+                  "Last seen recently"
+                )}
               </p>
             </div>
           </div>
@@ -782,43 +804,53 @@ const ConversationPage = () => {
 
         <div className="flex items-center gap-2">
           {isConnected ? (
-            <div className="text-xs text-green-600 flex items-center">
+            <div className="text-xs text-emerald-600 flex items-center p-2 bg-emerald-50 rounded-full">
               <Wifi size={16} />
             </div>
           ) : (
-            <div className="text-xs text-amber-600 flex items-center">
+            <div className="text-xs text-amber-600 flex items-center p-2 bg-amber-50 rounded-full">
               <WifiOff size={16} />
             </div>
           )}
-          <button className="p-2 rounded-full hover:bg-gray-100">
+          <button className="p-2 rounded-full hover:bg-pink-100/50 transition-all duration-200">
             <MoreVertical size={20} className="text-gray-700" />
           </button>
         </div>
       </header>
 
       {/* Messages list */}
-      <div ref={messageListRef} className="flex-grow overflow-y-auto px-4 py-6">
+      <div
+        ref={messageListRef}
+        className="flex-grow overflow-y-auto px-4 py-6 relative z-10"
+      >
         {hasMore && (
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-6">
             <button
               onClick={loadMoreMessages}
               disabled={loadingMore}
-              className="px-4 py-2 text-sm text-gray-600 bg-white rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50"
+              className="px-6 py-3 text-sm text-gray-600 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg hover:bg-white/80 disabled:opacity-50 transition-all duration-200 border border-pink-100/50"
             >
-              {loadingMore ? "Loading..." : "Load older messages"}
+              {loadingMore ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-pink-200 border-t-pink-500 rounded-full animate-spin"></div>
+                  Loading...
+                </div>
+              ) : (
+                "Load earlier messages"
+              )}
             </button>
           </div>
         )}
 
         {messageGroups.map((group, groupIndex) => (
-          <div key={groupIndex} className="mb-6">
-            <div className="flex justify-center mb-4">
-              <div className="px-3 py-1 bg-gray-200 rounded-full text-xs text-gray-600">
+          <div key={groupIndex} className="mb-8">
+            <div className="flex justify-center mb-6">
+              <div className="px-4 py-2 bg-white/60 backdrop-blur-sm rounded-2xl text-sm text-gray-600 shadow-sm border border-pink-100/50">
                 {formatDate(group.date)}
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {group.messages.map((message) => {
                 const isCurrentUser = message.senderId === currentUserId;
 
@@ -827,28 +859,27 @@ const ConversationPage = () => {
                     key={message.id}
                     className={`flex ${
                       isCurrentUser ? "justify-end" : "justify-start"
-                    }`}
+                    } animate-fadeIn`}
                   >
                     <div
-                      className={`max-w-[80%] ${
-                        message.error ? "opacity-50" : ""
+                      className={`max-w-[85%] sm:max-w-[70%] ${
+                        message.error ? "opacity-60" : ""
                       }`}
                     >
-                      {/* Message bubble */}
                       <div
-                        className={`rounded-2xl px-4 py-2 ${
+                        className={`rounded-3xl px-5 py-3 shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl ${
                           isCurrentUser
-                            ? "bg-primary text-white rounded-br-none"
-                            : "bg-white text-gray-800 rounded-bl-none shadow-sm"
+                            ? "bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-br-lg transform hover:scale-[1.02]"
+                            : "bg-white/90 text-gray-800 rounded-bl-lg border border-pink-100/50 hover:bg-white/95"
                         }`}
                       >
                         {message.mediaUrl && (
-                          <div className="mb-2 rounded-lg overflow-hidden">
+                          <div className="mb-3 rounded-2xl overflow-hidden shadow-sm">
                             {message.mediaType === "image" ? (
                               <img
                                 src={message.mediaUrl}
                                 alt="Image"
-                                className="w-full h-auto rounded-lg cursor-pointer"
+                                className="w-full h-auto rounded-2xl cursor-pointer transition-transform duration-200 hover:scale-105"
                                 onClick={() =>
                                   openMediaViewer(message.mediaUrl!, "image")
                                 }
@@ -857,18 +888,28 @@ const ConversationPage = () => {
                               <video
                                 src={message.mediaUrl}
                                 controls
-                                className="w-full h-auto rounded-lg"
+                                className="w-full h-auto rounded-2xl"
                                 preload="metadata"
                               />
                             ) : message.mediaType === "audio" ? (
-                              <audio
-                                src={message.mediaUrl}
-                                controls
-                                className="w-full"
-                                preload="metadata"
-                              />
+                              <div
+                                className={`p-3 rounded-2xl ${
+                                  isCurrentUser ? "bg-white/20" : "bg-gray-50"
+                                }`}
+                              >
+                                <audio
+                                  src={message.mediaUrl}
+                                  controls
+                                  className="w-full"
+                                  preload="metadata"
+                                />
+                              </div>
                             ) : (
-                              <div className="px-3 py-2 bg-gray-100 text-gray-700 rounded flex items-center">
+                              <div
+                                className={`px-4 py-3 rounded-2xl flex items-center ${
+                                  isCurrentUser ? "bg-white/20" : "bg-gray-50"
+                                }`}
+                              >
                                 <Paperclip size={16} className="mr-2" />
                                 <span className="text-sm">
                                   {message.mediaUrl.split("/").pop() ||
@@ -879,14 +920,20 @@ const ConversationPage = () => {
                           </div>
                         )}
                         {message.content && (
-                          <p className={message.mediaUrl ? "mt-2" : ""}>
+                          <p
+                            className={`leading-relaxed ${
+                              message.mediaUrl ? "mt-2" : ""
+                            } ${
+                              isCurrentUser ? "text-white" : "text-gray-800"
+                            }`}
+                          >
                             {message.content}
                           </p>
                         )}
                       </div>
 
                       <div
-                        className={`mt-1 flex items-center text-xs ${
+                        className={`mt-2 flex items-center text-xs ${
                           isCurrentUser
                             ? "justify-end text-gray-500"
                             : "justify-start text-gray-400"
@@ -895,17 +942,34 @@ const ConversationPage = () => {
                         <span>{formatTime(message.createdAt)}</span>
 
                         {isCurrentUser && (
-                          <span className="ml-1">
-                            {message.isSending
-                              ? "• Sending"
-                              : message.isRead
-                              ? "• Read"
-                              : "• Sent"}
+                          <span className="ml-2 flex items-center gap-1">
+                            {message.isSending ? (
+                              <>
+                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
+                                <span>Sending</span>
+                              </>
+                            ) : message.isRead ? (
+                              <>
+                                <Heart
+                                  size={10}
+                                  className="text-pink-400 fill-current"
+                                />
+                                <span>Read</span>
+                              </>
+                            ) : (
+                              <>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Delivered</span>
+                              </>
+                            )}
                           </span>
                         )}
 
                         {message.error && (
-                          <span className="ml-1 text-red-500">• Failed</span>
+                          <span className="ml-2 text-red-500 flex items-center gap-1">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            Failed
+                          </span>
                         )}
                       </div>
                     </div>
@@ -917,22 +981,23 @@ const ConversationPage = () => {
         ))}
 
         {otherUserTyping && (
-          <div className="flex justify-start mb-2">
-            <div className="bg-white rounded-xl px-4 py-2 shadow-sm flex items-center">
-              <div className="flex space-x-1">
+          <div className="flex justify-start mb-4 animate-fadeIn">
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl px-5 py-3 shadow-lg border border-pink-100/50 flex items-center">
+              <div className="flex space-x-1 mr-2">
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-pink-400 rounded-full animate-bounce"
                   style={{ animationDelay: "0ms" }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-pink-400 rounded-full animate-bounce"
                   style={{ animationDelay: "150ms" }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-pink-400 rounded-full animate-bounce"
                   style={{ animationDelay: "300ms" }}
                 ></div>
               </div>
+              <span className="text-sm text-gray-600">Writing...</span>
             </div>
           </div>
         )}
@@ -941,30 +1006,30 @@ const ConversationPage = () => {
       </div>
 
       {(previewUrl || isRecording) && (
-        <div className="bg-white border-t border-gray-200 p-3">
-          <div className="mb-2 p-3 bg-gray-100 rounded-lg relative">
+        <div className="bg-white/80 backdrop-blur-sm border-t border-pink-200/50 p-4 mx-4 rounded-t-2xl shadow-xl">
+          <div className="mb-3 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl relative border border-pink-100">
             <button
               onClick={
                 fileType === "audio" && audioBlob
                   ? cancelRecording
                   : cancelFileUpload
               }
-              className="absolute top-2 right-2 bg-gray-800 text-white rounded-full p-1 z-10"
+              className="absolute top-2 right-2 bg-gray-800 hover:bg-gray-900 text-white rounded-full p-1.5 z-10 transition-all duration-200 transform hover:scale-110"
             >
               <X size={16} />
             </button>
 
             {isRecording ? (
               <div className="flex items-center">
-                <div className="animate-pulse mr-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="animate-pulse mr-3">
+                  <div className="w-4 h-4 bg-red-500 rounded-full shadow-lg"></div>
                 </div>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-700 font-medium">
                   Recording: {formatRecordingTime(recordingTime)}
                 </span>
                 <button
                   onClick={stopRecording}
-                  className="ml-auto bg-gray-200 text-gray-800 p-2 rounded-full"
+                  className="ml-auto bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
                   <StopCircle size={20} />
                 </button>
@@ -973,20 +1038,22 @@ const ConversationPage = () => {
               <img
                 src={previewUrl}
                 alt="Selected image"
-                className="max-h-40 rounded-lg mx-auto"
+                className="max-h-48 rounded-2xl mx-auto shadow-md"
               />
             ) : fileType === "video" && previewUrl ? (
               <video
                 src={previewUrl}
                 controls
-                className="max-h-40 w-full rounded-lg"
+                className="max-h-48 w-full rounded-2xl shadow-md"
               />
             ) : fileType === "audio" && previewUrl ? (
-              <audio src={previewUrl} controls className="w-full" />
+              <div className="bg-white/50 rounded-2xl p-3">
+                <audio src={previewUrl} controls className="w-full" />
+              </div>
             ) : previewUrl ? (
-              <div className="flex items-center p-2">
-                <Paperclip size={20} className="text-gray-500 mr-2" />
-                <span className="text-sm text-gray-600 truncate">
+              <div className="flex items-center p-3 bg-white/50 rounded-2xl">
+                <Paperclip size={20} className="text-gray-500 mr-3" />
+                <span className="text-sm text-gray-700 truncate font-medium">
                   {selectedFile?.name || "Selected file"}
                 </span>
               </div>
@@ -995,9 +1062,8 @@ const ConversationPage = () => {
         </div>
       )}
 
-      {/* Message input */}
-      <div className="bg-white border-t border-gray-200 p-3">
-        <div className="flex items-center gap-2">
+      <div className="bg-white/80 backdrop-blur-md border-t border-pink-200/50 p-4 m-4 rounded-2xl shadow-xl">
+        <div className="flex items-center gap-3">
           <input
             type="file"
             ref={fileInputRef}
@@ -1007,33 +1073,35 @@ const ConversationPage = () => {
             id="file-upload"
           />
 
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-            disabled={isRecording || isUploading}
-          >
-            <Paperclip size={20} />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="p-1 text-gray-500 hover:text-pink-500 rounded-full hover:bg-pink-50 transition-all duration-200 transform hover:scale-110"
+              disabled={isRecording || isUploading}
+            >
+              <Paperclip size={20} />
+            </button>
 
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-            disabled={isRecording || isUploading}
-          >
-            <ImageIcon size={20} />
-          </button>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="p-1 text-gray-500 hover:text-pink-500 rounded-full hover:bg-pink-50 transition-all duration-200 transform hover:scale-110"
+              disabled={isRecording || isUploading}
+            >
+              <ImageIcon size={20} />
+            </button>
 
-          <button
-            onClick={isRecording ? stopRecording : startRecording}
-            className={`p-2 rounded-full hover:bg-gray-100 ${
-              isRecording
-                ? "text-red-500 hover:text-red-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-            disabled={isUploading || !!selectedFile}
-          >
-            <Mic size={20} />
-          </button>
+            <button
+              onClick={isRecording ? stopRecording : startRecording}
+              className={`p-1 rounded-full transition-all duration-200 transform hover:scale-110 ${
+                isRecording
+                  ? "text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100"
+                  : "text-gray-500 hover:text-pink-500 hover:bg-pink-50"
+              }`}
+              disabled={isUploading || !!selectedFile}
+            >
+              <Mic size={20} />
+            </button>
+          </div>
 
           <div className="flex-grow relative">
             <input
@@ -1046,12 +1114,12 @@ const ConversationPage = () => {
               }
               placeholder={
                 isUploading
-                  ? "Uploading media..."
+                  ? "Uploading your message..."
                   : isConnected
-                  ? "Type a message..."
-                  : "Type a message (offline mode)"
+                  ? "Write something beautiful..."
+                  : "Write something beautiful (offline)"
               }
-              className="w-full bg-gray-100 rounded-full py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full bg-gradient-to-r from-pink-50 to-purple-50 rounded-full py-4 px-5 pr-12 focus:outline-none focus:ring-2 focus:ring-pink-300/50 border border-pink-100 transition-all duration-200 placeholder-gray-400"
               disabled={isUploading}
             />
           </div>
@@ -1063,16 +1131,16 @@ const ConversationPage = () => {
               sending ||
               isUploading
             }
-            className={`p-2.5 rounded-full flex items-center justify-center ${
+            className={`p-3 rounded-full flex items-center justify-center transition-all duration-200 transform hover:scale-110 shadow-lg ${
               (messageText.trim() || selectedFile || audioBlob) &&
               !sending &&
               !isUploading
-                ? "bg-primary text-white"
+                ? "bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-rose-600 text-white"
                 : "bg-gray-200 text-gray-400"
             }`}
           >
             {isUploading ? (
-              <div className="w-4 h-4 border-2 border-gray-200 border-t-white rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
             ) : (
               <Send size={18} />
             )}
@@ -1082,33 +1150,50 @@ const ConversationPage = () => {
 
       {viewerUrl && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center animate-fadeIn"
           onClick={() => setViewerUrl(null)}
         >
           <button
             onClick={() => setViewerUrl(null)}
-            className="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-gray-800"
+            className="absolute top-6 right-6 text-white p-3 rounded-full hover:bg-white/10 transition-all duration-200 transform hover:scale-110"
           >
             <X size={24} />
           </button>
-          <div className="max-w-4xl max-h-[90vh] p-2">
+          <div className="max-w-4xl max-h-[90vh] p-4">
             {viewerType === "image" ? (
               <img
                 src={viewerUrl}
                 alt="Full size"
-                className="max-w-full max-h-[90vh] object-contain"
+                className="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl"
               />
             ) : viewerType === "video" ? (
               <video
                 src={viewerUrl}
                 controls
                 autoPlay
-                className="max-w-full max-h-[90vh]"
+                className="max-w-full max-h-[90vh] rounded-2xl shadow-2xl"
               />
             ) : null}
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
