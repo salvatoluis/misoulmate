@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: "https://api.soulmatify.com/api/v1",
@@ -9,11 +9,11 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+    const auth = JSON.parse(localStorage.getItem("auth") || "{}");
     const token = auth.token;
 
     if (token && config.headers) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },

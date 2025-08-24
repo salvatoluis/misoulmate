@@ -24,14 +24,16 @@ interface PaymentDetails {
 
 const PaymentSuccess: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const planId = searchParams.get("planId");
   const hasError = searchParams.get("error") === "true";
-  
+
   const API_URL = "https://api.soulmatify.com/api/v1";
 
   useEffect(() => {
@@ -43,11 +45,13 @@ const PaymentSuccess: React.FC = () => {
       }
 
       try {
-        const response = await axiosInstance.get(`${API_URL}/plans/payment/${planId}`);
-        
+        const response = await axiosInstance.get(
+          `${API_URL}/plans/payment/${planId}`
+        );
+
         if (response.data) {
           setPaymentDetails(response.data);
-          
+
           if (hasError && response.data.success) {
           } else if (hasError || !response.data.success) {
             setError(response.data.message || "Payment processing failed.");
@@ -58,8 +62,8 @@ const PaymentSuccess: React.FC = () => {
       } catch (err: any) {
         console.error("Error fetching payment details:", err);
         setError(
-          err.response?.data?.message || 
-          "Unable to retrieve payment information. Please contact support."
+          err.response?.data?.message ||
+            "Unable to retrieve payment information. Please contact support."
         );
       } finally {
         setLoading(false);
@@ -137,9 +141,7 @@ const PaymentSuccess: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
                 Payment Successful!
               </h2>
-              <p className="text-gray-600 mb-6">
-                {paymentDetails?.message}
-              </p>
+              <p className="text-gray-600 mb-6">{paymentDetails?.message}</p>
 
               {paymentDetails && (
                 <div className="bg-[#FF6B81]/5 border border-[#FF6B81]/20 rounded-lg p-4 mb-6">
@@ -149,14 +151,17 @@ const PaymentSuccess: React.FC = () => {
                       {paymentDetails.planType} Plan Activated
                     </span>
                   </div>
-                  
+
                   <div className="text-sm text-gray-600 space-y-1">
                     <p>
                       Amount: {paymentDetails.currency} ${paymentDetails.amount}
                     </p>
                     {paymentDetails.expiresAt && (
                       <p>
-                        Active until {new Date(paymentDetails.expiresAt).toLocaleDateString()}
+                        Active until{" "}
+                        {new Date(
+                          paymentDetails.expiresAt
+                        ).toLocaleDateString()}
                       </p>
                     )}
                     {paymentDetails.paymentId && (
@@ -194,17 +199,28 @@ const PaymentSuccess: React.FC = () => {
                 Payment Failed
               </h2>
               <p className="text-gray-600 mb-6">
-                {error || paymentDetails?.message || "Something went wrong with your payment."}
+                {error ||
+                  paymentDetails?.message ||
+                  "Something went wrong with your payment."}
               </p>
 
               {paymentDetails && (
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
                   <div className="text-sm text-gray-600 space-y-1">
-                    <p><strong>Plan:</strong> {paymentDetails.planType}</p>
-                    <p><strong>Amount:</strong> {paymentDetails.currency} ${paymentDetails.amount}</p>
-                    <p><strong>Status:</strong> {paymentDetails.status}</p>
+                    <p>
+                      <strong>Plan:</strong> {paymentDetails.planType}
+                    </p>
+                    <p>
+                      <strong>Amount:</strong> {paymentDetails.currency} $
+                      {paymentDetails.amount}
+                    </p>
+                    <p>
+                      <strong>Status:</strong> {paymentDetails.status}
+                    </p>
                     {paymentDetails.paymentId && (
-                      <p><strong>Payment ID:</strong> {paymentDetails.paymentId}</p>
+                      <p>
+                        <strong>Payment ID:</strong> {paymentDetails.paymentId}
+                      </p>
                     )}
                   </div>
                 </div>

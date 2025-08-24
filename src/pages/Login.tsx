@@ -1,129 +1,140 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Loader } from 'lucide-react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, ArrowRight, Loader } from "lucide-react";
+import axios from "axios";
 
-const Login: React.FC<any> = ({ }) => {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const BASE_URL = 'https://api.soulmatify.com/api/v1';
-    // const BASE_URL = "http://localhost:3000/api/v1";
+const Login: React.FC<any> = ({}) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const BASE_URL = "https://api.soulmatify.com/api/v1";
+  // const BASE_URL = "http://localhost:3000/api/v1";
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-        if (!email || !password) {
-            setError('Please enter both email and password');
-            setLoading(false);
-            return;
-        }
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      setLoading(false);
+      return;
+    }
 
-        try {
-            const response = await axios.post(`${BASE_URL}/auth/login`, {
-                email,
-                password,
-            });
+    try {
+      const response = await axios.post(`${BASE_URL}/auth/login`, {
+        email,
+        password,
+      });
 
-            const { user, profile, token } = response.data;
+      const { user, profile, token } = response.data;
 
-            localStorage.setItem('auth', JSON.stringify({ user, profile, token }));
+      localStorage.setItem("auth", JSON.stringify({ user, profile, token }));
 
-            navigate('/matches');
-        } catch (err: any) {
-            if (err.response?.data?.message) {
-                setError(err.response.data.message);
-                setLoading(false);
-            } else {
-                setError('An error occurred. Please try again.');
-                setLoading(false);
-            }
-        }
-    };
-    
+      navigate("/matches");
+    } catch (err: any) {
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+        setLoading(false);
+      } else {
+        setError("An error occurred. Please try again.");
+        setLoading(false);
+      }
+    }
+  };
 
-    return (
-        <div>
-            <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-                <p className="text-gray-600">Sign in to continue to miSoulMate</p>
-            </div>
+  return (
+    <div>
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h1>
+        <p className="text-gray-600">Sign in to continue to miSoulMate</p>
+      </div>
 
-            {error && (
-                <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4">
-                    {error}
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-sm text-gray-700 mb-1">Email</label>
-                    <div className="relative">
-                        <Mail size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                            placeholder="you@example.com"
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label className="block text-sm text-gray-700 mb-1">Password</label>
-                    <div className="relative">
-                        <Lock size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
-                            placeholder="••••••••"
-                        />
-                    </div>
-                </div>
-
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            id="remember"
-                            className="h-4 w-4 text-[#FF6B81] border-gray-300 rounded focus:ring-[#FF6B81]"
-                        />
-                        <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
-                            Remember me
-                        </label>
-                    </div>
-                    <Link to="/forgot-password" className="text-sm text-[#FF6B81] hover:underline">
-                        Forgot password?
-                    </Link>
-                </div>
-
-                <button
-                    type="submit"
-                    className="w-full py-3 bg-[#FF6B81] hover:bg-[#D86D72] text-white font-medium rounded-lg transition-colors flex items-center justify-center"
-                >
-                    Sign In
-                    {loading && <Loader className="animate-spin ml-2" />}
-                    <ArrowRight size={18} className="ml-2" />
-                </button>
-            </form>
-
-            <div className="mt-8 text-center">
-                <p className="text-gray-600">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-[#FF6B81] hover:underline font-medium">
-                        Sign Up
-                    </Link>
-                </p>
-            </div>
+      {error && (
+        <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4">
+          {error}
         </div>
-    );
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm text-gray-700 mb-1">Email</label>
+          <div className="relative">
+            <Mail
+              size={18}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+              placeholder="you@example.com"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm text-gray-700 mb-1">Password</label>
+          <div className="relative">
+            <Lock
+              size={18}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81]"
+              placeholder="••••••••"
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="remember"
+              className="h-4 w-4 text-[#FF6B81] border-gray-300 rounded focus:ring-[#FF6B81]"
+            />
+            <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
+              Remember me
+            </label>
+          </div>
+          <Link
+            to="/forgot-password"
+            className="text-sm text-[#FF6B81] hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-3 bg-[#FF6B81] hover:bg-[#D86D72] text-white font-medium rounded-lg transition-colors flex items-center justify-center"
+        >
+          Sign In
+          {loading && <Loader className="animate-spin ml-2" />}
+          <ArrowRight size={18} className="ml-2" />
+        </button>
+      </form>
+
+      <div className="mt-8 text-center">
+        <p className="text-gray-600">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-[#FF6B81] hover:underline font-medium"
+          >
+            Sign Up
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

@@ -1,4 +1,4 @@
-import { io, Socket } from 'socket.io-client';
+import { io, Socket } from "socket.io-client";
 
 class SocketService {
   private socket: Socket | null = null;
@@ -26,52 +26,57 @@ class SocketService {
       reconnectionAttempts: 5,
     });
 
-    this.socket.on('connect', () => {
-      console.log('Socket connected');
+    this.socket.on("connect", () => {
+      console.log("Socket connected");
       this.joinUserRoom();
-      this.connectionListeners.forEach(listener => listener(true));
+      this.connectionListeners.forEach((listener) => listener(true));
     });
 
-    this.socket.on('disconnect', () => {
-      console.log('Socket disconnected');
-      this.connectionListeners.forEach(listener => listener(false));
+    this.socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+      this.connectionListeners.forEach((listener) => listener(false));
     });
 
-    this.socket.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
-      this.connectionListeners.forEach(listener => listener(false, error));
+    this.socket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error);
+      this.connectionListeners.forEach((listener) => listener(false, error));
     });
 
-    this.socket.on('message:new', (message) => {
+    this.socket.on("message:new", (message) => {
       const matchId = message.matchId;
       if (this.messageListeners.has(matchId)) {
-        this.messageListeners.get(matchId)?.forEach(listener => listener(message));
+        this.messageListeners
+          .get(matchId)
+          ?.forEach((listener) => listener(message));
       }
     });
 
-    this.socket.on('message:read', (data) => {
+    this.socket.on("message:read", (data) => {
       const matchId = data.matchId;
       if (this.statusListeners.has(matchId)) {
-        this.statusListeners.get(matchId)?.forEach(listener => listener(data));
+        this.statusListeners
+          .get(matchId)
+          ?.forEach((listener) => listener(data));
       }
-      
-      this.globalReadListeners.forEach(listener => listener(data));
+
+      this.globalReadListeners.forEach((listener) => listener(data));
     });
 
-    this.socket.on('notification:message', (data) => {
-      this.notificationListeners.forEach(listener => listener(data));
+    this.socket.on("notification:message", (data) => {
+      this.notificationListeners.forEach((listener) => listener(data));
     });
 
-    this.socket.on('user:typing', (data) => {
+    this.socket.on("user:typing", (data) => {
       const matchId = data.matchId;
       if (this.typingListeners.has(matchId)) {
-        this.typingListeners.get(matchId)?.forEach(listener => 
-          listener(data.userId, data.isTyping));
+        this.typingListeners
+          .get(matchId)
+          ?.forEach((listener) => listener(data.userId, data.isTyping));
       }
     });
-    
-    this.socket.on('user:online', (data) => {
-      this.onlineStatusListeners.forEach(listener => listener(data));
+
+    this.socket.on("user:online", (data) => {
+      this.onlineStatusListeners.forEach((listener) => listener(data));
     });
 
     return this.socket;
@@ -79,45 +84,45 @@ class SocketService {
 
   joinUserRoom() {
     if (!this.socket || !this.userId) return;
-    this.socket.emit('join:user', { userId: this.userId });
+    this.socket.emit("join:user", { userId: this.userId });
   }
 
   joinMatchRoom(matchId: string) {
     if (!this.socket) return;
-    this.socket.emit('join:match', { matchId });
+    this.socket.emit("join:match", { matchId });
     console.log(`Joined match room: ${matchId}`);
   }
 
   leaveMatchRoom(matchId: string) {
     if (!this.socket) return;
-    this.socket.emit('leave:match', { matchId });
+    this.socket.emit("leave:match", { matchId });
     console.log(`Left match room: ${matchId}`);
   }
 
   sendMessage(matchId: string, content: string, media: any = null) {
     if (!this.socket) return;
-    
+
     const messageData = {
       matchId,
       content,
-      media
+      media,
     };
-    
-    this.socket.emit('message:send', messageData);
+
+    this.socket.emit("message:send", messageData);
   }
 
   sendTypingStatus(matchId: string, isTyping: boolean) {
     if (!this.socket) return;
-    
-    this.socket.emit('user:typing', {
+
+    this.socket.emit("user:typing", {
       matchId,
-      isTyping
+      isTyping,
     });
   }
 
   markMessagesAsRead(matchId: string) {
     if (!this.socket) return;
-    this.socket.emit('message:read', { matchId });
+    this.socket.emit("message:read", { matchId });
   }
 
   onNewMessage(matchId: string, callback: Function) {
@@ -132,7 +137,7 @@ class SocketService {
       const listeners = this.messageListeners.get(matchId) || [];
       this.messageListeners.set(
         matchId,
-        listeners.filter(listener => listener !== callback)
+        listeners.filter((listener) => listener !== callback)
       );
     }
   }
@@ -149,18 +154,18 @@ class SocketService {
       const listeners = this.statusListeners.get(matchId) || [];
       this.statusListeners.set(
         matchId,
-        listeners.filter(listener => listener !== callback)
+        listeners.filter((listener) => listener !== callback)
       );
     }
   }
-  
+
   onGlobalReadStatus(callback: Function) {
     this.globalReadListeners.push(callback);
   }
-  
+
   offGlobalReadStatus(callback: Function) {
     this.globalReadListeners = this.globalReadListeners.filter(
-      listener => listener !== callback
+      (listener) => listener !== callback
     );
   }
 
@@ -170,7 +175,7 @@ class SocketService {
 
   offNotification(callback: Function) {
     this.notificationListeners = this.notificationListeners.filter(
-      listener => listener !== callback
+      (listener) => listener !== callback
     );
   }
 
@@ -186,18 +191,18 @@ class SocketService {
       const listeners = this.typingListeners.get(matchId) || [];
       this.typingListeners.set(
         matchId,
-        listeners.filter(listener => listener !== callback)
+        listeners.filter((listener) => listener !== callback)
       );
     }
   }
-  
+
   onOnlineStatus(callback: Function) {
     this.onlineStatusListeners.push(callback);
   }
-  
+
   offOnlineStatus(callback: Function) {
     this.onlineStatusListeners = this.onlineStatusListeners.filter(
-      listener => listener !== callback
+      (listener) => listener !== callback
     );
   }
 
@@ -207,7 +212,7 @@ class SocketService {
 
   offConnectionChange(callback: Function) {
     this.connectionListeners = this.connectionListeners.filter(
-      listener => listener !== callback
+      (listener) => listener !== callback
     );
   }
 

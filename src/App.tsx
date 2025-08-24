@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Matches from './pages/Matches';
-import MatchProfile from './pages/MatchProfile';
-import UserProfile from './pages/UserProfile';
-import Conversation from './pages/Conversation';
-import Subscription from './pages/Subscription';
-import Settings from './pages/Settings';
-import BlockedUsers from './pages/BlockedUsers';
-import FAQHelp from './pages/FAQHelp';
-import DatePlanner from './pages/DatePlanner';
-import Icebreakers from './pages/Icebreakers';
-import HomePage from './pages/Home';
-import AuthLayout from './layouts/AuthLayout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Onboarding from './pages/Onboading';
-import MainLayout from './layouts/MainLayout';
-import PageNotFound from './pages/PageNotFound';
-import NotificationPage from './pages/Notifications';
-import Discover from './pages/Discover';
-import SafetyCenter from './pages/SafetyCenter';
-import ContactUs from './pages/ContactUs';
-import CommunityGuidelines from './pages/CommunityGuidelines';
-import ForYou from './pages/ForYou';
-import ConversationPage from './pages/ConversationPage';
-import socketService from './services/socket.service';
-import TermsOfService from './pages/TermsOfService';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import CookiePolicy from './pages/CoookiePolicy';
-import Messages from './pages/Messages';
-import Referral from './pages/Referral';
-import About from './pages/About';
-import PaymentSuccess from './pages/PaymentSuccess';
+import Matches from "./pages/Matches";
+import MatchProfile from "./pages/MatchProfile";
+import UserProfile from "./pages/UserProfile";
+import Conversation from "./pages/Conversation";
+import Subscription from "./pages/Subscription";
+import Settings from "./pages/Settings";
+import BlockedUsers from "./pages/BlockedUsers";
+import FAQHelp from "./pages/FAQHelp";
+import DatePlanner from "./pages/DatePlanner";
+import Icebreakers from "./pages/Icebreakers";
+import HomePage from "./pages/Home";
+import AuthLayout from "./layouts/AuthLayout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Onboarding from "./pages/Onboading";
+import MainLayout from "./layouts/MainLayout";
+import PageNotFound from "./pages/PageNotFound";
+import NotificationPage from "./pages/Notifications";
+import Discover from "./pages/Discover";
+import SafetyCenter from "./pages/SafetyCenter";
+import ContactUs from "./pages/ContactUs";
+import CommunityGuidelines from "./pages/CommunityGuidelines";
+import ForYou from "./pages/ForYou";
+import ConversationPage from "./pages/ConversationPage";
+import socketService from "./services/socket.service";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CoookiePolicy";
+import Messages from "./pages/Messages";
+import Referral from "./pages/Referral";
+import About from "./pages/About";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const authData = localStorage.getItem('auth');
+    const authData = localStorage.getItem("auth");
     if (authData) {
       try {
         const parsedAuth = JSON.parse(authData);
@@ -46,7 +46,7 @@ const App: React.FC = () => {
           socketService.initialize(parsedAuth.token, parsedAuth.user.id);
         }
       } catch (error) {
-        console.error('Error initializing socket:', error);
+        console.error("Error initializing socket:", error);
       }
     }
 
@@ -54,10 +54,10 @@ const App: React.FC = () => {
       setLoading(true);
     };
 
-    window.addEventListener('beforeunload', reloadListener);
+    window.addEventListener("beforeunload", reloadListener);
 
     return () => {
-      window.removeEventListener('beforeunload', reloadListener);
+      window.removeEventListener("beforeunload", reloadListener);
       socketService.disconnect();
     };
   }, []);
@@ -67,23 +67,28 @@ const App: React.FC = () => {
       setLoading(true);
     };
 
-    window.addEventListener('beforeunload', reloadListener);
+    window.addEventListener("beforeunload", reloadListener);
 
     return () => {
-      window.removeEventListener('beforeunload', reloadListener);
+      window.removeEventListener("beforeunload", reloadListener);
     };
   }, []);
 
-  const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
+  const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+    children,
+  }) => {
     return <>{children}</>;
   };
 
-  const OnboardingRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const OnboardingRoute: React.FC<{ children: React.ReactNode }> = ({
+    children,
+  }) => {
     return <>{children}</>;
   };
 
-  const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const PublicRoute: React.FC<{ children: React.ReactNode }> = ({
+    children,
+  }) => {
     return <>{children}</>;
   };
 
