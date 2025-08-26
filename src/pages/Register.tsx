@@ -1072,7 +1072,7 @@ const Register: React.FC = () => {
                                     id="profile.maxDistance"
                                     name="profile.maxDistance"
                                     min="5"
-                                    max="100"
+                                    max="10000"
                                     step="5"
                                     value={formData.profile.maxDistance}
                                     onChange={handleChange}
