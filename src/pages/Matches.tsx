@@ -152,8 +152,7 @@ const Matches: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white pt-safe pb-safe">
-            {/* Header */}
+        <div className="min-h-screen bg-white pt-16 pb-16">
             <header className="fixed top-0 left-0 right-0 bg-white z-40 shadow-sm border-b border-gray-100 pt-safe">
                 <div className="px-4 py-3 flex justify-between items-center">
                     <div className="flex items-center">
@@ -183,7 +182,6 @@ const Matches: React.FC = () => {
                 </div>
             </header>
 
-            {/* Filters Panel */}
             <AnimatePresence>
                 {isFilterOpen && (
                     <motion.div
@@ -287,7 +285,6 @@ const Matches: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {/* Main Content */}
             <main className={`px-4 pt-[calc(env(safe-area-inset-top)+56px+${isFilterOpen ? '0px' : '0px'})] pb-4`}>
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20">
