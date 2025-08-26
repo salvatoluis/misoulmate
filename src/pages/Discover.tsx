@@ -1,4 +1,3 @@
-// src/pages/Discover.tsx
 import React, { useState, useRef } from 'react';
 import { ChevronRight, Search, Filter, Heart, X, Zap, Coffee, MapPin, Music, Film, Book, Utensils, Briefcase, GraduationCap, Wine, Check, Bookmark, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
