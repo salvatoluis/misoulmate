@@ -1,19 +1,15 @@
-import { useState, useEffect } from 'react';
-import { ChevronRight, Heart, Check, Shield, Sparkles, Briefcase } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronRight, Heart, Shield, Briefcase, Star, Camera, ArrowRight } from 'lucide-react';
 
 export default function Hero() {
     const [scrollY, setScrollY] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
-    type FloatingElement = {
-        id: number;
-        size: number;
-        left: number;
-        top: number;
-        duration: number;
-        delay: number;
-    };
-    const [floatingElements, setFloatingElements] = useState<FloatingElement[]>([]);
-
+    const cardRef = useRef<HTMLDivElement>(null);
+    const ctaRef = useRef(null);
+    
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [cardMousePosition, setCardMousePosition] = useState({ x: 50, y: 50 });
+    
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY);
@@ -23,214 +19,311 @@ export default function Hero() {
             setIsVisible(true);
         }, 300);
 
-        // Create floating elements
-        const elements = Array(12).fill(0).map((_, i) => ({
-            id: i,
-            size: Math.random() * 30 + 10,
-            left: Math.random() * 100,
-            top: Math.random() * 100,
-            duration: Math.random() * 30 + 20,
-            delay: Math.random() * 10,
-        }));
-
-        setFloatingElements(elements);
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({
+                x: e.clientX,
+                y: e.clientY
+            });
+            
+            if (cardRef.current) {
+                const rect = cardRef.current.getBoundingClientRect();
+                setCardMousePosition({
+                    x: ((e.clientX - rect.left) / rect.width) * 100,
+                    y: ((e.clientY - rect.top) / rect.height) * 100
+                });
+            }
+        };
 
         window.addEventListener('scroll', handleScroll);
+        window.addEventListener('mousemove', handleMouseMove);
+        
         return () => {
             window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('mousemove', handleMouseMove);
             clearTimeout(timer);
         };
     }, []);
 
+    // Generate floating elements for background
+    const floatingElements = Array(10).fill(0).map((_, i) => ({
+        id: i,
+        size: Math.random() * 20 + 10,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        duration: Math.random() * 20 + 15,
+        delay: Math.random() * 5,
+        opacity: Math.random() * 0.05 + 0.01
+    }));
+
     return (
-        <div className="relative h-auto w-full overflow-hidden bg-black">
+        <div className="relative w-full overflow-hidden bg-gradient-to-b from-[#0c0c14] to-[#16161e]">
+            {/* Ambient background */}
             <div className="absolute inset-0 overflow-hidden">
+                {/* Soft gradient background */}
                 <div
-                    className="absolute left-0 top-0 h-[150vh] w-[150vw] -translate-x-1/4 -translate-y-1/4 opacity-30"
+                    className="absolute left-0 top-0 h-[150vh] w-[150vw] -translate-x-1/4 -translate-y-1/4 opacity-40"
                     style={{
-                        background: 'radial-gradient(circle at 30% 40%, rgba(var(--color-primary-500), 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(var(--color-primary-400), 0.2) 0%, transparent 30%), radial-gradient(circle at 20% 80%, rgba(var(--color-primary-600), 0.15) 0%, transparent 70%)',
+                        background: 'radial-gradient(circle at 30% 40%, rgba(255, 107, 129, 0.05) 0%, transparent 35%), radial-gradient(circle at 80% 20%, rgba(183, 91, 255, 0.04) 0%, transparent 30%), radial-gradient(circle at 20% 60%, rgba(252, 128, 178, 0.05) 0%, transparent 50%)',
                         transform: `translate(${-scrollY * 0.02}px, ${-scrollY * 0.03}px)`,
                     }}
                 ></div>
 
+                {/* Subtle floating elements */}
                 {floatingElements.map((el) => (
                     <div
                         key={el.id}
-                        className="absolute rounded-full bg-primary-300/10"
+                        className="absolute rounded-full"
                         style={{
                             width: `${el.size}px`,
                             height: `${el.size}px`,
                             left: `${el.left}%`,
                             top: `${el.top}%`,
+                            opacity: el.opacity,
+                            background: 'linear-gradient(135deg, rgba(255, 107, 129, 0.3), rgba(183, 91, 255, 0.3))',
                             animation: `float ${el.duration}s ease-in-out ${el.delay}s infinite alternate`,
-                            filter: 'blur(8px)',
+                            filter: 'blur(18px)',
                         }}
                     ></div>
                 ))}
 
+                {/* Subtle grid overlay */}
                 <div
-                    className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gMTAwIDAgTCAwIDAgMCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==')]"
-                    style={{ opacity: 0.3 - scrollY * 0.0005 }}
+                    className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gMTAwIDAgTCAwIDAgMCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAxNSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIgLz48L3N2Zz4=')]"
+                    style={{ opacity: 0.15 - scrollY * 0.0003 }}
                 ></div>
             </div>
 
+            {/* Main content */}
             <div
-                className={`relative z-10 mx-auto flex min-h-screen max-w-[1400px] flex-col items-center justify-center px-6 transition-all duration-1000 ease-out sm:px-8 lg:px-12 ${isVisible ? 'opacity-100 transform-none' : 'opacity-0 translate-y-8'}`}
+                className={`relative z-10 mx-auto flex min-h-screen max-w-[1400px] flex-col items-center justify-center px-6 transition-all duration-1000 ease-out sm:px-8 lg:px-12 ${
+                    isVisible ? 'opacity-100 transform-none' : 'opacity-0 translate-y-8'
+                }`}
             >
-                <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between">
-                    <div className="relative max-w-2xl space-y-10">
-
+                <div className="flex w-full flex-col items-center lg:flex-row lg:items-center lg:justify-between">
+                    {/* Left side content */}
+                    <div className="relative max-w-2xl space-y-10 text-center lg:text-left">
                         <div
-                            className="relative space-y-6"
-                            style={{ transform: `translateY(${-scrollY * 0.04}px)` }}
+                            className="relative space-y-7"
+                            style={{ transform: `translateY(${-scrollY * 0.03}px)` }}
                         >
                             {/* Badge */}
-                            <div className="inline-flex items-center rounded-full bg-white/[0.03] px-5 py-2 backdrop-blur-2xl">
-                                <div className="mr-2 h-2 w-2 rounded-full bg-primary-400"></div>
+                            <div className="inline-flex items-center rounded-full border border-white/5 bg-white/[0.03] px-5 py-2 backdrop-blur-xl">
+                                <div className="mr-2 h-2 w-2 rounded-full bg-[#FF6B81]"></div>
                                 <p className="text-xs font-medium text-white/90">
-                                    <span className="text-primary-300">12,000+</span> successful matches in the professional world
+                                    <span className="text-[#FF6B81]">12,000+</span> meaningful connections made
                                 </p>
                             </div>
 
-                            <h1 className="text-5xl font-bold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
+                            {/* Headline */}
+                            <h1 className="font-display text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
+                                Find 
                                 <span
-                                    className="relative inline-block"
+                                    className="relative mx-3 inline-block bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] bg-clip-text text-transparent"
                                     style={{
-                                        textShadow: '0 0 80px rgba(var(--color-primary-500), 0.2)'
+                                        textShadow: '0 0 80px rgba(255, 107, 129, 0.2)'
                                     }}
                                 >
-                                    Elevate
-                                    <div className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"></div>
+                                    Authentic
                                 </span>
-                                <br />
-                                Your Love Life
+                                <br className="hidden md:block" />
+                                Connections
                             </h1>
 
+                            {/* Description */}
                             <p className="text-xl leading-relaxed text-white/70">
-                                Where accomplished professionals find meaningful connections leading to marriage. Our AI-driven matches bring together like-minded individuals with shared values and ambitions.
+                                Discover meaningful relationships with like-minded professionals who share your values and aspirations. Our intelligent matching algorithm goes beyond appearances.
                             </p>
                         </div>
 
                         {/* CTA section */}
-                        <div className="flex flex-col space-y-5 sm:flex-row sm:space-x-6 sm:space-y-0">
-                            <button className="group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600 p-px text-lg font-semibold text-white">
-                                <span className="absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600 transition-all duration-300 ease-out group-hover:opacity-0"></span>
-                                <span className="absolute inset-0 opacity-0 transition-all duration-300 ease-out group-hover:opacity-100 bg-[radial-gradient(400px_circle_at_var(--mouse-x,_0)_var(--mouse-y,_0),_rgba(var(--color-primary-400),_0.6),_transparent_40%)]"></span>
-                                <span className="relative z-10 flex w-full items-center justify-center gap-2 rounded-[0.7rem] bg-black px-8 py-4 transition-all duration-300 ease-out group-hover:gap-4">
-                                    Start Your Journey
+                        <div 
+                            ref={ctaRef}
+                            className="flex flex-col space-y-5 sm:flex-row sm:space-x-6 sm:space-y-0"
+                            style={{
+                                '--mouse-x': `${mousePosition.x}px`,
+                                '--mouse-y': `${mousePosition.y}px`
+                            } as React.CSSProperties & Record<string, any>}
+                        >
+                            <button 
+                                className="group relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] p-[1px] text-lg font-semibold text-white shadow-lg shadow-[#FF6B81]/10"
+                            >
+                                <span className="absolute inset-0 opacity-25 transition-opacity duration-500 ease-out"
+                                    style={{
+                                        background: 'radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 107, 129, 0.6), transparent 60%)'
+                                    }}
+                                ></span>
+                                <span className="relative z-10 flex w-full items-center justify-center gap-2 rounded-full bg-[#0c0c14] px-8 py-3.5 transition-all duration-300 ease-out group-hover:bg-opacity-90 group-hover:gap-4">
+                                    Find Your Match
                                     <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                                 </span>
                             </button>
 
-                            <button className="group flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] px-8 py-4 text-lg font-semibold text-white backdrop-blur-md transition-all hover:bg-white/[0.05]">
-                                How It Works
+                            <button className="group flex items-center justify-center rounded-full border border-white/8 bg-white/[0.02] px-8 py-3.5 text-lg font-medium text-white backdrop-blur-md transition-all hover:bg-white/[0.04] hover:border-white/15">
+                                Learn More
                             </button>
                         </div>
                     </div>
 
-                    {/* Right side - 3D card interface */}
+                    {/* Right side - Profile card */}
                     <div
-                        className="relative mt-20 flex w-full max-w-xl origin-top lg:mt-0"
+                        ref={cardRef}
+                        className="relative mt-20 flex w-full max-w-xl origin-top perspective lg:mt-0"
                         style={{
-                            transform: `perspective(1000px) rotateX(${scrollY * 0.01}deg) rotateY(${scrollY * 0.01}deg)`,
-                            transformStyle: 'preserve-3d',
-                        }}
+                            '--mouse-x': `${cardMousePosition.x}%`,
+                            '--mouse-y': `${cardMousePosition.y}%`
+                        } as React.CSSProperties & Record<string, any>}
                     >
                         {/* Main profile card */}
-                        <div className="relative flex h-full w-full translate-z-0 flex-col overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.07] to-white/[0.03] p-[1px] shadow-2xl backdrop-blur-xl transition-all duration-300">
-                            <div className="relative h-full w-full rounded-[calc(1.5rem-1px)] bg-black/30 p-8">
+                        <div 
+                            className="relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.07] to-white/[0.03] p-[1px] shadow-2xl backdrop-blur-xl transition-all duration-300"
+                            style={{
+                                transform: `perspective(1000px) rotateX(${(cardMousePosition.y - 50) * 0.04}deg) rotateY(${(cardMousePosition.x - 50) * -0.04}deg)`,
+                                transformStyle: 'preserve-3d',
+                                transition: 'transform 0.1s ease-out'
+                            }}
+                        >
+                            <div className="relative h-full w-full rounded-[calc(1.5rem-1px)] bg-[#0c0c14]/90 p-8">
                                 {/* Highlight accent */}
-                                <div className="absolute -right-40 -top-40 h-80 w-80 rounded-full bg-primary-500/10 blur-3xl"></div>
-                                <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-primary-600/10 blur-3xl"></div>
+                                <div className="absolute -right-40 -top-40 h-80 w-80 rounded-full bg-[#FF6B81]/5 blur-3xl"></div>
+                                <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-[#B75BFF]/5 blur-3xl"></div>
+                                
+                                {/* Light effect that follows mouse */}
+                                <div 
+                                    className="absolute inset-0 opacity-10 transition-opacity duration-300 ease-out"
+                                    style={{
+                                        background: 'radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 107, 129, 0.4), transparent 40%)'
+                                    }}
+                                ></div>
 
                                 {/* Profile header */}
                                 <div className="mb-8 flex items-center justify-between">
                                     <div className="flex items-center gap-5">
-                                        <div className="relative h-16 w-16 overflow-hidden rounded-2xl p-[2px]" style={{ background: `linear-gradient(45deg, rgb(var(--color-primary-500)), rgb(var(--color-primary-400)))` }}>
-                                            <div className="h-full w-full rounded-[calc(1rem-1px)] bg-black/30"></div>
-                                            <Sparkles className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 text-white" />
+                                        <div className="relative h-16 w-16 overflow-hidden rounded-full p-[2px] shadow-md" 
+                                            style={{ 
+                                                background: `linear-gradient(45deg, #FF6B81, #B75BFF)`
+                                            }}
+                                        >
+                                            {/* Profile image placeholder */}
+                                            <div className="h-full w-full rounded-full bg-black/30 bg-[url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
                                         </div>
                                         <div>
-                                            <h3 className="text-2xl font-bold text-white">Elite Matching</h3>
-                                            <p className="text-white/60">Personalized for you</p>
+                                            <h3 className="text-2xl font-bold text-white">Sarah, 28</h3>
+                                            <p className="text-white/60">Marketing Director</p>
                                         </div>
                                     </div>
 
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500/10 backdrop-blur-sm">
-                                        <Check className="h-5 w-5 text-primary-400" />
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FF6B81]/10 backdrop-blur-sm">
+                                        <Heart className="h-5 w-5 text-[#FF6B81]" />
                                     </div>
                                 </div>
 
                                 {/* Compatibility stats */}
-                                <div className="mb-10 space-y-6">
+                                <div className="mb-6 space-y-6">
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
-                                            <p className="text-sm font-medium text-white/80">Compatibility Score</p>
+                                            <p className="text-sm font-medium text-white/80">Match Compatibility</p>
                                             <div className="flex items-center gap-1.5">
-                                                <div className="h-1.5 w-1.5 rounded-full bg-primary-400"></div>
-                                                <p className="text-sm font-bold text-white">97%</p>
+                                                <div className="h-1.5 w-1.5 rounded-full bg-[#FF6B81]"></div>
+                                                <p className="text-sm font-bold text-white">92%</p>
                                             </div>
                                         </div>
                                         <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/5">
-                                            <div className="absolute inset-0 h-full w-[97%] rounded-full bg-gradient-to-r from-primary-600 to-primary-400">
-                                                <div className="absolute inset-0 opacity-30 bg-primary animate-shimmer"></div>
+                                            <div className="absolute inset-0 h-full w-[92%] rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF]">
+                                                <div className="absolute inset-0 opacity-30 bg-white animate-shimmer"></div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-3 gap-4">
-                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/10">
-                                                <Shield className="h-5 w-5 text-primary-400" />
+                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm border border-white/[0.03]">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B81]/10">
+                                                <Shield className="h-5 w-5 text-[#FF6B81]" />
                                             </div>
-                                            <p className="mt-3 text-sm font-medium text-white">Elite Verification</p>
-                                            <p className="mt-1 text-xs text-white/60">Verified professionals</p>
+                                            <p className="mt-3 text-sm font-medium text-white">Verified</p>
+                                            <p className="mt-1 text-xs text-white/60">Identity confirmed</p>
                                         </div>
 
-                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/10">
-                                                <Briefcase className="h-5 w-5 text-primary-400" />
-                                            </div>
-                                            <p className="mt-3 text-sm font-medium text-white">Career Match</p>
-                                            <p className="mt-1 text-xs text-white/60">93% alignment</p>
-                                        </div>
-
-                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/10">
-                                                <Heart className="h-5 w-5 text-primary-400" />
+                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm border border-white/[0.03]">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#B75BFF]/10">
+                                                <Star className="h-5 w-5 text-[#B75BFF]" />
                                             </div>
                                             <p className="mt-3 text-sm font-medium text-white">Values</p>
-                                            <p className="mt-1 text-xs text-white/60">95% compatibility</p>
+                                            <p className="mt-1 text-xs text-white/60">90% alignment</p>
+                                        </div>
+
+                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm border border-white/[0.03]">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B81]/10">
+                                                <Briefcase className="h-5 w-5 text-[#FF6B81]" />
+                                            </div>
+                                            <p className="mt-3 text-sm font-medium text-white">Career</p>
+                                            <p className="mt-1 text-xs text-white/60">Ambitious</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Match preview */}
-                                <div className="relative rounded-2xl bg-white/[0.02] p-5 backdrop-blur-md">
+                                {/* Photo gallery preview */}
+                                <div className="mb-6 mt-8">
+                                    <div className="mb-3 flex items-center justify-between">
+                                        <p className="text-sm font-medium text-white/80">Photos</p>
+                                        <p className="text-xs text-[#FF6B81]">View all</p>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        <div className="relative aspect-square overflow-hidden rounded-xl bg-white/5">
+                                            <div className="h-full w-full bg-[url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
+                                        </div>
+                                        <div className="relative aspect-square overflow-hidden rounded-xl bg-white/5">
+                                            <div className="h-full w-full bg-[url('https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
+                                        </div>
+                                        <div className="relative aspect-square overflow-hidden rounded-xl bg-white/5">
+                                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#FF6B81]/10 to-[#B75BFF]/10 text-white">
+                                                <div className="flex items-center gap-1.5">
+                                                    <Camera size={14} />
+                                                    <span className="text-xs font-medium">3+</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Interests section */}
+                                <div className="mb-6">
+                                    <p className="mb-3 text-sm font-medium text-white/80">Interests</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {['Travel', 'Fitness', 'Fine Dining', 'Art', 'Reading'].map((interest, i) => (
+                                            <div 
+                                                key={i} 
+                                                className="rounded-full bg-white/[0.03] px-3 py-1 text-xs font-medium text-white/80 border border-white/5"
+                                            >
+                                                {interest}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Message preview */}
+                                <div className="relative rounded-2xl bg-white/[0.02] p-5 backdrop-blur-md border border-white/[0.03]">
                                     <div className="mb-4 flex justify-between">
-                                        <p className="text-sm font-medium text-white">Your Top Matches</p>
-                                        <p className="text-xs text-primary-400">View all</p>
+                                        <p className="text-sm font-medium text-white">Recent Message</p>
+                                        <p className="text-xs text-[#FF6B81]">View chat</p>
                                     </div>
 
-                                    <div className="flex items-center gap-4">
-                                        <div className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-primary-500 to-primary-400 p-[2px]">
-                                            <div className="h-full w-full rounded-lg bg-black/30"></div>
-                                            <p className="absolute text-xs font-bold text-white">+5</p>
+                                    <div className="flex items-start gap-4">
+                                        <div className="relative h-10 w-10 overflow-hidden rounded-full border border-white/5">
+                                            <div className="h-full w-full bg-[#0c0c14] bg-[url('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
                                         </div>
-
-                                        {[1, 2, 3].map((i) => (
-                                            <div key={i} className="h-10 w-10 rounded-xl bg-white/5"></div>
-                                        ))}
-
-                                        <div className="ml-auto rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-white">
-                                            <span className="text-primary-400">24</span> new today
+                                        <div>
+                                            <p className="text-sm font-medium text-white">Alex</p>
+                                            <p className="text-xs text-white/60 mt-1">I'd love to check out that new art exhibit this weekend if you're free...</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* CTA button */}
-                                <button className="mt-7 w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 py-4 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all hover:shadow-xl hover:shadow-primary-500/30">
-                                    Find Your Perfect Match
+                                <button className="mt-7 w-full rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#FF6B81]/10 transition-all hover:shadow-xl hover:shadow-[#FF6B81]/20 flex items-center justify-center gap-2 group">
+                                    <span className="relative flex items-center gap-2">
+                                        Start Conversation
+                                        <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -248,20 +341,20 @@ export default function Hero() {
                             }}
                         >
                             <div className="flex items-center gap-3">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-400 p-0.5 shadow-lg shadow-primary-500/20">
-                                    <div className="h-full w-full rounded-[calc(0.75rem-1px)] bg-black/20 backdrop-blur-sm"></div>
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#FF6B81] to-[#B75BFF] p-0.5 shadow-lg shadow-[#FF6B81]/20">
+                                    <div className="h-full w-full rounded-full bg-black/20 backdrop-blur-sm"></div>
                                     <div className="absolute flex h-6 w-6 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
                                         <div className="h-2 w-2 rounded-full bg-green-400"></div>
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium text-white">2,384 Online Now</p>
-                                    <p className="text-xs text-white/60">In your professional network</p>
+                                    <p className="text-sm font-medium text-white">843 Online Now</p>
+                                    <p className="text-xs text-white/60">5 matches nearby</p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Floating achievement */}
+                        {/* Floating match notification */}
                         <div
                             className="absolute -right-6 top-10 z-20 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 shadow-xl backdrop-blur-xl"
                             style={{
@@ -275,8 +368,10 @@ export default function Hero() {
                             }}
                         >
                             <div className="flex items-center gap-3">
-                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-400"></div>
-                                <p className="text-xs font-medium text-white">745+ successful marriages</p>
+                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF6B81] to-[#B75BFF] flex items-center justify-center">
+                                    <Heart size={14} className="text-white" />
+                                </div>
+                                <p className="text-xs font-medium text-white">3 new matches today</p>
                             </div>
                         </div>
                     </div>
@@ -284,20 +379,30 @@ export default function Hero() {
             </div>
 
             <style>{`
-        @keyframes float {
-          0% { transform: translateZ(20px); }
-          100% { transform: translateZ(40px); }
-        }
-        
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
+                @keyframes float {
+                    0% { transform: translateZ(20px); }
+                    100% { transform: translateZ(40px); }
+                }
+                
+                @keyframes shimmer {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+                
+                .animate-shimmer {
+                    animation: shimmer 2s infinite;
+                }
+                
+                .perspective {
+                    perspective: 1000px;
+                }
+                
+                @font-face {
+                    font-family: 'Display';
+                    src: local('SF Pro Display'), local('Poppins'), local('Inter'), sans-serif;
+                    font-weight: bold;
+                }
+            `}</style>
         </div>
     );
 }
