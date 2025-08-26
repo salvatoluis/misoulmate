@@ -29,7 +29,13 @@ const interestOptions = [
 
 const languageOptions = [
     'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese',
-    'Korean', 'Italian', 'Portuguese', 'Russian', 'Arabic', 'Hindi'
+    'Korean', 'Italian', 'Portuguese', 'Russian', 'Arabic', 'Hindi',
+    'Turkish', 'Vietnamese', 'Thai', 'Dutch', 'Swedish', 'Danish',
+    'Finnish', 'Czech', 'Hungarian', 'Romanian', 'Bulgarian', 'Greek',
+    'Slovak', 'Indonesian', 'Malay', 'Filipino', 'Swahili', 'Hebrew',
+    'Thai', 'Ukrainian', 'Norwegian', 'Polish', 'Catalan', 'Croatian',
+    'Serbian', 'Lithuanian', 'Latvian', 'Estonian', 'Icelandic',
+    'Afrikaans', 'Albanian', 'Basque',
 ];
 
 const Register: React.FC = () => {
@@ -103,7 +109,9 @@ const Register: React.FC = () => {
         }
     }, [location]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
 
         if (name.includes('.')) {
@@ -149,7 +157,7 @@ const Register: React.FC = () => {
         });
     };
 
-    const toggleLanguage = (language) => {
+    const toggleLanguage = (language: string) => {
         setFormData(prev => {
             const currentLanguages = prev.profile.languages;
             const newLanguages = currentLanguages.includes(language)
@@ -166,9 +174,9 @@ const Register: React.FC = () => {
         });
     };
 
-    const handleAgeRangeChange = (index, value) => {
+    const handleAgeRangeChange = (index: number, value: number) => {
         setFormData(prev => {
-            const newRange = [...prev.profile.ageRange];
+            const newRange = [...prev.profile.ageRange] as [number, number];
             newRange[index] = value;
             return {
                 ...prev,
@@ -193,7 +201,7 @@ const Register: React.FC = () => {
         }));
     };
 
-    const updateQuestion = (index, field, value) => {
+    const updateQuestion = (index: number, field: string, value: string) => {
         setFormData(prev => {
             const newQuestions = [...prev.profile.questions];
             newQuestions[index] = {
@@ -211,7 +219,7 @@ const Register: React.FC = () => {
         });
     };
 
-    const removeQuestion = (index) => {
+    const removeQuestion = (index: number) => {
         setFormData(prev => {
             const newQuestions = [...prev.profile.questions];
             newQuestions.splice(index, 1);
@@ -226,7 +234,7 @@ const Register: React.FC = () => {
         });
     };
 
-    const handleFileUpload = (e) => {
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const fileURL = URL.createObjectURL(e.target.files[0]);
 
@@ -240,7 +248,7 @@ const Register: React.FC = () => {
         }
     };
 
-    const removePhoto = (index) => {
+    const removePhoto = (index: number) => {
         setFormData(prev => {
             const newPhotos = [...prev.profile.photos];
             newPhotos.splice(index, 1);
@@ -255,7 +263,7 @@ const Register: React.FC = () => {
         });
     };
 
-    const calculateAge = (birthdate) => {
+    const calculateAge = (birthdate: string) => {
         const birthDate = new Date(birthdate);
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
@@ -267,7 +275,7 @@ const Register: React.FC = () => {
     };
 
     const validateStep = () => {
-        const errors = {};
+        const errors: { [key: string]: string } = {};
 
         switch (step) {
             case 1:
@@ -355,7 +363,7 @@ const Register: React.FC = () => {
         }, 300);
     };
 
-    const convertBlobToBase64 = (blobUrl) => {
+    const convertBlobToBase64 = (blobUrl: string) => {
         return new Promise((resolve, reject) => {
             fetch(blobUrl)
                 .then(response => response.blob())
@@ -369,7 +377,7 @@ const Register: React.FC = () => {
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormSubmitted(true);
 
@@ -411,29 +419,41 @@ const Register: React.FC = () => {
         } catch (err) {
             console.error('Registration error:', err);
 
-            if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message);
-            } else if (err.response && err.response.data && err.response.data.errors) {
-                const apiErrors = err.response.data.errors;
-                const formattedErrors = {};
+            if (
+                typeof err === 'object' &&
+                err !== null &&
+                'response' in err &&
+                typeof (err as any).response === 'object' &&
+                (err as any).response !== null &&
+                'data' in (err as any).response
+            ) {
+                const response = (err as any).response;
+                if (response.data && response.data.message) {
+                    setError(response.data.message);
+                } else if (response.data && response.data.errors) {
+                    const apiErrors = response.data.errors;
+                    const formattedErrors: { [key: string]: string } = {};
 
-                apiErrors.forEach((error) => {
-                    const field = error.path.split('.').pop();
-                    formattedErrors[field] = error.message;
-                });
+                    apiErrors.forEach((error: any) => {
+                        const field = error.path.split('.').pop();
+                        formattedErrors[field] = error.message;
+                    });
 
-                setValidationErrors(formattedErrors);
+                    setValidationErrors(formattedErrors);
 
-                if (formattedErrors.email || formattedErrors.password) {
-                    setStep(1);
-                } else if (formattedErrors.name || formattedErrors.age || formattedErrors.location) {
-                    setStep(2);
-                } else if (formattedErrors.bio || formattedErrors.interests) {
-                    setStep(3);
-                } else if (formattedErrors.photos) {
-                    setStep(4);
+                    if (formattedErrors.email || formattedErrors.password) {
+                        setStep(1);
+                    } else if (formattedErrors.name || formattedErrors.age || formattedErrors.location) {
+                        setStep(2);
+                    } else if (formattedErrors.bio || formattedErrors.interests) {
+                        setStep(3);
+                    } else if (formattedErrors.photos) {
+                        setStep(4);
+                    } else {
+                        setStep(5);
+                    }
                 } else {
-                    setStep(5);
+                    setError('An error occurred during registration. Please try again.');
                 }
             } else {
                 setError('An error occurred during registration. Please try again.');
@@ -447,7 +467,6 @@ const Register: React.FC = () => {
     const renderProgress = () => {
         return (
             <div className="relative mb-8">
-                {/* Progress bar background */}
                 <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
                     {/* Progress bar indicator */}
                     <div 
@@ -1124,7 +1143,7 @@ const Register: React.FC = () => {
                             Back
                         </button>
                     ) : (
-                        <div></div> // Empty div to maintain layout with flex justify-between
+                        <div></div>
                     )}
 
                     {step < 5 ? (
@@ -1172,7 +1191,6 @@ const Register: React.FC = () => {
                 </div>
             )}
 
-            {/* Global CSS */}
             <style>{`
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }
