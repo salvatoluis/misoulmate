@@ -3,10 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
     Heart, ArrowLeft, MessageCircle, X,
     MapPin, Briefcase, GraduationCap, Coffee, Music,
-    BookOpen, Camera, Film, User, Globe, Instagram, Star,
-    Sparkles, Send, AlertTriangle, ArrowRightCircle, ArrowLeftCircle,
-    Ban, ChevronDown, ChevronUp, Clock, Share2, Diamond,
-    Info, Users, MessageSquare, Settings, ChevronRight
+    BookOpen, Camera, Film, User, Globe, Instagram, Star, ArrowRightCircle,
+    Sparkles, Send, AlertTriangle, ArrowLeftCircle,
+    Ban, ChevronDown, ChevronUp, Share2, Diamond, MessageSquare, ChevronRight
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { matchService, conversationService, profileService } from '@/services';
@@ -20,7 +19,6 @@ const MatchProfilePage = () => {
     const [otherUser, setOtherUser] = useState<any>(null);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [showCompatibility, setShowCompatibility] = useState(false);
     const [messageText, setMessageText] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
