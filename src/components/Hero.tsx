@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Heart, Shield, Briefcase, Star, Camera, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Hero() {
     const [scrollY, setScrollY] = useState(0);
@@ -9,7 +10,8 @@ export default function Hero() {
     
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [cardMousePosition, setCardMousePosition] = useState({ x: 50, y: 50 });
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY);
@@ -44,7 +46,6 @@ export default function Hero() {
         };
     }, []);
 
-    // Generate floating elements for background
     const floatingElements = Array(10).fill(0).map((_, i) => ({
         id: i,
         size: Math.random() * 20 + 10,
@@ -57,9 +58,7 @@ export default function Hero() {
 
     return (
         <div className="relative w-full overflow-hidden bg-gradient-to-b from-[#0c0c14] to-[#16161e]">
-            {/* Ambient background */}
             <div className="absolute inset-0 overflow-hidden">
-                {/* Soft gradient background */}
                 <div
                     className="absolute left-0 top-0 h-[150vh] w-[150vw] -translate-x-1/4 -translate-y-1/4 opacity-40"
                     style={{
@@ -68,7 +67,6 @@ export default function Hero() {
                     }}
                 ></div>
 
-                {/* Subtle floating elements */}
                 {floatingElements.map((el) => (
                     <div
                         key={el.id}
@@ -106,7 +104,6 @@ export default function Hero() {
                             className="relative space-y-7"
                             style={{ transform: `translateY(${-scrollY * 0.03}px)` }}
                         >
-                            {/* Badge */}
                             <div className="inline-flex items-center rounded-full border border-white/5 bg-white/[0.03] px-5 py-2 backdrop-blur-xl">
                                 <div className="mr-2 h-2 w-2 rounded-full bg-[#FF6B81]"></div>
                                 <p className="text-xs font-medium text-white/90">
@@ -114,7 +111,6 @@ export default function Hero() {
                                 </p>
                             </div>
 
-                            {/* Headline */}
                             <h1 className="font-display text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
                                 Find 
                                 <span
@@ -129,13 +125,11 @@ export default function Hero() {
                                 Connections
                             </h1>
 
-                            {/* Description */}
                             <p className="text-xl leading-relaxed text-white/70">
                                 Discover meaningful relationships with like-minded professionals who share your values and aspirations. Our intelligent matching algorithm goes beyond appearances.
                             </p>
                         </div>
 
-                        {/* CTA section */}
                         <div 
                             ref={ctaRef}
                             className="flex flex-col space-y-5 sm:flex-row sm:space-x-6 sm:space-y-0"
@@ -145,6 +139,7 @@ export default function Hero() {
                             } as React.CSSProperties & Record<string, any>}
                         >
                             <button 
+                                onClick={() => navigate('/matches')}
                                 className="group relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] p-[1px] text-lg font-semibold text-white shadow-lg shadow-[#FF6B81]/10"
                             >
                                 <span className="absolute inset-0 opacity-25 transition-opacity duration-500 ease-out"
@@ -158,13 +153,12 @@ export default function Hero() {
                                 </span>
                             </button>
 
-                            <button className="group flex items-center justify-center rounded-full border border-white/8 bg-white/[0.02] px-8 py-3.5 text-lg font-medium text-white backdrop-blur-md transition-all hover:bg-white/[0.04] hover:border-white/15">
+                            <button onClick={() => navigate('/matches')} className="group flex items-center justify-center rounded-full border border-white/8 bg-white/[0.02] px-8 py-3.5 text-lg font-medium text-white backdrop-blur-md transition-all hover:bg-white/[0.04] hover:border-white/15">
                                 Learn More
                             </button>
                         </div>
                     </div>
 
-                    {/* Right side - Profile card */}
                     <div
                         ref={cardRef}
                         className="relative mt-20 flex w-full max-w-xl origin-top perspective lg:mt-0"
@@ -173,9 +167,8 @@ export default function Hero() {
                             '--mouse-y': `${cardMousePosition.y}%`
                         } as React.CSSProperties & Record<string, any>}
                     >
-                        {/* Main profile card */}
                         <div 
-                            className="relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.07] to-white/[0.03] p-[1px] shadow-2xl backdrop-blur-xl transition-all duration-300"
+                            className="relative flex h-full mt-16 w-full flex-col overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.07] to-white/[0.03] p-[1px] shadow-2xl backdrop-blur-xl transition-all duration-300"
                             style={{
                                 transform: `perspective(1000px) rotateX(${(cardMousePosition.y - 50) * 0.04}deg) rotateY(${(cardMousePosition.x - 50) * -0.04}deg)`,
                                 transformStyle: 'preserve-3d',
@@ -183,11 +176,9 @@ export default function Hero() {
                             }}
                         >
                             <div className="relative h-full w-full rounded-[calc(1.5rem-1px)] bg-[#0c0c14]/90 p-8">
-                                {/* Highlight accent */}
                                 <div className="absolute -right-40 -top-40 h-80 w-80 rounded-full bg-[#FF6B81]/5 blur-3xl"></div>
                                 <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-[#B75BFF]/5 blur-3xl"></div>
                                 
-                                {/* Light effect that follows mouse */}
                                 <div 
                                     className="absolute inset-0 opacity-10 transition-opacity duration-300 ease-out"
                                     style={{
@@ -195,7 +186,6 @@ export default function Hero() {
                                     }}
                                 ></div>
 
-                                {/* Profile header */}
                                 <div className="mb-8 flex items-center justify-between">
                                     <div className="flex items-center gap-5">
                                         <div className="relative h-16 w-16 overflow-hidden rounded-full p-[2px] shadow-md" 
@@ -203,7 +193,6 @@ export default function Hero() {
                                                 background: `linear-gradient(45deg, #FF6B81, #B75BFF)`
                                             }}
                                         >
-                                            {/* Profile image placeholder */}
                                             <div className="h-full w-full rounded-full bg-black/30 bg-[url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
                                         </div>
                                         <div>
@@ -217,7 +206,6 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {/* Compatibility stats */}
                                 <div className="mb-6 space-y-6">
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
@@ -261,7 +249,6 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {/* Photo gallery preview */}
                                 <div className="mb-6 mt-8">
                                     <div className="mb-3 flex items-center justify-between">
                                         <p className="text-sm font-medium text-white/80">Photos</p>
@@ -285,7 +272,6 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {/* Interests section */}
                                 <div className="mb-6">
                                     <p className="mb-3 text-sm font-medium text-white/80">Interests</p>
                                     <div className="flex flex-wrap gap-2">
@@ -300,7 +286,6 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {/* Message preview */}
                                 <div className="relative rounded-2xl bg-white/[0.02] p-5 backdrop-blur-md border border-white/[0.03]">
                                     <div className="mb-4 flex justify-between">
                                         <p className="text-sm font-medium text-white">Recent Message</p>
@@ -318,17 +303,14 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {/* CTA button */}
                                 <button className="mt-7 w-full rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#FF6B81]/10 transition-all hover:shadow-xl hover:shadow-[#FF6B81]/20 flex items-center justify-center gap-2 group">
                                     <span className="relative flex items-center gap-2">
-                                        Start Conversation
                                         <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                                     </span>
                                 </button>
                             </div>
                         </div>
 
-                        {/* Floating notification */}
                         <div
                             className="absolute -left-8 bottom-16 z-20 max-w-[250px] rounded-2xl border border-white/5 bg-white/5 px-4 py-3 shadow-xl backdrop-blur-xl"
                             style={{
