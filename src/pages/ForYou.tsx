@@ -152,7 +152,7 @@ const ForYou: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white pt-safe pb-safe">
+        <div className="min-h-screen bg-white pt-[68px] pb-[67px]">
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 bg-white z-40 shadow-sm border-b border-gray-100 pt-safe">
                 <div className="px-4 py-3 flex justify-between items-center">
