@@ -50,6 +50,7 @@ const Register: React.FC = () => {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [agreeToTerms, setAgreeToTerms] = useState(false);
+    const [photoError, setPhotoError] = useState('');
 
     type Profile = {
         name: string;
@@ -90,7 +91,7 @@ const Register: React.FC = () => {
             languages: [],
             lookingFor: 'Relationship',
             showMe: 'Women',
-            gender: '',
+            gender: 'male', // Set default gender
             ageRange: [25, 35],
             maxDistance: 25,
             questions: []
@@ -110,7 +111,7 @@ const Register: React.FC = () => {
     }, [location]);
 
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
 
@@ -132,7 +133,16 @@ const Register: React.FC = () => {
             }));
         }
 
-        if (validationErrors[name]) {
+        // Clear validation error when field is updated
+        if (name.includes('.')) {
+            const field = name.split('.')[1];
+            if (validationErrors[field]) {
+                setValidationErrors(prev => ({
+                    ...prev,
+                    [field]: ''
+                }));
+            }
+        } else if (validationErrors[name]) {
             setValidationErrors(prev => ({
                 ...prev,
                 [name]: ''
@@ -155,6 +165,14 @@ const Register: React.FC = () => {
                 }
             };
         });
+
+        // Clear interests validation error when interests are updated
+        if (validationErrors.interests) {
+            setValidationErrors(prev => ({
+                ...prev,
+                interests: ''
+            }));
+        }
     };
 
     const toggleLanguage = (language: string) => {
@@ -236,21 +254,46 @@ const Register: React.FC = () => {
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            const fileURL = URL.createObjectURL(e.target.files[0]);
-
-            setFormData(prev => ({
-                ...prev,
-                profile: {
-                    ...prev.profile,
-                    photos: [...prev.profile.photos, fileURL]
+            // Check file size (limit to 5MB)
+            const file = e.target.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                setPhotoError('Image size should be less than 5MB');
+                return;
+            }
+            
+            try {
+                const fileURL = URL.createObjectURL(file);
+                
+                setFormData(prev => ({
+                    ...prev,
+                    profile: {
+                        ...prev.profile,
+                        photos: [...prev.profile.photos, fileURL]
+                    }
+                }));
+                
+                // Clear photo error and validation error
+                setPhotoError('');
+                if (validationErrors.photos) {
+                    setValidationErrors(prev => ({
+                        ...prev,
+                        photos: ''
+                    }));
                 }
-            }));
+            } catch (err) {
+                console.error('Error creating object URL:', err);
+                setPhotoError('Failed to process image. Please try another one.');
+            }
         }
     };
 
     const removePhoto = (index: number) => {
         setFormData(prev => {
             const newPhotos = [...prev.profile.photos];
+            
+            // Release the object URL to prevent memory leaks
+            URL.revokeObjectURL(newPhotos[index]);
+            
             newPhotos.splice(index, 1);
 
             return {
@@ -313,13 +356,14 @@ const Register: React.FC = () => {
                 if (!formData.profile.location) {
                     errors.location = 'Location is required';
                 }
+                
+                if (!formData.profile.gender) {
+                    errors.gender = 'Gender is required';
+                }
                 break;
 
             case 3: 
-
-                if (!formData.profile.bio) {
-                    errors.bio = 'Bio is required';
-                }
+                // Bio is not required according to backend validation
                 if (formData.profile.interests.length === 0) {
                     errors.interests = 'Please select at least one interest';
                 }
@@ -363,18 +407,30 @@ const Register: React.FC = () => {
         }, 300);
     };
 
-    const convertBlobToBase64 = (blobUrl: string) => {
-        return new Promise((resolve, reject) => {
-            fetch(blobUrl)
-                .then(response => response.blob())
-                .then(blob => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(blob);
-                })
-                .catch(reject);
-        });
+    const convertBlobToBase64 = async (blobUrl: string): Promise<string> => {
+        try {
+            const response = await fetch(blobUrl);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
+            }
+            
+            const blob = await response.blob();
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    if (typeof reader.result === 'string') {
+                        resolve(reader.result);
+                    } else {
+                        reject(new Error('Failed to convert blob to base64'));
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.error('Error converting blob to base64:', error);
+            throw new Error('Failed to process image. Please try uploading again.');
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -388,10 +444,23 @@ const Register: React.FC = () => {
         try {
             setIsLoading(true);
             setError('');
-
-            const base64Photos = await Promise.all(
-                formData.profile.photos.map(photo => convertBlobToBase64(photo))
+            
+            // Validate that all questions have both question and answer
+            const validQuestions = formData.profile.questions.filter(
+                q => q.question.trim() !== '' && q.answer.trim() !== ''
             );
+            
+            // Convert photos to base64
+            let base64Photos: string[] = [];
+            try {
+                base64Photos = await Promise.all(
+                    formData.profile.photos.map(photo => convertBlobToBase64(photo))
+                );
+            } catch (error) {
+                setError('Failed to process one or more images. Please try uploading them again.');
+                setIsLoading(false);
+                return;
+            }
 
             const age = calculateAge(formData.profile.birthdate);
 
@@ -399,14 +468,12 @@ const Register: React.FC = () => {
             const registerData = {
                 email: formData.email,
                 password: formData.password,
-                referralCode: formData.referralCode,
+                referralCode: formData.referralCode || null, // Ensure null if empty string
                 profile: {
                     ...profileWithoutBirthdate,
                     photos: base64Photos,
                     age,
-                    questions: formData.profile.questions.filter(
-                        q => q.question.trim() !== '' && q.answer.trim() !== ''
-                    )
+                    questions: validQuestions
                 }
             };
 
@@ -434,16 +501,21 @@ const Register: React.FC = () => {
                     const apiErrors = response.data.errors;
                     const formattedErrors: { [key: string]: string } = {};
 
+                    // Format API errors for display
                     apiErrors.forEach((error: any) => {
-                        const field = error.path.split('.').pop();
-                        formattedErrors[field] = error.message;
+                        if (error.path && typeof error.path === 'string') {
+                            // Extract the last part of the path (e.g., 'profile.name' -> 'name')
+                            const field = error.path.split('.').pop();
+                            formattedErrors[field] = error.message;
+                        }
                     });
 
                     setValidationErrors(formattedErrors);
 
+                    // Navigate to the appropriate step based on errors
                     if (formattedErrors.email || formattedErrors.password) {
                         setStep(1);
-                    } else if (formattedErrors.name || formattedErrors.age || formattedErrors.location) {
+                    } else if (formattedErrors.name || formattedErrors.age || formattedErrors.location || formattedErrors.gender) {
                         setStep(2);
                     } else if (formattedErrors.bio || formattedErrors.interests) {
                         setStep(3);
@@ -463,6 +535,15 @@ const Register: React.FC = () => {
             setFormSubmitted(false);
         }
     };
+
+    // Clean up object URLs when component unmounts
+    useEffect(() => {
+        return () => {
+            formData.profile.photos.forEach(photo => {
+                URL.revokeObjectURL(photo);
+            });
+        };
+    }, []);
 
     const renderProgress = () => {
         return (
@@ -611,7 +692,7 @@ const Register: React.FC = () => {
                                 </p>
                             ) : (
                                 <p className="text-xs text-gray-500">
-                                   
+                                    Password must be at least 8 characters
                                 </p>
                             )}
                         </div>
@@ -735,6 +816,7 @@ const Register: React.FC = () => {
                                         ? 'border-red-500 ring-1 ring-red-500' 
                                         : 'border-gray-300'
                                     } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81] transition-all duration-200`}
+                                    max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                                 />
                             </div>
                             {validationErrors.birthdate ? (
@@ -773,6 +855,34 @@ const Register: React.FC = () => {
                                 <p className="text-red-500 text-sm mt-1 flex items-center">
                                     <AlertCircle size={14} className="mr-1" />
                                     {validationErrors.location}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="profile.gender">
+                                Gender
+                                <span className="text-red-500 ml-1">*</span>
+                            </label>
+                            <select
+                                id="profile.gender"
+                                name="profile.gender"
+                                value={formData.profile.gender}
+                                onChange={handleChange}
+                                className={`w-full p-3 pl-3 border ${validationErrors.gender
+                                    ? 'border-red-500 ring-1 ring-red-500'
+                                    : 'border-gray-300'
+                                } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81] bg-white`}
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            {validationErrors.gender && (
+                                <p className="text-red-500 text-sm mt-1 flex items-center">
+                                    <AlertCircle size={14} className="mr-1" />
+                                    {validationErrors.gender}
                                 </p>
                             )}
                         </div>
@@ -906,6 +1016,12 @@ const Register: React.FC = () => {
                                     </label>
                                 )}
                             </div>
+                            {photoError && (
+                                <p className="text-red-500 text-sm mt-2 flex items-center">
+                                    <AlertCircle size={14} className="mr-1" />
+                                    {photoError}
+                                </p>
+                            )}
                             {validationErrors.photos && (
                                 <p className="text-red-500 text-sm mt-2 flex items-center">
                                     <AlertCircle size={14} className="mr-1" />
@@ -970,7 +1086,7 @@ const Register: React.FC = () => {
                             )}
 
                             <p className="text-xs text-gray-500 mt-2">
-                                Add questions and answers to showcase your personality.
+                                Add questions and answers to showcase your personality. Both question and answer are required for each item.
                             </p>
                         </div>
                     </div>
@@ -1007,11 +1123,15 @@ const Register: React.FC = () => {
                                     value={formData.profile.gender}
                                     onChange={handleChange}
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B81]/30 focus:border-[#FF6B81] bg-white"
+                                    disabled
                                 >
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Set in basic information
+                                </p>
                             </div>
 
                             <div>
