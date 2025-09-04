@@ -37,8 +37,8 @@ interface ReferralUser {
   email: string;
   createdAt: string;
   verified: boolean;
-  subscription: string;
-  plan: string;
+  subscription?: string;
+  plan?: string;
 }
 
 interface PointTransaction {
@@ -181,10 +181,16 @@ const Referrals: React.FC = () => {
   };
 
   const isPlanPaid = (user: ReferralUser) => {
-    return user.plan !== "Free";
+    // Check plan first, fall back to subscription
+    const planValue = user.plan || user.subscription;
+    return planValue !== "Free" && planValue !== "Basic";
   };
 
-  // Updated to handle actual point redemption
+  // Function to get the plan display value
+  const getPlanDisplayValue = (user: ReferralUser) => {
+    return user.plan || user.subscription || "Free";
+  };
+
   const handleRedeemPoints = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -730,7 +736,9 @@ const Referrals: React.FC = () => {
                               : "bg-gray-100 text-gray-800"
                           }`}
                         >
-                          {referral.plan || "Free"}
+                          {isPlanPaid(referral)
+                            ? "Subscribed"
+                            : "Free"}
                         </span>
                       </td>
 
