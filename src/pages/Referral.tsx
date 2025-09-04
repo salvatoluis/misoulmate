@@ -75,7 +75,6 @@ const Referrals: React.FC = () => {
     null
   );
 
-  // New state variables for redemption
   const [showRedeemModal, setShowRedeemModal] = useState(false);
   const [pointsToRedeem, setPointsToRedeem] = useState(400);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -181,14 +180,8 @@ const Referrals: React.FC = () => {
   };
 
   const isPlanPaid = (user: ReferralUser) => {
-    // Check plan first, fall back to subscription
     const planValue = user.plan || user.subscription;
     return planValue !== "Free" && planValue !== "Basic";
-  };
-
-  // Function to get the plan display value
-  const getPlanDisplayValue = (user: ReferralUser) => {
-    return user.plan || user.subscription || "Free";
   };
 
   const handleRedeemPoints = async (e: React.FormEvent) => {
@@ -214,14 +207,12 @@ const Referrals: React.FC = () => {
         paymentDetails,
       });
 
-      // Update referral info with new points balance
       setReferralInfo({
         ...referralInfo,
         points: response.data.points,
         redeemablePoints: response.data.redeemablePoints,
       });
 
-      // Fetch updated transactions
       const transactionsResponse = await axiosInstance.get(
         "/referrals/points/transactions"
       );
@@ -234,7 +225,6 @@ const Referrals: React.FC = () => {
       setPointsToRedeem(400);
       setShowRedeemModal(false);
 
-      // Clear success message after 3 seconds
       setTimeout(() => setConversionSuccess(null), 5000);
     } catch (err: any) {
       console.error("Error redeeming points:", err);
@@ -244,7 +234,6 @@ const Referrals: React.FC = () => {
     }
   };
 
-  // For backwards compatibility (legacy)
   const handleConvertPoints = async () => {
     if (!convertPoints || convertPoints <= 0 || !referralInfo) return;
 
@@ -259,13 +248,11 @@ const Referrals: React.FC = () => {
         points: convertPoints,
       });
 
-      // Update referral info with new points balance
       setReferralInfo({
         ...referralInfo,
         points: response.data.points,
       });
 
-      // Fetch updated transactions
       const transactionsResponse = await axiosInstance.get(
         "/referrals/points/transactions"
       );
@@ -274,7 +261,6 @@ const Referrals: React.FC = () => {
       setConversionSuccess(`Successfully converted ${convertPoints} points!`);
       setConvertPoints(0);
 
-      // Clear success message after 3 seconds
       setTimeout(() => setConversionSuccess(null), 3000);
     } catch (err: any) {
       console.error("Error converting points:", err);
@@ -284,12 +270,10 @@ const Referrals: React.FC = () => {
     }
   };
 
-  // Calculate dollar value
   const getDollarValue = (points: number) => {
     return (points * 0.05).toFixed(2);
   };
 
-  // Show loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -299,7 +283,6 @@ const Referrals: React.FC = () => {
     );
   }
 
-  // Show error state
   if (error && !referralInfo) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
@@ -330,7 +313,6 @@ const Referrals: React.FC = () => {
       </header>
 
       <div className="container mx-auto px-4 py-6 pb-20">
-        {/* Error banner */}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex justify-between items-center">
             <div className="flex items-center">
@@ -343,7 +325,6 @@ const Referrals: React.FC = () => {
           </div>
         )}
 
-        {/* Success message */}
         {conversionSuccess && (
           <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex justify-between items-center">
             <div className="flex items-center">
@@ -359,7 +340,6 @@ const Referrals: React.FC = () => {
           </div>
         )}
 
-        {/* Hero Section */}
         <div className="bg-gradient-to-r from-[#FF6B81] to-[#FF8E8E] text-white p-8 rounded-xl mb-6">
           <div className="flex justify-center mb-4">
             <Gift size={40} />
@@ -373,7 +353,6 @@ const Referrals: React.FC = () => {
           </p>
         </div>
 
-        {/* New Redeemable Points Card */}
         <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white p-6 rounded-xl mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -412,7 +391,6 @@ const Referrals: React.FC = () => {
           )}
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white p-4 rounded-xl shadow-sm">
             <Users size={24} className="text-[#FF6B81] mb-2" />
@@ -447,7 +425,6 @@ const Referrals: React.FC = () => {
           </div>
         </div>
 
-        {/* Referral Code & Link */}
         <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Your Referral Code
@@ -763,7 +740,6 @@ const Referrals: React.FC = () => {
           )}
         </div>
 
-        {/* Transaction History */}
         <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Transaction History
@@ -819,7 +795,6 @@ const Referrals: React.FC = () => {
             </div>
           )}
         </div>
-        {/* Rewards Section */}
         <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800">
