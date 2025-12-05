@@ -56,7 +56,7 @@ const ContactUs: React.FC = () => {
             question: 'How do I cancel my subscription?',
             answer: (
                 <div className="space-y-2">
-                    <p>To cancel your miSoulMate subscription:</p>
+                    <p>To cancel your Soulmatify subscription:</p>
                     <ol className="list-decimal pl-5 space-y-1">
                         <li>Go to Settings {'>'} Subscription</li>
                         <li>Tap on "Manage Subscription"</li>
@@ -107,7 +107,7 @@ const ContactUs: React.FC = () => {
             question: 'How do I delete my account?',
             answer: (
                 <div className="space-y-2">
-                    <p>To delete your miSoulMate account:</p>
+                    <p>To delete your Soulmatify account:</p>
                     <ol className="list-decimal pl-5 space-y-1">
                         <li>Go to Settings {'>'} Account</li>
                         <li>Scroll to the bottom and tap "Delete Account"</li>
@@ -185,7 +185,7 @@ const ContactUs: React.FC = () => {
                             <h3 className="font-medium text-gray-800 mb-1">Email Support</h3>
                             <p className="text-sm text-gray-600 mb-3">24/7 support via email</p>
                             <a
-                                href="mailto:support@miSoulMate.com"
+                                href="mailto:support@Soulmatify.com"
                                 className="block w-full py-2 text-sm text-[#FF6B81] border border-[#FF6B81] rounded-lg hover:bg-[#FF6B81]/5 transition-colors"
                             >
                                 Email Us

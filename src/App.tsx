@@ -6,6 +6,7 @@ import MatchProfile from "./pages/MatchProfile";
 import UserProfile from "./pages/UserProfile";
 import Conversation from "./pages/Conversation";
 import Subscription from "./pages/Subscription";
+import SubscriptionOffer from "./pages/SubscriptionOffer";
 import Settings from "./pages/Settings";
 import BlockedUsers from "./pages/BlockedUsers";
 import FAQHelp from "./pages/FAQHelp";
@@ -171,6 +172,15 @@ const App: React.FC = () => {
                 <AuthLayout>
                   <Register />
                 </AuthLayout>
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/subscription-offer"
+            element={
+              <PublicRoute>
+                <SubscriptionOffer />
               </PublicRoute>
             }
           />

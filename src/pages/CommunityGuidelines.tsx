@@ -31,7 +31,7 @@ const CommunityGuidelines: React.FC = () => {
             icon: <Users className="text-[#FF6B81]" size={20} />,
             content: (
                 <div className="space-y-3">
-                    <p>At miSoulMate, we're committed to creating a respectful and inclusive environment where everyone feels welcome. Our community is diverse, and we celebrate people of all backgrounds, identities, and orientations.</p>
+                    <p>At Soulmatify, we're committed to creating a respectful and inclusive environment where everyone feels welcome. Our community is diverse, and we celebrate people of all backgrounds, identities, and orientations.</p>
 
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
@@ -80,7 +80,7 @@ const CommunityGuidelines: React.FC = () => {
             icon: <Check className="text-[#FF6B81]" size={20} />,
             content: (
                 <div className="space-y-3">
-                    <p>Building genuine connections starts with being your authentic self. Honesty is fundamental to creating a trustworthy environment for everyone on miSoulMate.</p>
+                    <p>Building genuine connections starts with being your authentic self. Honesty is fundamental to creating a trustworthy environment for everyone on Soulmatify.</p>
 
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
@@ -134,7 +134,7 @@ const CommunityGuidelines: React.FC = () => {
             icon: <Shield className="text-[#FF6B81]" size={20} />,
             content: (
                 <div className="space-y-3">
-                    <p>Your safety and privacy are top priorities at miSoulMate. We've implemented features to help keep you safe, but it's important to also take personal precautions.</p>
+                    <p>Your safety and privacy are top priorities at Soulmatify. We've implemented features to help keep you safe, but it's important to also take personal precautions.</p>
 
                     <h4 className="font-medium text-gray-800 mt-4 mb-2">Do:</h4>
                     <ul className="space-y-2">
@@ -361,7 +361,7 @@ const CommunityGuidelines: React.FC = () => {
             icon: <UserX className="text-[#FF6B81]" size={20} />,
             content: (
                 <div className="space-y-3">
-                    <p>The following activities are strictly prohibited on miSoulMate and may result in immediate account suspension or permanent ban:</p>
+                    <p>The following activities are strictly prohibited on Soulmatify and may result in immediate account suspension or permanent ban:</p>
 
                     <ul className="space-y-3 mt-4">
                         <li className="flex items-start">
@@ -396,7 +396,7 @@ const CommunityGuidelines: React.FC = () => {
                             <X size={16} className="text-red-500 mt-1 mr-2 flex-shrink-0" />
                             <div>
                                 <span className="font-medium text-gray-800">Underage Users:</span>
-                                <p className="text-gray-600 text-sm mt-0.5">miSoulMate is for adults 18+ only. Misrepresenting your age or attempting to interact with minors is prohibited</p>
+                                <p className="text-gray-600 text-sm mt-0.5">Soulmatify is for adults 18+ only. Misrepresenting your age or attempting to interact with minors is prohibited</p>
                             </div>
                         </li>
                         <li className="flex items-start">
@@ -481,12 +481,12 @@ const CommunityGuidelines: React.FC = () => {
                     <h2 className="text-xl font-bold text-gray-800 mb-4">About Our Guidelines</h2>
 
                     <p className="text-gray-700 mb-4">
-                        miSoulMate is a place to connect, build relationships, and discover meaningful connections.
+                        Soulmatify is a place to connect, build relationships, and discover meaningful connections.
                         These guidelines help ensure that everyone has a positive and safe experience.
                     </p>
 
                     <p className="text-gray-700 mb-4">
-                        By using miSoulMate, you agree to follow these guidelines and our
+                        By using Soulmatify, you agree to follow these guidelines and our
                         <Link to="/terms" className="text-[#FF6B81] mx-1 hover:underline">Terms of Service</Link>
                         and
                         <Link to="/privacy" className="text-[#FF6B81] mx-1 hover:underline">Privacy Policy</Link>.
@@ -497,7 +497,7 @@ const CommunityGuidelines: React.FC = () => {
                         <div className="flex">
                             <Info size={20} className="text-primary mr-3 flex-shrink-0" />
                             <p className="text-primary text-sm">
-                                These guidelines apply to all interactions on miSoulMate, including profiles, messages, and any other content shared on the platform.
+                                These guidelines apply to all interactions on Soulmatify, including profiles, messages, and any other content shared on the platform.
                             </p>
                         </div>
                     </div>

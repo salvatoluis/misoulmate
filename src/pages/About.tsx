@@ -13,6 +13,9 @@ import {
   MapPin,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Features from "../components/Features";
+import HowItWorks from "../components/HowItWorks";
+import FinalCTA from "../components/FinalCTA";
 
 const About: React.FC = () => {
   const navigate = useNavigate();
@@ -96,7 +99,7 @@ const About: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-20">
+    <div className="bg-[#FFF9F0] min-h-screen pb-20">
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center">
           <button onClick={() => navigate(-1)} className="mr-4">
@@ -106,7 +109,16 @@ const About: React.FC = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6">
+      {/* Why Choose Us Section */}
+      <Features />
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
+      {/* Call to Action Section */}
+      <FinalCTA />
+
+      <div className="container mx-auto px-4 py-6 bg-gray-50">
         <div className="text-center mb-12">
           <div className="inline-flex justify-center items-center w-20 h-20 rounded-full bg-[#FF6B81]/10 mb-6">
             <Heart size={36} className="text-[#FF6B81]" />

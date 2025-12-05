@@ -68,7 +68,7 @@ const SafetyCenter: React.FC = () => {
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
                         <Info size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-primary text-sm">miSoulMate offers a "Share My Date" feature that lets you share your location and date details with trusted contacts.</p>
+                        <p className="text-primary text-sm">Soulmatify offers a "Share My Date" feature that lets you share your location and date details with trusted contacts.</p>
                     </div>
                 </div>
             )
@@ -89,7 +89,7 @@ const SafetyCenter: React.FC = () => {
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
                         <Lock size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-primary text-sm">miSoulMate messages are encrypted and our systems scan for suspicious behavior patterns.</p>
+                        <p className="text-primary text-sm">Soulmatify messages are encrypted and our systems scan for suspicious behavior patterns.</p>
                     </div>
                 </div>
             )
@@ -129,7 +129,7 @@ const SafetyCenter: React.FC = () => {
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
                         <Check size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-primary text-sm">miSoulMate's video chat feature is designed with privacy in mind and doesn't allow recording within the app.</p>
+                        <p className="text-primary text-sm">Soulmatify's video chat feature is designed with privacy in mind and doesn't allow recording within the app.</p>
                     </div>
                 </div>
             )
@@ -149,7 +149,7 @@ const SafetyCenter: React.FC = () => {
                     </ul>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-100 flex">
                         <Info size={18} className="text-primary mr-2 flex-shrink-0 mt-0.5" />
-                        <p className="text-primary text-sm">miSoulMate allows you to hide your distance or set a custom location for privacy.</p>
+                        <p className="text-primary text-sm">Soulmatify allows you to hide your distance or set a custom location for privacy.</p>
                     </div>
                 </div>
             )

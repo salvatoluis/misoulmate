@@ -10,58 +10,54 @@ const Features = () => {
         {
             id: 1,
             title: 'Verified Profiles',
-            description: 'Every profile undergoes a thorough verification process to ensure you\'re meeting genuine individuals seeking meaningful relationships.',
-            icon: < ShieldCheck size={32} />,
+            description: 'Every profile undergoes verification to ensure you\'re meeting genuine individuals.',
+            icon: < ShieldCheck size={28} />,
             iconBgColor: 'from-primary to-primary',
             iconColor: 'text-white',
             detailedPoints: [
                 'Multi-factor authentication',
-                'Secure ID verification',
-                'Social profile cross-checking'
+                'Secure ID verification'
             ]
         },
         {
             id: 2,
-            title: 'Value-Based Matching',
-            description: 'Our proprietary algorithm matches you based on core values, life goals, and personality traits that lead to lasting relationships.',
-            icon: <Scale size={32} />,
+            title: 'Smart Matching',
+            description: 'Our algorithm matches you based on core values and personality traits.',
+            icon: <Scale size={28} />,
             iconBgColor: 'from-teal-600 to-teal-500',
             iconColor: 'text-white',
             detailedPoints: [
-                'Deep personality assessment',
-                'Core values alignment',
-                'Long-term compatibility focus'
+                'Personality assessment',
+                'Values alignment'
             ]
         },
         {
             id: 3,
             title: 'Safe Communication',
-            description: 'Connect through our encrypted platform featuring video calls, messaging, and guided conversation starters for meaningful interactions.',
-            icon: <Lock size={32} />,
+            description: 'Connect through our encrypted platform with messaging and video calls.',
+            icon: <Lock size={28} />,
             iconBgColor: 'from-amber-500 to-amber-400',
             iconColor: 'text-white',
             detailedPoints: [
                 'End-to-end encryption',
-                'Profile safety features',
-                'Moderated interactions'
+                'Safety features'
             ]
         },
         {
             id: 4,
             title: 'Community Events',
-            description: 'Join virtual and in-person events designed to help you connect with compatible matches in natural, pressure-free environments.',
-            icon: <Users size={32} />,
+            description: 'Join events designed to help you connect in natural environments.',
+            icon: <Users size={28} />,
             iconBgColor: 'from-primary to-primary',
             iconColor: 'text-white',
             detailedPoints: [
-                'Curated social gatherings',
-                'Interest-based activities',
-                'Relationship workshops'
+                'Social gatherings',
+                'Interest-based activities'
             ]
         }
     ];
 
-    const headingWords = "Why Choose miSoulMate".split(' ');
+    const headingWords = "Why Choose Soulmatify".split(' ');
 
     type Feature = {
         id: number;
@@ -209,11 +205,8 @@ const Features = () => {
                         <span className="text-slate-600 font-medium">A Comprehensive Matchmaking Experience</span>
                     </div>
 
-                    <p
-                        className="text-lg text-slate-600 max-w-2xl mx-auto bg-white/70 backdrop-blur-sm p-5 rounded-2xl border border-white/80 shadow-sm"
-
-                    >
-                        Our unique approach focuses on compatibility that matters, connecting you with individuals who share your values, goals, and vision for a meaningful life together.
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Connect with individuals who share your values, goals, and vision for a meaningful life together.
                     </p>
                 </div>
 

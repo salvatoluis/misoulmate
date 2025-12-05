@@ -232,7 +232,7 @@ const CookiePolicy: React.FC = () => {
                         If you have any questions or concerns about our use of cookies or this Cookie Policy, please contact us at:
                     </p>
                     <p className="font-medium">
-                        Email: privacy@misoulmate.com<br />
+                        Email: privacy@soulmatify.com<br />
                         Address: 123 Dating Avenue, Suite 500, San Francisco, CA 94103, USA
                     </p>
                 </div>
@@ -279,7 +279,7 @@ const CookiePolicy: React.FC = () => {
                             </div>
                         </div>
                         <p className="text-gray-700">
-                            This Cookie Policy explains how miSoulMate uses cookies and similar technologies to recognize and remember you when you visit our website and apps, and how you can control them.
+                            This Cookie Policy explains how Soulmatify uses cookies and similar technologies to recognize and remember you when you visit our website and apps, and how you can control them.
                         </p>
                     </div>
                 </div>
@@ -318,7 +318,7 @@ const CookiePolicy: React.FC = () => {
                     <div className="bg-white rounded-xl shadow-sm overflow-hidden p-5 mb-6">
                         <h3 className="font-semibold text-lg text-gray-800 mb-3">Cookie Preferences</h3>
                         <p className="text-gray-700 mb-4">
-                            You can customize which cookies you allow on miSoulMate. Please note that blocking some types of cookies may impact your experience on our site.
+                            You can customize which cookies you allow on Soulmatify. Please note that blocking some types of cookies may impact your experience on our site.
                         </p>
 
                         <div className="space-y-3">
@@ -373,7 +373,7 @@ const CookiePolicy: React.FC = () => {
 
                     <div className="text-center space-y-4">
                         <p className="text-sm text-gray-500">
-                            By using miSoulMate, you consent to our use of cookies in accordance with this Cookie Policy and our Privacy Policy.
+                            By using Soulmatify, you consent to our use of cookies in accordance with this Cookie Policy and our Privacy Policy.
                         </p>
                         <div className="flex justify-center space-x-4">
                             <Link

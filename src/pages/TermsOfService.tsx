@@ -29,7 +29,7 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        Welcome to miSoulMate. These Terms of Service ("Terms") govern your access to and use of the miSoulMate application, website, and services (collectively, the "Service"). Please read these Terms carefully before accessing or using our Service.
+                        Welcome to Soulmatify. These Terms of Service ("Terms") govern your access to and use of the Soulmatify application, website, and services (collectively, the "Service"). Please read these Terms carefully before accessing or using our Service.
                     </p>
                     <p>
                         By accessing or using the Service, you agree to be bound by these Terms. If you do not agree to all the terms and conditions of this agreement, you may not access or use any services.
@@ -43,11 +43,11 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        You must be at least 18 years old to create an account on miSoulMate and use the Service. By creating an account and using the Service, you represent and warrant that:
+                        You must be at least 18 years old to create an account on Soulmatify and use the Service. By creating an account and using the Service, you represent and warrant that:
                     </p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li>You are at least 18 years old.</li>
-                        <li>You can form a binding contract with miSoulMate.</li>
+                        <li>You can form a binding contract with Soulmatify.</li>
                         <li>You are not a person who is barred from using the Service under the laws of the United States or any other applicable jurisdiction.</li>
                         <li>You will comply with these Terms and all applicable local, state, national, and international laws, rules, and regulations.</li>
                         <li>You have never been convicted of or pled no contest to a felony, a sex crime, or any crime involving violence or a threat of violence, and that you are not required to register as a sex offender with any state, federal, or local sex offender registry.</li>
@@ -61,7 +61,7 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        You are responsible for maintaining the confidentiality of your login credentials and are fully responsible for all activities that occur under your account. You agree to immediately notify miSoulMate of any unauthorized use of your account or any other breach of security.
+                        You are responsible for maintaining the confidentiality of your login credentials and are fully responsible for all activities that occur under your account. You agree to immediately notify Soulmatify of any unauthorized use of your account or any other breach of security.
                     </p>
                     <p>
                         Your account is personal to you and you agree not to provide any other person with access to this Service using your username, password, or other security information.
@@ -96,7 +96,7 @@ const TermsOfService: React.FC = () => {
                         <li>Contains viruses, corrupted data, or other harmful files</li>
                     </ul>
                     <p>
-                        miSoulMate reserves the right, but is not obligated, to monitor and/or review all User Content, and to remove any User Content that violates these Terms or that otherwise violates our Community Guidelines.
+                        Soulmatify reserves the right, but is not obligated, to monitor and/or review all User Content, and to remove any User Content that violates these Terms or that otherwise violates our Community Guidelines.
                     </p>
                 </div>
             )
@@ -107,14 +107,14 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        By posting User Content on the Service, you grant to miSoulMate a non-exclusive, transferable, sub-licensable, royalty-free, worldwide license to host, use, distribute, modify, run, copy, publicly display, translate, and create derivative works of your User Content in connection with the operation and provision of the Service.
+                        By posting User Content on the Service, you grant to Soulmatify a non-exclusive, transferable, sub-licensable, royalty-free, worldwide license to host, use, distribute, modify, run, copy, publicly display, translate, and create derivative works of your User Content in connection with the operation and provision of the Service.
                     </p>
                     <p>
                         This license terminates when you delete your User Content or your account, except:
                     </p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li>Where your User Content has been shared with others and they have not deleted it</li>
-                        <li>Where miSoulMate has used your User Content in promotional materials or for legal purposes</li>
+                        <li>Where Soulmatify has used your User Content in promotional materials or for legal purposes</li>
                         <li>Where reasonably necessary for technical backup and storage purposes</li>
                     </ul>
                 </div>
@@ -126,10 +126,10 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        miSoulMate offers paid subscription services ("Premium Services") that provide enhanced features beyond the basic free service. By purchasing Premium Services, you agree to the following:
+                        Soulmatify offers paid subscription services ("Premium Services") that provide enhanced features beyond the basic free service. By purchasing Premium Services, you agree to the following:
                     </p>
                     <ul className="list-disc pl-5 space-y-1">
-                        <li>You authorize miSoulMate to charge your chosen payment method for the subscription fees.</li>
+                        <li>You authorize Soulmatify to charge your chosen payment method for the subscription fees.</li>
                         <li>Subscriptions automatically renew until you cancel. You can cancel at any time through your account settings.</li>
                         <li>Cancellation will stop automatic renewal, but you will not receive a refund for the current billing period.</li>
                         <li>We may change subscription fees by giving you notice before the change takes effect.</li>
@@ -148,13 +148,13 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        While miSoulMate strives to encourage a respectful user experience, we are not responsible for the conduct of any user on or off the Service. You agree to use caution in all interactions with other users, particularly if you decide to communicate off the platform or meet in person.
+                        While Soulmatify strives to encourage a respectful user experience, we are not responsible for the conduct of any user on or off the Service. You agree to use caution in all interactions with other users, particularly if you decide to communicate off the platform or meet in person.
                     </p>
                     <p>
-                        You understand that miSoulMate does not conduct criminal background checks on its users or otherwise inquire into the background of its users. miSoulMate makes no representations or warranties as to the conduct or compatibility of users.
+                        You understand that Soulmatify does not conduct criminal background checks on its users or otherwise inquire into the background of its users. Soulmatify makes no representations or warranties as to the conduct or compatibility of users.
                     </p>
                     <p>
-                        miSoulMate reserves the right to conduct any criminal background check or other screenings at any time, and to use available public records for any purpose related to the operation of the Service.
+                        Soulmatify reserves the right to conduct any criminal background check or other screenings at any time, and to use available public records for any purpose related to the operation of the Service.
                     </p>
                     <p>
                         Please refer to our <Link to="/safety" className="text-[#FF6B81] hover:underline">Safety Center</Link> for tips on safe dating practices.
@@ -185,10 +185,10 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. MISOULMATE EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+                        THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. SOULMATIFY EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
                     </p>
                     <p>
-                        MISOULMATE MAKES NO WARRANTY THAT:
+                        SOULMATIFY MAKES NO WARRANTY THAT:
                     </p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li>THE SERVICE WILL MEET YOUR REQUIREMENTS</li>
@@ -205,7 +205,7 @@ const TermsOfService: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        IN NO EVENT SHALL MISOULMATE, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS, BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES WHATSOEVER RESULTING FROM:
+                        IN NO EVENT SHALL SOULMATIFY, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS, BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES WHATSOEVER RESULTING FROM:
                     </p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li>ERRORS, MISTAKES, OR INACCURACIES OF CONTENT</li>
@@ -244,7 +244,7 @@ const TermsOfService: React.FC = () => {
                         If you have any questions about these Terms, please contact us at:
                     </p>
                     <p className="font-medium">
-                        Email: legal@misoulmate.com<br />
+                        Email: legal@soulmatify.com<br />
                         Address: 123 Dating Avenue, Suite 500, San Francisco, CA 94103, USA
                     </p>
                 </div>
@@ -291,7 +291,7 @@ const TermsOfService: React.FC = () => {
                             </div>
                         </div>
                         <p className="text-gray-700">
-                            Please read these Terms of Service carefully before using miSoulMate. By accessing or using our service, you agree to be bound by these terms.
+                            Please read these Terms of Service carefully before using Soulmatify. By accessing or using our service, you agree to be bound by these terms.
                         </p>
                     </div>
                 </div>
@@ -329,7 +329,7 @@ const TermsOfService: React.FC = () => {
 
                     <div className="text-center space-y-4">
                         <p className="text-sm text-gray-500">
-                            By using miSoulMate, you acknowledge that you have read and understood these Terms of Service and agree to be bound by them.
+                            By using Soulmatify, you acknowledge that you have read and understood these Terms of Service and agree to be bound by them.
                         </p>
                         <div className="flex justify-center space-x-4">
                             <Link

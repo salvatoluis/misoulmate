@@ -128,7 +128,7 @@ const AppPreview: React.FC = () => {
                         </div>
 
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-800">
-                            Take miSoulMate Everywhere
+                            Take Soulmatify Everywhere
                         </h2>
 
                         <p className="text-lg text-slate-600 mb-8">

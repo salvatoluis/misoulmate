@@ -124,29 +124,16 @@ const Navbar: React.FC = () => {
           className="flex items-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <div className="text-2xl font-bold">
-            {scrolled ? (
-              <img
-                src="/images/logo_2.png"
-                alt="Logo"
-                className="h-8 w-auto"
-                style={{
-                  animation: "fadeIn 0.3s ease forwards",
-                }}
-              />
-            ) : (
-              <img
-                src="/images/logo.png"
-                alt="Logo"
-                className="h-8 w-auto"
-                style={{
-                  animation: "fadeInDown 0.5s ease forwards",
-                  opacity: 0,
-                  animationDelay: "0.2s",
-                }}
-              />
-            )}
-          </div>
+          <img
+            src="/images/logo.jpeg"
+            alt="Soulmatify"
+            className="h-10 w-auto"
+            style={{
+              animation: "fadeInDown 0.5s ease forwards",
+              opacity: 0,
+              animationDelay: "0.2s",
+            }}
+          />
         </div>
 
         <div className="hidden md:flex items-center space-x-6">

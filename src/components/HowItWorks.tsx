@@ -13,62 +13,58 @@ const HowItWorks = () => {
         {
             id: 1,
             title: 'Complete Your Profile',
-            description: 'Create a comprehensive profile that showcases your personality, values, and relationship goals.',
-            icon: <BookOpen size={28} />,
+            description: 'Create a profile that showcases your personality and relationship goals.',
+            icon: <BookOpen size={24} />,
             color: 'from-primary to-primary',
-            detailedDescription: 'Our in-depth personality assessment goes beyond surface-level traits to understand your core values, communication style, and relationship preferences. This comprehensive approach allows for much more meaningful matches.',
+            detailedDescription: 'Our personality assessment helps us understand your core values and preferences for meaningful matches.',
             iconBg: 'bg-gradient-to-br from-primary to-primary',
             features: [
-                'Advanced personality assessment',
-                'Values and life goals exploration',
-                'Relationship expectations questionnaire'
+                'Personality assessment',
+                'Values exploration'
             ]
         },
         {
             id: 2,
-            title: 'Discover Compatible Matches',
-            description: 'Our algorithm suggests individuals with compatible values, communication styles, and life goals.',
-            icon: <Search size={28} />,
+            title: 'Discover Matches',
+            description: 'Our algorithm suggests compatible individuals based on your values and goals.',
+            icon: <Search size={24} />,
             color: 'from-teal-600 to-teal-500',
-            detailedDescription: 'Our proprietary compatibility system analyzes over 100 dimensions of compatibility to suggest individuals who share your vision for life and relationship preferences. Focus on quality connections rather than endless swiping.',
+            detailedDescription: 'Focus on quality connections with matches who share your vision for life.',
             iconBg: 'bg-gradient-to-br from-teal-600 to-teal-500',
             features: [
-                'Value-based matching algorithm',
-                'Relationship readiness filtering',
-                'Life stage compatibility assessment'
+                'Value-based matching',
+                'Compatibility assessment'
             ]
         },
         {
             id: 3,
-            title: 'Meaningful Communication',
-            description: 'Build connection through guided conversation tools designed to foster genuine understanding.',
-            icon: <MessageCircle size={28} />,
+            title: 'Connect & Chat',
+            description: 'Build connections through messaging and conversation tools.',
+            icon: <MessageCircle size={24} />,
             color: 'from-primary to-primary',
-            detailedDescription: 'Our platform offers guided conversation starters based on shared interests and values. Progress through communication stages naturally, from messaging to voice calls to video conversations at your comfort level.',
+            detailedDescription: 'Use conversation starters and progress naturally from messaging to video calls.',
             iconBg: 'bg-gradient-to-br from-primary to-primary',
             features: [
-                'Guided conversation topics',
-                'Progressive communication stages',
-                'Icebreaker suggestions based on profiles'
+                'Conversation starters',
+                'Messaging & video calls'
             ]
         },
         {
             id: 4,
-            title: 'Real-World Connection',
-            description: 'Transition to in-person meetings with our date planning tools and relationship guidance.',
-            icon: <Coffee size={28} />,
+            title: 'Meet in Person',
+            description: 'Plan your first date with our tools and safety guidance.',
+            icon: <Coffee size={24} />,
             color: 'from-amber-500 to-amber-400',
-            detailedDescription: 'When you\'re ready to meet, our platform offers suggested meeting locations, activity recommendations based on mutual interests, and safety protocols to ensure comfortable first meetings.',
+            detailedDescription: 'Get venue suggestions and safety tips for comfortable first meetings.',
             iconBg: 'bg-gradient-to-br from-amber-500 to-amber-400',
             features: [
-                'Suggested meeting venues based on preferences',
-                'Pre-date coaching and preparation',
-                'Relationship milestone guidance'
+                'Venue suggestions',
+                'Safety protocols'
             ]
         }
     ];
 
-    const headingWords = "How miSoulMate Works".split(' ');
+    const headingWords = "How Soulmatify Works".split(' ');
 
     const wordVariants = {
         hidden: { y: 50, opacity: 0 },
@@ -426,7 +422,7 @@ const HowItWorks = () => {
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ delay: 0.8, duration: 0.5 }}
                     >
-                        Our thoughtful four-step process is designed to help you find a compatible partner who shares your values and vision for the future.
+                        Four simple steps to finding your compatible partner.
                     </motion.p>
                 </motion.div>
 

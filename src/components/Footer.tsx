@@ -290,7 +290,7 @@ const Footer: React.FC = () => {
                     >
                         <p className="text-slate-500 text-sm mb-4 md:mb-0 flex items-center">
                             <Info size={14} className="mr-1.5" />
-                            Made with love in Nairobi Kenya. © 2025 miSoulMate. All rights reserved.
+                            Made with love in Nairobi Kenya. © 2025 Soulmatify. All rights reserved.
                         </p>
                         <div className="flex items-center">
                             <a href="#" className="text-slate-400 hover:text-white text-sm mr-6 hover:underline">Beta Program</a>

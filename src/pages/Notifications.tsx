@@ -106,7 +106,7 @@ const initialNotifications: Notification[] = [
     {
         id: 'n9',
         type: 'system',
-        content: 'Welcome to miSoulMate! Complete your profile to start matching.',
+        content: 'Welcome to Soulmatify! Complete your profile to start matching.',
         timestamp: '1 week ago',
         isRead: true
     },

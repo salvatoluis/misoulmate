@@ -57,7 +57,7 @@ export default function Hero() {
     }));
 
     return (
-        <div className="relative w-full overflow-hidden bg-gradient-to-b from-[#0c0c14] to-[#16161e]">
+        <div className="relative w-full overflow-hidden bg-gradient-to-b from-[#0c0c14] to-[#16161e] pt-20">
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className="absolute left-0 top-0 h-[150vh] w-[150vw] -translate-x-1/4 -translate-y-1/4 opacity-40"
@@ -104,13 +104,6 @@ export default function Hero() {
                             className="relative space-y-7"
                             style={{ transform: `translateY(${-scrollY * 0.03}px)` }}
                         >
-                            <div className="inline-flex items-center rounded-full border border-white/5 bg-white/[0.03] px-5 py-2 backdrop-blur-xl">
-                                <div className="mr-2 h-2 w-2 rounded-full bg-[#FF6B81]"></div>
-                                <p className="text-xs font-medium text-white/90">
-                                    <span className="text-[#FF6B81]">12,000+</span> meaningful connections made
-                                </p>
-                            </div>
-
                             <h1 className="font-display text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
                                 Find 
                                 <span
@@ -130,31 +123,27 @@ export default function Hero() {
                             </p>
                         </div>
 
-                        <div 
+                        <div
                             ref={ctaRef}
-                            className="flex flex-col space-y-5 sm:flex-row sm:space-x-6 sm:space-y-0"
+                            className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
                             style={{
                                 '--mouse-x': `${mousePosition.x}px`,
                                 '--mouse-y': `${mousePosition.y}px`
                             } as React.CSSProperties & Record<string, any>}
                         >
-                            <button 
-                                onClick={() => navigate('/matches')}
-                                className="group relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] p-[1px] text-lg font-semibold text-white shadow-lg shadow-[#FF6B81]/10"
+                            <button
+                                onClick={() => navigate('/register')}
+                                className="group relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-[#FF6B81]/20 hover:shadow-xl hover:shadow-[#FF6B81]/30 transition-all duration-300"
                             >
-                                <span className="absolute inset-0 opacity-25 transition-opacity duration-500 ease-out"
-                                    style={{
-                                        background: 'radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 107, 129, 0.6), transparent 60%)'
-                                    }}
-                                ></span>
-                                <span className="relative z-10 flex w-full items-center justify-center gap-2 rounded-full bg-[#0c0c14] px-8 py-3.5 transition-all duration-300 ease-out group-hover:bg-opacity-90 group-hover:gap-4">
-                                    Find Your Match
-                                    <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                                </span>
+                                Get Started Free
+                                <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                             </button>
 
-                            <button onClick={() => navigate('/matches')} className="group flex items-center justify-center rounded-full border border-white/8 bg-white/[0.02] px-8 py-3.5 text-lg font-medium text-white backdrop-blur-md transition-all hover:bg-white/[0.04] hover:border-white/15">
-                                Learn More
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="group flex items-center justify-center rounded-full border-2 border-white/20 bg-white/[0.05] px-8 py-4 text-lg font-medium text-white backdrop-blur-md transition-all hover:bg-white/[0.10] hover:border-white/30"
+                            >
+                                Sign In
                             </button>
                         </div>
                     </div>
@@ -206,79 +195,48 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                <div className="mb-6 space-y-6">
+                                <div className="space-y-4">
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
                                             <p className="text-sm font-medium text-white/80">Match Compatibility</p>
-                                            <div className="flex items-center gap-1.5">
-                                                <div className="h-1.5 w-1.5 rounded-full bg-[#FF6B81]"></div>
-                                                <p className="text-sm font-bold text-white">92%</p>
-                                            </div>
+                                            <p className="text-sm font-bold text-white">92%</p>
                                         </div>
                                         <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/5">
-                                            <div className="absolute inset-0 h-full w-[92%] rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF]">
-                                                <div className="absolute inset-0 opacity-30 bg-white animate-shimmer"></div>
-                                            </div>
+                                            <div className="absolute inset-0 h-full w-[92%] rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF]"></div>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-3 gap-4">
-                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm border border-white/[0.03]">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B81]/10">
-                                                <Shield className="h-5 w-5 text-[#FF6B81]" />
+                                    <div className="grid grid-cols-3 gap-3">
+                                        <div className="rounded-xl bg-white/[0.03] p-3 backdrop-blur-sm border border-white/[0.03] text-center">
+                                            <div className="flex h-8 w-8 mx-auto items-center justify-center rounded-lg bg-[#FF6B81]/10 mb-2">
+                                                <Shield className="h-4 w-4 text-[#FF6B81]" />
                                             </div>
-                                            <p className="mt-3 text-sm font-medium text-white">Verified</p>
-                                            <p className="mt-1 text-xs text-white/60">Identity confirmed</p>
+                                            <p className="text-xs font-medium text-white">Verified</p>
                                         </div>
 
-                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm border border-white/[0.03]">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#B75BFF]/10">
-                                                <Star className="h-5 w-5 text-[#B75BFF]" />
+                                        <div className="rounded-xl bg-white/[0.03] p-3 backdrop-blur-sm border border-white/[0.03] text-center">
+                                            <div className="flex h-8 w-8 mx-auto items-center justify-center rounded-lg bg-[#B75BFF]/10 mb-2">
+                                                <Star className="h-4 w-4 text-[#B75BFF]" />
                                             </div>
-                                            <p className="mt-3 text-sm font-medium text-white">Values</p>
-                                            <p className="mt-1 text-xs text-white/60">90% alignment</p>
+                                            <p className="text-xs font-medium text-white">Values</p>
                                         </div>
 
-                                        <div className="rounded-2xl bg-white/[0.03] p-4 backdrop-blur-sm border border-white/[0.03]">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B81]/10">
-                                                <Briefcase className="h-5 w-5 text-[#FF6B81]" />
+                                        <div className="rounded-xl bg-white/[0.03] p-3 backdrop-blur-sm border border-white/[0.03] text-center">
+                                            <div className="flex h-8 w-8 mx-auto items-center justify-center rounded-lg bg-[#FF6B81]/10 mb-2">
+                                                <Briefcase className="h-4 w-4 text-[#FF6B81]" />
                                             </div>
-                                            <p className="mt-3 text-sm font-medium text-white">Career</p>
-                                            <p className="mt-1 text-xs text-white/60">Ambitious</p>
+                                            <p className="text-xs font-medium text-white">Career</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="mb-6 mt-8">
-                                    <div className="mb-3 flex items-center justify-between">
-                                        <p className="text-sm font-medium text-white/80">Photos</p>
-                                        <p className="text-xs text-[#FF6B81]">View all</p>
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-2">
-                                        <div className="relative aspect-square overflow-hidden rounded-xl bg-white/5">
-                                            <div className="h-full w-full bg-[url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
-                                        </div>
-                                        <div className="relative aspect-square overflow-hidden rounded-xl bg-white/5">
-                                            <div className="h-full w-full bg-[url('https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
-                                        </div>
-                                        <div className="relative aspect-square overflow-hidden rounded-xl bg-white/5">
-                                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#FF6B81]/10 to-[#B75BFF]/10 text-white">
-                                                <div className="flex items-center gap-1.5">
-                                                    <Camera size={14} />
-                                                    <span className="text-xs font-medium">3+</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="mb-6">
+                                <div className="mt-6">
                                     <p className="mb-3 text-sm font-medium text-white/80">Interests</p>
                                     <div className="flex flex-wrap gap-2">
-                                        {['Travel', 'Fitness', 'Fine Dining', 'Art', 'Reading'].map((interest, i) => (
-                                            <div 
-                                                key={i} 
-                                                className="rounded-full bg-white/[0.03] px-3 py-1 text-xs font-medium text-white/80 border border-white/5"
+                                        {['Travel', 'Fitness', 'Art'].map((interest, i) => (
+                                            <div
+                                                key={i}
+                                                className="rounded-full bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-white/80 border border-white/5"
                                             >
                                                 {interest}
                                             </div>
@@ -286,27 +244,9 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                <div className="relative rounded-2xl bg-white/[0.02] p-5 backdrop-blur-md border border-white/[0.03]">
-                                    <div className="mb-4 flex justify-between">
-                                        <p className="text-sm font-medium text-white">Recent Message</p>
-                                        <p className="text-xs text-[#FF6B81]">View chat</p>
-                                    </div>
-
-                                    <div className="flex items-start gap-4">
-                                        <div className="relative h-10 w-10 overflow-hidden rounded-full border border-white/5">
-                                            <div className="h-full w-full bg-[#0c0c14] bg-[url('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80')] bg-cover bg-center"></div>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-medium text-white">Alex</p>
-                                            <p className="text-xs text-white/60 mt-1">I'd love to check out that new art exhibit this weekend if you're free...</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button className="mt-7 w-full rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#FF6B81]/10 transition-all hover:shadow-xl hover:shadow-[#FF6B81]/20 flex items-center justify-center gap-2 group">
-                                    <span className="relative flex items-center gap-2">
-                                        <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                                    </span>
+                                <button className="mt-6 w-full rounded-full bg-gradient-to-r from-[#FF6B81] to-[#B75BFF] py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#FF6B81]/10 transition-all hover:shadow-xl hover:shadow-[#FF6B81]/20 flex items-center justify-center gap-2 group">
+                                    View Profile
+                                    <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                                 </button>
                             </div>
                         </div>

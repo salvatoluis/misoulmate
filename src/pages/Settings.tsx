@@ -75,7 +75,7 @@ const Settings: React.FC = () => {
         {
             id: 'activity_status',
             title: 'Activity Status',
-            description: 'Show when you\'re active on miSoulMate',
+            description: 'Show when you\'re active on Soulmatify',
             value: 'On',
             options: ['On', 'Off']
         }

@@ -33,7 +33,7 @@ const PrivacyPolicy: React.FC = () => {
                             <span className="font-medium">Account Information:</span> When you create an account, you provide us with at least your login credentials, as well as some basic details necessary for the service to work, such as your gender, date of birth, and sexual orientation.
                         </li>
                         <li>
-                            <span className="font-medium">Profile Information:</span> To help you connect with others on miSoulMate, we may ask you to upload additional information to your profile, such as details about yourself, your lifestyle, interests, preferences, and photos.
+                            <span className="font-medium">Profile Information:</span> To help you connect with others on Soulmatify, we may ask you to upload additional information to your profile, such as details about yourself, your lifestyle, interests, preferences, and photos.
                         </li>
                         <li>
                             <span className="font-medium">Content:</span> When you engage with our community, we collect the content you contribute, as well as information about when and how you created it. This includes your messages to other users, photos you upload, and information about your interactions with other users.
@@ -68,7 +68,7 @@ const PrivacyPolicy: React.FC = () => {
                             <span className="font-medium">Social Media:</span> If you choose to log in to our services using a social media account, we will receive social media data such as your name and email address to authenticate you.
                         </li>
                         <li>
-                            <span className="font-medium">Other Partners:</span> We may receive information about you from our partners, for instance when miSoulMate accounts can be created through a partner's website (such as a social network).
+                            <span className="font-medium">Other Partners:</span> We may receive information about you from our partners, for instance when Soulmatify accounts can be created through a partner's website (such as a social network).
                         </li>
                     </ul>
                 </div>
@@ -124,7 +124,7 @@ const PrivacyPolicy: React.FC = () => {
                             <span className="font-medium">Legal requirements:</span> We may disclose your information if reasonably necessary to: (i) comply with a legal process, such as a court order, subpoena, or search warrant; (ii) protect our rights, privacy, safety or property, or that of you or others; or (iii) enforce our terms of service.
                         </li>
                         <li>
-                            <span className="font-medium">Business transfers:</span> We may share your information if miSoulMate is involved in a merger, acquisition, reorganization, sale of some or all of its assets, bankruptcy, or similar transaction.
+                            <span className="font-medium">Business transfers:</span> We may share your information if Soulmatify is involved in a merger, acquisition, reorganization, sale of some or all of its assets, bankruptcy, or similar transaction.
                         </li>
                     </ul>
                     <p>
@@ -176,7 +176,7 @@ const PrivacyPolicy: React.FC = () => {
                         </li>
                     </ul>
                     <p>
-                        To exercise these rights, you can contact us at privacy@misoulmate.com. Note that these rights may be limited in some circumstances by local law requirements.
+                        To exercise these rights, you can contact us at privacy@soulmatify.com. Note that these rights may be limited in some circumstances by local law requirements.
                     </p>
                 </div>
             )
@@ -207,7 +207,7 @@ const PrivacyPolicy: React.FC = () => {
                         </li>
                     </ul>
                     <p>
-                        To exercise these rights, you can contact us at privacy@misoulmate.com or use the "Do Not Sell or Share My Personal Information" link on our website. We will not discriminate against you for exercising your rights under the CCPA/CPRA.
+                        To exercise these rights, you can contact us at privacy@soulmatify.com or use the "Do Not Sell or Share My Personal Information" link on our website. We will not discriminate against you for exercising your rights under the CCPA/CPRA.
                     </p>
                 </div>
             )
@@ -224,7 +224,7 @@ const PrivacyPolicy: React.FC = () => {
                         We regularly monitor our systems for possible vulnerabilities and attacks and regularly review our information collection, storage, and processing practices to update our physical, technical, and organizational security measures.
                     </p>
                     <p>
-                        We may suspend your use of all or part of the services without notice if we suspect or detect any breach of security. If you believe that your account or information is no longer secure, please notify us immediately at security@misoulmate.com.
+                        We may suspend your use of all or part of the services without notice if we suspect or detect any breach of security. If you believe that your account or information is no longer secure, please notify us immediately at security@soulmatify.com.
                     </p>
                 </div>
             )
@@ -238,7 +238,7 @@ const PrivacyPolicy: React.FC = () => {
                         Our services are restricted to individuals who are 18 years of age or older. We do not knowingly collect, maintain, or use personal information from children under 18 years of age. If we learn that we have collected personal information of a child under 18, we will take steps to delete such information from our files as soon as possible.
                     </p>
                     <p>
-                        If you believe that we might have any information from or about a child under 18, please contact us at privacy@misoulmate.com.
+                        If you believe that we might have any information from or about a child under 18, please contact us at privacy@soulmatify.com.
                     </p>
                 </div>
             )
@@ -249,7 +249,7 @@ const PrivacyPolicy: React.FC = () => {
             content: (
                 <div className="space-y-3 text-gray-700">
                     <p>
-                        miSoulMate operates globally and may transfer your data to third parties in locations around the world for the purposes described in this privacy policy. Wherever your personal information is transferred, stored, or processed by us, we will take reasonable steps to safeguard the privacy of your personal information.
+                        Soulmatify operates globally and may transfer your data to third parties in locations around the world for the purposes described in this privacy policy. Wherever your personal information is transferred, stored, or processed by us, we will take reasonable steps to safeguard the privacy of your personal information.
                     </p>
                     <p>
                         When we transfer personal data outside of the EEA, UK, or Switzerland, we ensure an adequate level of protection for the rights of data subjects based on the adequacy of the receiving country's data protection laws, contractual obligations placed on the recipient of the data, or EU-US and Swiss-US Privacy Shield principles.
@@ -326,9 +326,9 @@ const PrivacyPolicy: React.FC = () => {
                         If you have questions about this Privacy Policy, please contact us at:
                     </p>
                     <p className="font-medium">
-                        Email: privacy@misoulmate.com<br />
+                        Email: privacy@soulmatify.com<br />
                         Address: 123 Dating Avenue, Suite 500, San Francisco, CA 94103, USA<br />
-                        Data Protection Officer: dpo@misoulmate.com
+                        Data Protection Officer: dpo@soulmatify.com
                     </p>
                 </div>
             )
@@ -374,7 +374,7 @@ const PrivacyPolicy: React.FC = () => {
                             </div>
                         </div>
                         <p className="text-gray-700">
-                            This Privacy Policy describes how miSoulMate collects, uses, and discloses your information and how you can control your privacy settings when using our services.
+                            This Privacy Policy describes how Soulmatify collects, uses, and discloses your information and how you can control your privacy settings when using our services.
                         </p>
                     </div>
                 </div>
@@ -412,7 +412,7 @@ const PrivacyPolicy: React.FC = () => {
 
                     <div className="text-center space-y-4">
                         <p className="text-sm text-gray-500">
-                            By using miSoulMate, you acknowledge that you have read and understood this Privacy Policy and our handling of your personal information.
+                            By using Soulmatify, you acknowledge that you have read and understood this Privacy Policy and our handling of your personal information.
                         </p>
                         <div className="flex justify-center space-x-4">
                             <Link
