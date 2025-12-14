@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
 import HowItWorks from '../components/HowItWorks';
-// import Testimonials from '../components/Testimonials';
 import AppPreview from '../components/AppPreview';
 import FinalCTA from '../components/FinalCTA';
 import Footer from '../components/Footer';
@@ -16,7 +15,6 @@ const HomePage: React.FC = () => {
             <Hero />
             <Features />
             <HowItWorks />
-            {/* <Testimonials /> */}
             <AppPreview />
             <FinalCTA />
             <Footer />
